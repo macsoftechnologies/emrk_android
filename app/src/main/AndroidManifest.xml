@@ -20,7 +20,7 @@
         <activity android:name=".activities.LanguageSelectionActivity" />
         <activity
             android:name=".activities.SplashScreenActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
