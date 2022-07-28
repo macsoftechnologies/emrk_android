@@ -7,7 +7,7 @@ android {
     buildToolsVersion "32.0.0"
 
     defaultConfig {
-        applicationId "com.macsoftech.ekart"
+        applicationId "com.macsof.emrk"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1

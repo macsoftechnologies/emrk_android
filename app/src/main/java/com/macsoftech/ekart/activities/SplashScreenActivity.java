@@ -1,5 +1,6 @@
 package com.macsoftech.ekart.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -14,13 +15,10 @@ public class SplashScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                Intent intent = new Intent(SplashScreenActivity.this, DashBoardActivity.class);
-//                startActivity(intent);
-//                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
+            startActivity(intent);
+            finish();
         }, 1000);
 
 

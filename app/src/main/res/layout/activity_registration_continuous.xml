@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        tools:context=".activities.LoginActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Create Account"
+            android:textColor="@color/colorPrimary"
+            android:padding="10dp"
+            android:textSize="30sp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_height="wrap_content"/>
+
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:hint="Entity Name"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:hint="Primary"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:hint="Location"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:hint="User Profile"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:hint="Entity Profile"
+            android:textColorHint="@color/grey"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/btn_back"
+            android:layout_width="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:background="@drawable/primary_store_rounded"
+            android:layout_height="45dp">
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:text="Next"
+                android:gravity="center"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_register"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/white"
+            android:text="Register"
+            android:gravity="center"
+            android:layout_width="150dp"
+            android:background="@drawable/login_submit_bg"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/btn_login"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="@string/if_already_registered_user_please_login"
+            android:textColor="@color/colorPrimary" />
+
+
+    </LinearLayout>
+</ScrollView>
