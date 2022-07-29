@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/menu_profile"></ImageView>
+                android:src="@drawable/entity_profile"/>
 
             <TextView
                 android:layout_toRightOf="@+id/profileicon"
@@ -44,16 +44,17 @@
                 android:padding="10dp"
                 android:text="Gopal Krishna"
                 android:textColor="@color/skyblue"
-                android:textSize="25sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
                 android:id="@+id/editicon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:tint="@color/grey"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/menu_profile">
+                android:src="@drawable/edit">
             </ImageView>
 
 
@@ -68,7 +69,7 @@
                 android:text="Owner name"
                 android:layout_marginLeft="2dp"
                 android:textColor="@color/grey"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_toRightOf="@+id/profileicon"
@@ -81,8 +82,8 @@
                     android:layout_margin="5dp"
                     android:textColor="@color/grey"
                     android:layout_weight="1"
-                    android:textSize="10sp"
                     android:layout_width="0dp"
+                    android:textSize="16sp"
                     android:layout_height="wrap_content"
                     android:text="Location1">
 
@@ -90,11 +91,11 @@
 
                 <TextView
                     android:textColor="@color/grey"
-                    android:textSize="10sp"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:textSize="16sp"
                     android:text="Location 2">
 
                 </TextView>
@@ -111,27 +112,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_marginTop="5dp"
             android:text="1. Change Contact Number"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_marginTop="5dp"
             android:text="2. Payment"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="3. Change Language"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
 
         <LinearLayout
@@ -144,9 +148,10 @@
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4. Subcription"
+            android:text="4. Subscription"
+            android:layout_marginTop="5dp"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
             <TextView
                 android:paddingLeft="25dp"
@@ -166,9 +171,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_marginTop="5dp"
             android:text="5. Entity Name"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp"/>
 
 
         <TextView
@@ -176,9 +182,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_marginTop="5dp"
             android:text="6. Entity Locations"
             android:textColor="@color/skyblue"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
 
         <TextView
@@ -187,8 +194,9 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Logout"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25sp" />
+            android:layout_marginTop="10dp"
+            android:textColor="#01B9F5"
+            android:textSize="18sp"/>
 
 
 

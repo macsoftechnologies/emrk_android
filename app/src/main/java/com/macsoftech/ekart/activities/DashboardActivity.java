@@ -12,6 +12,7 @@ import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.fragments.HelpFragment;
 import com.macsoftech.ekart.fragments.HomeSearchFragment;
 import com.macsoftech.ekart.fragments.MyEntityFragment;
+import com.macsoftech.ekart.fragments.MyEntityTrailFragment;
 import com.macsoftech.ekart.fragments.ProfileFragment;
 
 import butterknife.BindView;
@@ -22,13 +23,15 @@ public class DashboardActivity extends BaseActivity {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
+    public static boolean isTrailStarted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
-
+        isTrailStarted = false;
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -36,7 +39,12 @@ public class DashboardActivity extends BaseActivity {
                 if (item.getItemId() == R.id.menu_search) {
                     fragment = new HomeSearchFragment();
                 } else if (item.getItemId() == R.id.menu_entity) {
-                    fragment = new MyEntityFragment();
+                    if (!isTrailStarted) {
+                        fragment = new MyEntityTrailFragment();
+                    } else {
+                        fragment = new MyEntityFragment();
+                    }
+
                 } else if (item.getItemId() == R.id.menu_help) {
                     fragment = new HelpFragment();
                 } else if (item.getItemId() == R.id.menu_profile) {
@@ -56,7 +64,7 @@ public class DashboardActivity extends BaseActivity {
         replaceFragment(new HomeSearchFragment());
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)

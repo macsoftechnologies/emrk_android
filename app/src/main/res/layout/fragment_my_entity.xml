@@ -1,14 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.MyEntityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Entity" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_margin="5dp"
+            android:layout_width="80dp"
+            android:src="@drawable/entity_profile"
+            android:layout_height="80dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:fontFamily="@font/lato_bold"
+                android:text="Entity Name"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+            <TextView
+                android:text="Owner Name"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-</FrameLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Contacts"
+                    android:padding="5dp"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/contact_white"
+                    android:background="@drawable/login_submit_bg"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:text="Locations"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/contact_white"
+                    android:background="@drawable/login_submit_bg"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="ADD PRODUCT "
+        android:padding="12dp"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/contact_white"
+        android:background="@drawable/login_submit_bg"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <ScrollView
+        android:background="#ECEFEF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/row_entity_products"/>
+        <include layout="@layout/row_entity_products"/>
+        <include layout="@layout/row_entity_products"/>
+        <include layout="@layout/row_entity_products"/>
+        <include layout="@layout/row_entity_products"/>
+
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

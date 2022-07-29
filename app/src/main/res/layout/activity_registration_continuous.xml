@@ -27,6 +27,7 @@
             android:layout_marginTop="20dp"
             android:singleLine="true"
             android:hint="Entity Name"
+            android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -35,6 +36,7 @@
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:hint="Primary"
+            android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -43,6 +45,7 @@
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:hint="Location"
+            android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -51,6 +54,7 @@
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:hint="User Profile"
+            android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -59,6 +63,7 @@
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:hint="Entity Profile"
+            android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:inputType="textEmailAddress"
