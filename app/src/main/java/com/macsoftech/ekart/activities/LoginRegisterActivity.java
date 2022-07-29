@@ -21,12 +21,12 @@ public class LoginRegisterActivity extends BaseActivity {
     @OnClick(R.id.btn_login)
     public void onLoginClick() {
         startActivity(new Intent(this, LoginActivity.class));
-        finish();
+//        finish();
     }
 
     @OnClick(R.id.btn_register)
     public void onRegisterContinueClick() {
         startActivity(new Intent(this, RegistrationActivity.class));
-        finish();
+//        finish();
     }
 }
