@@ -1,60 +1,36 @@
 package com.macsoftech.ekart.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.macsoftech.ekart.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeSearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HomeSearchFragment extends BaseFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ChipGroup chipGroup;
 
     public HomeSearchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeSearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeSearchFragment newInstance(String param1, String param2) {
-        HomeSearchFragment fragment = new HomeSearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -62,5 +38,45 @@ public class HomeSearchFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_search, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        chipGroup = view.findViewById(R.id.chip_group);
+        loadGroup();
+    }
+
+    public void loadGroup() {
+        //chip_group
+        chipGroup.setSelectionRequired(false);
+        for (int i = 0; i < 7; i++) {
+            Chip chip1 = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.tag_cloud, chipGroup, false);
+            chip1.setText("Adidas " + (i + 1));
+            chip1.setId(i + 1);
+            chipGroup.addView(chip1);
+        }
+
+        chipGroup.setOnCheckedChangeListener((chipGroup, id) -> {
+            Chip chip = ((Chip) chipGroup.getChildAt(chipGroup.getCheckedChipId() - 1));
+            if (chip != null) {
+                showPopUp(id);
+            }
+        });
+    }
+
+    void showPopUp(int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Info");
+        builder.setMessage("Shown info of " + id);
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
