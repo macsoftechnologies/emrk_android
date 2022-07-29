@@ -88,7 +88,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/down"
+                android:drawableRight="@drawable/down_blue"
                 android:layout_height="50dp"/>
         </LinearLayout>
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/down"
+                android:drawableRight="@drawable/down_blue"
                 android:layout_height="50dp"/>
         </LinearLayout>
 
@@ -134,7 +134,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/down"
+                android:drawableRight="@drawable/down_blue"
                 android:layout_height="50dp"/>
         </LinearLayout>
         <LinearLayout
@@ -152,7 +152,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
-                android:drawableRight="@drawable/down"
+                android:drawableRight="@drawable/down_blue"
                 android:layout_height="50dp"/>
         </LinearLayout>
 
