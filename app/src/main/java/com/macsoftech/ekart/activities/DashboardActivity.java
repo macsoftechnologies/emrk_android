@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 
 public class DashboardActivity extends BaseActivity {
 
+    @Nullable
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
