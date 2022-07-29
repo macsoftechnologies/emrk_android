@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E0F4FE"
     android:padding="10dp"
+
     android:orientation="vertical"
     tools:context=".fragments.HelpFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:background="#fff"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <TextView
@@ -24,7 +30,7 @@
             android:drawableRight="@drawable/white_arrow_down"
             android:layout_height="wrap_content"/>
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/ll_content_1"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -99,6 +105,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#fff"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -114,6 +121,7 @@
             android:textSize="16sp" />
         <LinearLayout
             android:visibility="gone"
+            tools:visibility="visible"
             android:background="@color/skyblue"
             android:id="@+id/ll_content_2"
             android:orientation="vertical"
@@ -258,6 +266,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#fff"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <TextView
@@ -277,19 +286,20 @@
             android:orientation="vertical"
             android:layout_gravity="center"
             android:gravity="center"
+            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <FrameLayout
                 android:background="@color/black"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp">
 
                 <ImageView
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:src="@drawable/plus"></ImageView>
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/video"/>
 
             </FrameLayout>
 
@@ -301,6 +311,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#fff"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <TextView
@@ -319,6 +330,7 @@
             android:id="@+id/ll_content_4"
             android:orientation="vertical"
             android:textSize="16sp"
+            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -362,6 +374,7 @@
         android:layout_width="match_parent"
         android:background="#fff"
         android:orientation="vertical"
+        android:animateLayoutChanges="true"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txt_header_5"
@@ -374,6 +387,7 @@
             android:layout_height="wrap_content"/>
         <LinearLayout
             android:visibility="gone"
+            tools:visibility="visible"
             android:background="@color/skyblue"
             android:id="@+id/ll_content_5"
             android:orientation="vertical"
@@ -393,7 +407,7 @@
                     android:drawablePadding="10dp"
                     android:gravity="center_horizontal"
                     android:padding="16dp"
-                    android:text="Report"
+                    android:text="Feeback"
                     android:textColor="@color/grey"
                     android:textSize="16sp" />
 
@@ -418,3 +432,4 @@
 
 
 </LinearLayout>
+</ScrollView>
