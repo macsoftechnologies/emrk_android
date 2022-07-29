@@ -1,14 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profile" />
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profileicon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/menu_profile"></ImageView>
+
+            <TextView
+                android:layout_toRightOf="@+id/profileicon"
+                android:id="@+id/edtprofilename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Gopal Krishna"
+                android:textColor="@color/skyblue"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:id="@+id/editicon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/menu_profile">
+            </ImageView>
+
+
+            <TextView
+                android:id="@+id/ownername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtprofilename"
+                android:layout_toLeftOf="@id/editicon"
+                android:layout_toRightOf="@+id/profileicon"
+                android:padding="5dp"
+                android:text="Owner name"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/grey"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_toRightOf="@+id/profileicon"
+                android:layout_below="@+id/ownername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_margin="5dp"
+                    android:textColor="@color/grey"
+                    android:layout_weight="1"
+                    android:textSize="10sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Location1">
+
+                </TextView>
+
+                <TextView
+                    android:textColor="@color/grey"
+                    android:textSize="10sp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Location 2">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="1. Change Contact Number"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="2. Payment"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="3. Change Language"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4. Subcription"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+            <TextView
+                android:paddingLeft="25dp"
+                android:layout_marginLeft="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(01-05-2022 to 01-06-2022)"
+                android:textColor="@color/skyblue"
+                android:textSize="10sp" />
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="5. Entity Name"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="6. Entity Locations"
+            android:textColor="@color/skyblue"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Logout"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp" />
+
+
+
+    </LinearLayout>
 
 </FrameLayout>
