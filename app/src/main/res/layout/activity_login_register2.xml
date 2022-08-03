@@ -35,6 +35,7 @@
             app:cornerRadius="5dp"
             app:fieldBgColor="#fff"
             app:noOfFields="4"
+
             android:textSelectHandle="@drawable/text_handle"
             android:id="@+id/squareField"
             android:layout_marginTop="15dp"/>

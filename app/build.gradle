@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.macsof.emrk"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 32
         versionCode 1
         versionName "1.0.2"
@@ -54,5 +54,6 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
     implementation 'com.github.poovamraj:PinEditTextField:1.2.6'
 
+    implementation 'androidx.security:security-crypto:1.0.0'
 
 }

@@ -33,10 +33,12 @@
                 android:layout_width="match_parent"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
+                android:id="@+id/et_search"
                 android:singleLine="true"
                 android:layout_height="wrap_content"/>
 
             <ImageView
+                android:id="@+id/iv_search"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:rotation="270"
@@ -70,6 +72,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -182,6 +185,7 @@
         android:textColor="@color/colorPrimary"
         android:drawablePadding="10dp"
         android:layout_height="50dp"/>
+
 
 
 </LinearLayout>

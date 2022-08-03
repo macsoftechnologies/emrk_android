@@ -67,9 +67,15 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void replaceFragment(Fragment fragment) {
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
+                .commitAllowingStateLoss();
+    }
+
+    public void replaceBackStackFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 }
