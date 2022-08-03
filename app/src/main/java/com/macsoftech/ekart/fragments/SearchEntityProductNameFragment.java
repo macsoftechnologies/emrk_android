@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.macsoftech.ekart.R;
+import com.macsoftech.ekart.activities.DashboardActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.adapter.ProductNameAdapter;
 import com.macsoftech.ekart.model.CompanyName;
@@ -137,14 +138,13 @@ public class SearchEntityProductNameFragment extends Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
-            int position = viewHolder.getAdapterPosition();
+//            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+//            int position = viewHolder.getAdapterPosition();
+
+            DashboardActivity activity = (DashboardActivity) getActivity();
+            activity.replaceBackStackFragment(new EntityDetailsFragment());
            // CompanyName item = list.get(position);
-//            Intent intent = new Intent(getActivity(), VenRouteDetailActivity.class);
-//            intent.putExtra("brandLogo", item.getLogo());
-//            intent.putExtra("brandName", item.getBrandName());
-//            intent.putExtra("data", item);
-//            startActivity(intent);
+
 
         }
     };

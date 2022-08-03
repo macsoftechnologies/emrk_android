@@ -134,10 +134,10 @@ public class HomeSearchFragment extends BaseFragment {
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-              //  DashboardActivity activity = (DashboardActivity) getActivity();
+                chipGroup.setVisibility(View.GONE);
+                // DashboardActivity activity = (DashboardActivity) getActivity();
 //                activity.replaceBackStackFragment();
-
-                displayDetails(getActivity());
+                   displayDetails(getActivity());
 
             }
         });
@@ -196,11 +196,17 @@ public class HomeSearchFragment extends BaseFragment {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             //CompanyName item = list.get(position);
-            Intent intent = new Intent(getActivity(), TestActivity.class);
+          //  Intent intent = new Intent(getActivity(), TestActivity.class);
 //            intent.putExtra("brandLogo", item.getLogo());
 //            intent.putExtra("brandName", item.getBrandName());
 //            intent.putExtra("data", item);
-            startActivity(intent);
+            //startActivity(intent);
+
+             DashboardActivity activity = (DashboardActivity) getActivity();
+             activity.replaceBackStackFragment(new SearchEntityDetailFragment());
+
+            //displayDetails(getActivity());
+
 
         }
     };

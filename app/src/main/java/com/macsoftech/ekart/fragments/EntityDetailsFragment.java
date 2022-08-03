@@ -12,15 +12,14 @@ import androidx.fragment.app.Fragment;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchEntityDetailFragment#newInstance} factory method to
+ * Use the {@link EntityDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchEntityDetailFragment extends Fragment {
+public class EntityDetailsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +30,7 @@ public class SearchEntityDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchEntityDetailFragment() {
+    public EntityDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -44,8 +43,8 @@ public class SearchEntityDetailFragment extends Fragment {
      * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchEntityDetailFragment newInstance(String param1, String param2) {
-        SearchEntityDetailFragment fragment = new SearchEntityDetailFragment();
+    public static EntityDetailsFragment newInstance(String param1, String param2) {
+        EntityDetailsFragment fragment = new EntityDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,7 +65,7 @@ public class SearchEntityDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_entity_product_detail, container, false);
+        return inflater.inflate(R.layout.fragment_entity_product_detail, container, false);
     }
 
 
@@ -77,8 +76,8 @@ public class SearchEntityDetailFragment extends Fragment {
         view.findViewById(R.id.txtviewentity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DashboardActivity activity = (DashboardActivity) getActivity();
-                activity.replaceBackStackFragment(new SearchEntityProductNameFragment());
+//                DashboardActivity activity = (DashboardActivity) getActivity();
+//                activity.replaceBackStackFragment(new SearchEntityProductNameFragment());
 
             }
         });
