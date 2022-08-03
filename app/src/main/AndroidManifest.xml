@@ -18,6 +18,7 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.LoginRegisterActivity" />
         <activity android:name=".activities.LanguageSelectionActivity" />
+        <activity android:name=".activities.TestActivity" />
         <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true">

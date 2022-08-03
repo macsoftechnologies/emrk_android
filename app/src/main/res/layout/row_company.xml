@@ -22,49 +22,51 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="Product Name"
-                    android:textColor="@color/colorPrimary" />
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/login_submit_bg"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Modify Details"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:text="Product Name 1"
-                android:layout_height="wrap_content"/>
-            <LinearLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Size: "
+                    android:id="@+id/txtcampanyname"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Product Name"
                     android:fontFamily="@font/lato_bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txtviewdetails"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="View Details"
+                    android:padding="10dp"
+                    android:background="@drawable/login_submit_bg"
+                    android:textColor="@color/white"
+                    android:layout_width="120dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtmobileNo"
+                android:layout_width="match_parent"
+                android:text="Mobile No:"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtqty"
+                    android:layout_width="wrap_content"
+                    android:text="Qty: "
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="BC x DC"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:visibility="gone"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center_horizontal"
                     android:text="Delete"

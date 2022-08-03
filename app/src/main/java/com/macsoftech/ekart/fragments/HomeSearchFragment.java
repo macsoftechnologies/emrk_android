@@ -1,7 +1,9 @@
 package com.macsoftech.ekart.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,12 +15,19 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
-import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.activities.TestActivity;
+import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
+import com.macsoftech.ekart.model.CompanyName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +43,11 @@ public class HomeSearchFragment extends BaseFragment {
 
     ImageView iv_search;
     EditText et_search;
+
+    @BindView(R.id.recycleView)
+    RecyclerView recyclerView;
+
+    List<CompanyName>   list ;
 
     public HomeSearchFragment() {
         // Required empty public constructor
@@ -59,6 +73,7 @@ public class HomeSearchFragment extends BaseFragment {
         ButterKnife.bind(this,view);
 
         iv_search = view.findViewById(R.id.iv_search);
+       // recyclerView = view.findViewById(R.id.recyclerView);
         et_search = view.findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,12 +134,74 @@ public class HomeSearchFragment extends BaseFragment {
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                DashboardActivity activity = (DashboardActivity) getActivity();
+              //  DashboardActivity activity = (DashboardActivity) getActivity();
 //                activity.replaceBackStackFragment();
+
+                displayDetails(getActivity());
+
             }
         });
         builder.setNegativeButton("Cancel", null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
+    private void displayDetails(Context mContext) {
+
+         list = new ArrayList<CompanyName>();
+         CompanyName campanyName = new CompanyName();
+        campanyName.setCompanyName("Skml Pt Ltd");
+        campanyName.setMobileNo("999998766");
+        campanyName.setQty("9999");
+        list.add(campanyName);
+
+
+        CompanyName campanyName2 = new CompanyName();
+        campanyName2.setCompanyName("Skml Pt Ltd");
+        campanyName2.setMobileNo("999998766");
+        campanyName2.setQty("9999");
+        list.add(campanyName2);
+
+        CompanyName campanyName3 = new CompanyName();
+        campanyName3.setCompanyName("Skml Pt Ltd");
+        campanyName3.setMobileNo("999998766");
+        campanyName3.setQty("9999");
+        list.add(campanyName3);
+
+        CompanyName campanyName4 = new CompanyName();
+        campanyName4.setCompanyName("Skml Pt Ltd");
+        campanyName4.setMobileNo("999998766");
+        campanyName4.setQty("9999");
+        list.add(campanyName4);
+
+        CompanyName campanyName5 = new CompanyName();
+        campanyName5.setCompanyName("Skml Pt Ltd");
+        campanyName5.setMobileNo("999998766");
+        campanyName5.setQty("9999");
+        list.add(campanyName5);
+
+        ComapnyNameAdapter listAdapter = new ComapnyNameAdapter(list, mContext);
+        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(linearLayout);
+        recyclerView.setAdapter(listAdapter);
+        listAdapter.onItemClickListener(clickListener);
+    }
+
+
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+            int position = viewHolder.getAdapterPosition();
+            //CompanyName item = list.get(position);
+            Intent intent = new Intent(getActivity(), TestActivity.class);
+//            intent.putExtra("brandLogo", item.getLogo());
+//            intent.putExtra("brandName", item.getBrandName());
+//            intent.putExtra("data", item);
+            startActivity(intent);
+
+        }
+    };
 }

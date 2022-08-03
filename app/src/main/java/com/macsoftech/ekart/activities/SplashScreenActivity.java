@@ -15,11 +15,16 @@ public class SplashScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
 
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
-            startActivity(intent);
-            finish();
-        }, 1000);
+//        new Handler().postDelayed(() -> {
+//            Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }, 1000);
+
+
+        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+        startActivity(intent);
+
 
 
     }
