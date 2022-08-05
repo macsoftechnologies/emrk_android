@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -47,6 +48,12 @@ public class HomeSearchFragment extends BaseFragment {
     @BindView(R.id.recycleView)
     RecyclerView recyclerView;
 
+    @BindView(R.id.lengthlayout)
+    LinearLayout lengthlayout;
+
+    @BindView(R.id.locationlayout)
+    LinearLayout locationlayout;
+
     List<CompanyName>   list ;
 
     public HomeSearchFragment() {
@@ -73,7 +80,23 @@ public class HomeSearchFragment extends BaseFragment {
         ButterKnife.bind(this,view);
 
         iv_search = view.findViewById(R.id.iv_search);
+        //sizelayout = view.findViewById(R.id.sizelayout);
        // recyclerView = view.findViewById(R.id.recyclerView);
+
+        lengthlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lengthAlertDialog();
+            }
+        });
+
+        locationlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationAlertDialog();
+            }
+        });
+
         et_search = view.findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -210,4 +233,76 @@ public class HomeSearchFragment extends BaseFragment {
 
         }
     };
+
+
+    /**
+     * length dialog
+     */
+    private void lengthAlertDialog(){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_size, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+        alertLayout.findViewById(R.id.linearcancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        alertLayout.findViewById(R.id.linearok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        alertLayout.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * location dialog
+     */
+    private void locationAlertDialog(){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_location, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+        alertLayout.findViewById(R.id.linearcancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        alertLayout.findViewById(R.id.linearok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        alertLayout.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 }

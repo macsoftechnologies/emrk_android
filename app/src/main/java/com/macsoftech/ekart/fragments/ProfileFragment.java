@@ -1,14 +1,25 @@
 package com.macsoftech.ekart.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.macsoftech.ekart.R;
+import com.macsoftech.ekart.activities.LoginActivity;
+import com.macsoftech.ekart.activities.RegistrationActivity;
+import com.macsoftech.ekart.helper.SettingsPreferences;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +33,8 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    @BindView(R.id.tvlogout)
+    TextView tvlogout;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -63,4 +76,20 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+    }
+
+    @OnClick(R.id.tvlogout)
+    public void onLogoutClick() {
+        SettingsPreferences.saveBoolean(getActivity(), "LOGIN", false);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
+    }
+
+
 }

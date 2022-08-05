@@ -25,14 +25,16 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/etmail"
         android:hint="Mobile"
         android:textSize="16sp"
-        android:inputType="phone"
+        android:inputType="text"
         android:textColorHint="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/etpwd"
         android:layout_marginTop="10dp"
         android:hint="Password"
         android:inputType="textPassword"

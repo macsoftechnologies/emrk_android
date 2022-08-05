@@ -1,14 +1,21 @@
 package com.macsoftech.ekart.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.macsoftech.ekart.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +32,12 @@ public class MyEntityFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @BindView(R.id.tvcontacts)
+    TextView tvcontacts;
+
+    @BindView(R.id.tvlocation)
+    TextView tvlocation;
 
     public MyEntityFragment() {
         // Required empty public constructor
@@ -62,5 +75,46 @@ public class MyEntityFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_entity, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this,view);
+        tvcontacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addContactAlertDialog();
+            }
+        });
+
+        tvlocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationAlertDialog();
+            }
+        });
+
+    }
+
+
+    private void addContactAlertDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
+    private void locationAlertDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_entity_location, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 }
