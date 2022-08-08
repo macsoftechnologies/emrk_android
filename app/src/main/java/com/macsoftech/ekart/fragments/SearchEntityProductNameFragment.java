@@ -1,6 +1,9 @@
 package com.macsoftech.ekart.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +93,33 @@ public class SearchEntityProductNameFragment extends Fragment {
         ButterKnife.bind(this,view);
         recyclerView = view.findViewById(R.id.recycleView);
         displayProductNames(getActivity());
+
+        view.findViewById(R.id.txt_view_contacts).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addContactAlertDialog();
+            }
+        });
+
+        view.findViewById(R.id.txt_call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phone = "+91987654321";
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void addContactAlertDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(true);
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 
 

@@ -103,7 +103,7 @@ public class MyEntityFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertLayout);
-        alert.setCancelable(false);
+        alert.setCancelable(true);
         AlertDialog dialog = alert.create();
         dialog.show();
     }
@@ -113,7 +113,7 @@ public class MyEntityFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_location, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertLayout);
-        alert.setCancelable(false);
+        alert.setCancelable(true);
         AlertDialog dialog = alert.create();
         dialog.show();
     }
