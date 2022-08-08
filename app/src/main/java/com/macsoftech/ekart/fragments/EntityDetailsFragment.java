@@ -1,6 +1,8 @@
 package com.macsoftech.ekart.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,7 @@ import butterknife.ButterKnife;
  * Use the {@link EntityDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EntityDetailsFragment extends Fragment {
+public class EntityDetailsFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +84,42 @@ public class EntityDetailsFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.txtviewentity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity activity = (DashboardActivity) getActivity();
+                activity.replaceBackStackFragment(new SearchEntityProductNameFragment());
+
+            }
+        });
+        view.findViewById(R.id.txt_view_contacts).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addContactAlertDialog();
+            }
+        });
+
+        view.findViewById(R.id.txt_call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phone = "+91987654321";
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+
+
+
+    }
+
+    private void addContactAlertDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(true);
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 
 

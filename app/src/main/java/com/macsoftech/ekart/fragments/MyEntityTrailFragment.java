@@ -17,7 +17,7 @@ import com.macsoftech.ekart.activities.DashboardActivity;
  * Use the {@link MyEntityTrailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyEntityTrailFragment extends Fragment {
+public class MyEntityTrailFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

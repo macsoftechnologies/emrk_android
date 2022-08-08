@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  * Use the {@link SearchEntityProductNameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchEntityProductNameFragment extends Fragment {
+public class SearchEntityProductNameFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
