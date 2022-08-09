@@ -145,7 +145,8 @@ public class HomeSearchFragment extends BaseFragment {
         chipGroup.setOnCheckedChangeListener((chipGroup, id) -> {
             Chip chip = ((Chip) chipGroup.getChildAt(chipGroup.getCheckedChipId() - 1));
             if (chip != null) {
-                showPopUp(id, String.valueOf(chip.getTag()));
+               // showPopUp(id, String.valueOf(chip.getTag()));
+                chipAlertDialog(id, String.valueOf(chip.getTag()));
             }
         });
     }
@@ -304,5 +305,43 @@ public class HomeSearchFragment extends BaseFragment {
         });
     }
 
+
+    /**
+     * length dialog
+     * @param id
+     * @param s
+     */
+    private void chipAlertDialog(int id, String s){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alertdialog_chip, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+        alertLayout.findViewById(R.id.linearcancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        alertLayout.findViewById(R.id.linearok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                displayDetails(getActivity());
+            }
+        });
+
+        alertLayout.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 
 }
