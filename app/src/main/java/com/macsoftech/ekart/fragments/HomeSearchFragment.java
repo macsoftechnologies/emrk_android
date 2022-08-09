@@ -133,6 +133,8 @@ public class HomeSearchFragment extends BaseFragment {
 
     public void loadGroup() {
         //chip_group
+        chipGroup.clearCheck();
+        chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);
         for (int i = 0; i < 7; i++) {
             Chip chip1 = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.tag_cloud, chipGroup, false);
@@ -141,11 +143,12 @@ public class HomeSearchFragment extends BaseFragment {
             chip1.setId(i + 1);
             chipGroup.addView(chip1);
         }
-
+        chipGroup.setOnCheckedChangeListener(null);
         chipGroup.setOnCheckedChangeListener((chipGroup, id) -> {
             Chip chip = ((Chip) chipGroup.getChildAt(chipGroup.getCheckedChipId() - 1));
             if (chip != null) {
                // showPopUp(id, String.valueOf(chip.getTag()));
+                chip.setChecked(false);
                 chipAlertDialog(id, String.valueOf(chip.getTag()));
             }
         });
@@ -333,6 +336,7 @@ public class HomeSearchFragment extends BaseFragment {
             public void onClick(View v) {
                 dialog.dismiss();
                 displayDetails(getActivity());
+                chipGroup.setVisibility(View.GONE);
             }
         });
 

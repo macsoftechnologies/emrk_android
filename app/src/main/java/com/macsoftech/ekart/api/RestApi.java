@@ -9,6 +9,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.app.BaseApp;
+import com.macsoftech.ekart.model.LoginResponse;
+import com.macsoftech.ekart.model.LoginRootResponse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -197,7 +199,7 @@ public class RestApi {
 //                "password":"gfdsdf"
 //        }
         @POST("users/login")
-        Call<ResponseBody> login(@Body Map<String, String> body);
+        Call<LoginRootResponse> login(@Body Map<String, String> body);
 
         @Multipart
         @POST("users/register")

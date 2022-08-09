@@ -1,7 +1,6 @@
 package com.macsoftech.ekart.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,15 +9,14 @@ import android.widget.EditText;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.model.LoginRootResponse;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,20 +68,24 @@ public class LoginActivity extends BaseActivity {
         //"emailId":"gowthami@gmail.com",
         //     "password":"gfdsdf"
 
-        RestApi.getInstance().getService().login(map).enqueue(new Callback<ResponseBody>() {
+        RestApi.getInstance().getService().login(map).enqueue(new Callback<LoginRootResponse>() {
 
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String result = response.body().toString();
-                SettingsPreferences.saveBoolean(LoginActivity.this, "LOGIN", true);
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+            public void onResponse(Call<LoginRootResponse> call, Response<LoginRootResponse> response) {
+//                String result = response.body().toString();
+                if (response.isSuccessful()) {
+                    SettingsPreferences.saveBoolean(LoginActivity.this, "LOGIN", true);
+                    SettingsPreferences.saveObject(LoginActivity.this, "user", response.body().loginRes);
+                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<LoginRootResponse> call, Throwable t) {
 
             }
         });
