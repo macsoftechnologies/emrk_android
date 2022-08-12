@@ -57,49 +57,55 @@
             android:textColor="@color/white"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            android:padding="16dp"
-            android:text="English"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:fontFamily="@font/lato_bold"
-            android:background="@drawable/weclome_lang_bg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <TextView-->
+<!--            android:padding="16dp"-->
+<!--            android:text="English"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:layout_marginRight="30dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:fontFamily="@font/lato_bold"-->
+<!--            android:background="@drawable/weclome_lang_bg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-        <TextView
-            android:padding="16dp"
-            android:text="Hindi"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/lato_bold"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:background="@drawable/weclome_lang_bg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <TextView-->
+<!--            android:padding="16dp"-->
+<!--            android:text="Hindi"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:fontFamily="@font/lato_bold"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:layout_marginRight="30dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@drawable/weclome_lang_bg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-        <TextView
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:text="Telugu"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:fontFamily="@font/lato_bold"
-            android:background="@drawable/weclome_lang_bg"
+<!--        <TextView-->
+<!--            android:padding="16dp"-->
+<!--            android:textSize="16sp"-->
+<!--            android:text="Telugu"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:layout_marginRight="30dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:fontFamily="@font/lato_bold"-->
+<!--            android:background="@drawable/weclome_lang_bg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+        <RadioGroup
             android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/rg_languages"
             android:layout_height="wrap_content"/>
 
         <TextView

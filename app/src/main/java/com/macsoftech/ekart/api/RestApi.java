@@ -9,8 +9,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.app.BaseApp;
-import com.macsoftech.ekart.model.LoginResponse;
 import com.macsoftech.ekart.model.LoginRootResponse;
+import com.macsoftech.ekart.model.language.LanguageRootResponse;
+import com.macsoftech.ekart.model.register.RegistrationRootResponse;
+import com.macsoftech.ekart.model.search.SearchRootResponse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +44,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Url;
 
 /**
@@ -198,12 +202,22 @@ public class RestApi {
 //            "emailId":"gowthami@gmail.com",
 //                "password":"gfdsdf"
 //        }
+        @GET("languages/getLang")
+        Call<LanguageRootResponse> getLanguages();
+
         @POST("users/login")
         Call<LoginRootResponse> login(@Body Map<String, String> body);
 
+        @POST("product/search")
+        Call<SearchRootResponse> searchProducts(@Body Map<String, String> body);
+
         @Multipart
         @POST("users/register")
-        Call<ResponseBody> register();
+        Call<RegistrationRootResponse> register(
+                @Part MultipartBody.Part paramImage1,
+                @Part MultipartBody.Part paramImage2,
+                @PartMap() Map<String, RequestBody> partMap
+        );
 
     }
 

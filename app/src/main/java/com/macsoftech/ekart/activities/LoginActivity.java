@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.model.CommonErrorResponse;
 import com.macsoftech.ekart.model.LoginRootResponse;
 
 import java.util.HashMap;
@@ -67,26 +69,30 @@ public class LoginActivity extends BaseActivity {
         map.put("password", pwd);
         //"emailId":"gowthami@gmail.com",
         //     "password":"gfdsdf"
-
+        showProgress();
         RestApi.getInstance().getService().login(map).enqueue(new Callback<LoginRootResponse>() {
 
             @Override
             public void onResponse(Call<LoginRootResponse> call, Response<LoginRootResponse> response) {
-//                String result = response.body().toString();
+                hideDialog();
                 if (response.isSuccessful()) {
                     SettingsPreferences.saveBoolean(LoginActivity.this, "LOGIN", true);
-                    SettingsPreferences.saveObject(LoginActivity.this, "user", response.body().loginRes);
+                    SettingsPreferences.saveObject(LoginActivity.this, SettingsPreferences.USER, response.body().loginRes);
                     Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
+                } else {
+                    CommonErrorResponse errorResponse = new Gson().fromJson(response.errorBody().charStream(), CommonErrorResponse.class);
+                    showToast(errorResponse.getMessage());
+//                    showToast("Failed to Login");
                 }
 
             }
 
             @Override
             public void onFailure(Call<LoginRootResponse> call, Throwable t) {
-
+                hideDialog();
             }
         });
 

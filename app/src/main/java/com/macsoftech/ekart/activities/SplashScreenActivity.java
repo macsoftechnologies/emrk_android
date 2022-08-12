@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.macsoftech.ekart.R;
+import com.macsoftech.ekart.helper.SettingsPreferences;
 
 
 public class SplashScreenActivity extends BaseActivity {
@@ -16,15 +17,26 @@ public class SplashScreenActivity extends BaseActivity {
         getSupportActionBar().hide();
 
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
-            startActivity(intent);
-            finish();
+            moveToNext();
         }, 1000);
 
 
 //        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
 //        startActivity(intent);
 
+
+    }
+
+    private void moveToNext() {
+        boolean isLoginSucces = SettingsPreferences.getBoolean(this, "LOGIN");
+        if (isLoginSucces) {
+            Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 }

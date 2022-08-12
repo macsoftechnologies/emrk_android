@@ -26,6 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -55,5 +58,5 @@ dependencies {
     implementation 'com.github.poovamraj:PinEditTextField:1.2.6'
 
     implementation 'androidx.security:security-crypto:1.0.0'
-
+    implementation 'id.zelory:compressor:2.1.1'
 }

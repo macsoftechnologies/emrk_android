@@ -23,6 +23,7 @@
 
 
     <EditText
+        android:id="@+id/et_first_name"
         android:layout_marginTop="20dp"
         android:singleLine="true"
         android:hint="First Name"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_last_name"
         android:singleLine="true"
         android:layout_marginTop="10dp"
         android:hint="Last Name"
@@ -41,6 +43,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_mobile"
         android:singleLine="true"
         android:layout_marginTop="10dp"
         android:hint="Mobile"
@@ -50,6 +53,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_alt_mobile"
         android:singleLine="true"
         android:textSize="16sp"
         android:layout_marginTop="10dp"
@@ -60,6 +64,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_email"
         android:singleLine="true"
         android:layout_marginTop="10dp"
         android:hint="Email"
@@ -70,23 +75,25 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_pwd"
         android:singleLine="true"
         android:layout_marginTop="10dp"
         android:hint="Choose Password"
         android:textSize="16sp"
         android:textColorHint="@color/grey"
         android:layout_width="match_parent"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/et_confirm_pwd"
         android:singleLine="true"
         android:layout_marginTop="10dp"
         android:hint="Confirm Password"
         android:textSize="16sp"
         android:textColorHint="@color/grey"
         android:layout_width="match_parent"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"/>
 
 

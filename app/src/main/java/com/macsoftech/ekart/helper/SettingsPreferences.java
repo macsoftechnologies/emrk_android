@@ -19,6 +19,7 @@ public class SettingsPreferences {
 
     private static final String ACT_PREF = "act_pref";
     public static final String PROFILE = "profile";
+    public static final String USER = "user";
     public static final String NEAR_BY = "neary_by";
     public static final String IS_RECENTS_REFRESH = "is_recents_refresh";
     static String masterKeyAlias;

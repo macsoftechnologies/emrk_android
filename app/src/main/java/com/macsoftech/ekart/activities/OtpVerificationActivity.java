@@ -34,8 +34,7 @@ public class OtpVerificationActivity extends BaseActivity {
             @Override
             public boolean onTextComplete(String str) {
                 if (str.equalsIgnoreCase("1234")) {
-                    startActivity(new Intent(OtpVerificationActivity.this, DashboardActivity.class));
-                    finish();
+                    onLoginClick();
                     return true;
                 }
                 return false;

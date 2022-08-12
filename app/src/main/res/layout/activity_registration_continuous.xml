@@ -24,6 +24,7 @@
 
 
         <EditText
+            android:id="@+id/et_entity_name"
             android:layout_marginTop="20dp"
             android:singleLine="true"
             android:hint="Entity Name"
@@ -33,41 +34,96 @@
             android:layout_height="wrap_content"/>
 
         <EditText
+            android:id="@+id/et_primary"
             android:singleLine="true"
             android:layout_marginTop="10dp"
-            android:hint="Primary"
+            android:hint="Primary Location"
             android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
+            android:id="@+id/et_location"
             android:singleLine="true"
             android:layout_marginTop="10dp"
-            android:hint="Location"
+            android:hint="Other Locations (ex: Goa,Hyderabad,Delhi)"
             android:textSize="16sp"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:singleLine="true"
-            android:layout_marginTop="10dp"
-            android:hint="User Profile"
-            android:textSize="16sp"
-            android:textColorHint="@color/grey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <EditText-->
+<!--            android:singleLine="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:hint="User Profile"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColorHint="@color/grey"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-        <EditText
-            android:singleLine="true"
+<!--        <EditText-->
+<!--            android:singleLine="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:hint="Entity Profile"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColorHint="@color/grey"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:inputType="textEmailAddress"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+        <LinearLayout
             android:layout_marginTop="10dp"
-            android:hint="Entity Profile"
-            android:textSize="16sp"
-            android:textColorHint="@color/grey"
             android:layout_width="match_parent"
-            android:inputType="textEmailAddress"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_profile"
+                    android:padding="5dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/add"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/dotted_rect"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <TextView
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:text="User Profile"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_entity"
+                    android:padding="5dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/add"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/dotted_rect"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <TextView
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:text="Entity Profile"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/btn_back"
@@ -79,7 +135,7 @@
             android:layout_height="45dp">
             <TextView
                 android:textColor="@color/colorPrimary"
-                android:text="Next"
+                android:text="Previous"
                 android:gravity="center"
                 android:drawablePadding="5dp"
                 android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
