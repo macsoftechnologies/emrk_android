@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_margin="5dp"
+            android:id="@+id/iv_entity"
             android:layout_width="80dp"
             android:src="@drawable/entity_profile"
             android:layout_height="80dp"/>
@@ -29,6 +30,7 @@
             <TextView
                 android:fontFamily="@font/lato_bold"
                 android:text="Entity Name"
+                android:id="@+id/txt_entity"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -40,6 +42,7 @@
         </LinearLayout>
             <TextView
                 android:text="Owner Name"
+                android:id="@+id/txt_vendor_name"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,22 +105,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        />
 <!--    android:background="#ECEFEF"-->
-    <ScrollView
+<!--    <ScrollView-->
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/row_entity_products"/>
-        <include layout="@layout/row_entity_products"/>
-        <include layout="@layout/row_entity_products"/>
-        <include layout="@layout/row_entity_products"/>
-        <include layout="@layout/row_entity_products"/>
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <include layout="@layout/row_entity_products"/>-->
+<!--        <include layout="@layout/row_entity_products"/>-->
+<!--        <include layout="@layout/row_entity_products"/>-->
+<!--        <include layout="@layout/row_entity_products"/>-->
+<!--        <include layout="@layout/row_entity_products"/>-->
 
-    </LinearLayout>
-    </ScrollView>
+<!--    </LinearLayout>-->
+<!--    </ScrollView>-->
 </LinearLayout>
