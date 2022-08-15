@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.model.CompanyName;
+import com.macsoftech.ekart.model.search.UserProdResponse;
 
 import java.util.List;
 
 public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.MyviewHolder> {
 
-    List<CompanyName> companyLists;
+    List<UserProdResponse> companyLists;
     Context mContext;
     View.OnClickListener onItemClickListener;
 
 
-    public ProductNameAdapter(List<CompanyName> list, Context nContext) {
+    public ProductNameAdapter(List<UserProdResponse> list, Context nContext) {
         companyLists = list;
         mContext = nContext;
     }
@@ -40,9 +41,9 @@ public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.
 
     @Override
     public void onBindViewHolder(MyviewHolder holder, int position) {
-        holder.txtcampanyname.setText(companyLists.get(position).getCompanyName());
-        holder.txtmobileNo.setText(companyLists.get(position).getMobileNo());
-        holder.txtqty.setText("SIZE :"+companyLists.get(position).getQty());
+        holder.txtcampanyname.setText(companyLists.get(position).getProductName());
+        holder.txtmobileNo.setText(companyLists.get(position).getProductCode());
+        holder.txtqty.setText("SIZE :"+companyLists.get(position).getSize());
         holder.txtqty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

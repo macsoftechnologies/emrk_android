@@ -131,8 +131,11 @@ public class RegistrationContinuousActivity extends BaseActivity {
             @Override
             public void onResponse(Call<RegistrationRootResponse> call, Response<RegistrationRootResponse> response) {
                 hideDialog();
+
                 if (response.isSuccessful()) {
-                    startActivity(new Intent(RegistrationContinuousActivity.this, OtpVerificationActivity.class));
+                    Intent intent = new Intent(RegistrationContinuousActivity.this, OtpVerificationActivity.class);
+                    intent.putExtra("mobileNum", getIntent().getStringExtra("mobileNum"));
+                    startActivity(intent);
                     finish();
                 } else {
                     CommonErrorResponse errorResponse = new Gson().fromJson(response.errorBody().charStream(), CommonErrorResponse.class);

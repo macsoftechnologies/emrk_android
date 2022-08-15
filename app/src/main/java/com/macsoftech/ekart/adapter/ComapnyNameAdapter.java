@@ -10,18 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.model.CompanyName;
+import com.macsoftech.ekart.model.search.ListOfVendorsData;
 
 
 import java.util.List;
 
 public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.MyviewHolder> {
 
-    List<CompanyName> companyLists;
+    List<ListOfVendorsData> companyLists;
     Context mContext;
     View.OnClickListener onItemClickListener;
 
 
-    public ComapnyNameAdapter(List<CompanyName> list, Context nContext) {
+    public ComapnyNameAdapter(List<ListOfVendorsData> list, Context nContext) {
         companyLists = list;
         mContext = nContext;
     }
@@ -40,9 +41,9 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
 
     @Override
     public void onBindViewHolder(MyviewHolder holder, int position) {
-        holder.txtcampanyname.setText(companyLists.get(position).getCompanyName());
-        holder.txtmobileNo.setText("MobileNO: "+companyLists.get(position).getMobileNo());
-        holder.txtqty.setText("QTY"+companyLists.get(position).getQty());
+        holder.txtcampanyname.setText(companyLists.get(position).getEntityName());
+        holder.txtmobileNo.setText("MobileNO: -");
+        holder.txtqty.setText("QTY: "+companyLists.get(position).getQuantity());
         holder.txtqty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

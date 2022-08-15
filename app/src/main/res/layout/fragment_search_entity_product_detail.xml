@@ -22,10 +22,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/iv_entity"
             android:layout_margin="5dp"
-            android:layout_width="80dp"
+            android:layout_width="75dp"
             android:src="@drawable/entity_profile"
-            android:layout_height="80dp"/>
+            android:layout_height="75dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -40,6 +41,7 @@
             <TextView
                 android:fontFamily="@font/lato_bold"
                 android:text="Entity Name"
+                android:id="@+id/txt_entity"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
         </LinearLayout>
             <TextView
                 android:text="Owner Name"
+                android:id="@+id/txt_vendor_name"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,6 +63,7 @@
             <TextView
                 android:layout_margin="2dp"
                 android:text="9545678967"
+                android:id="@+id/txt_mobile"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,6 +134,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:id="@+id/txt_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
@@ -139,6 +144,7 @@
 
 
                 <ImageView
+                    android:id="@+id/iv_product"
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center_vertical|center"
@@ -154,13 +160,14 @@
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:text="Size: "
+                        android:layout_width="0dp"
+                        android:text="Size "
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="BC x DC"
+                        android:id="@+id/txt_size"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -173,13 +180,14 @@
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:text="Qty: "
+                        android:layout_width="0dp"
+                        android:text="Qty "
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="1000"
+                        android:id="@+id/txt_qty"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -191,14 +199,15 @@
 
                     <TextView
                         android:layout_marginLeft="5dp"
-                        android:layout_weight="0.4"
-                        android:layout_width="wrap_content"
-                        android:text="Address: "
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:text="Address "
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="Location"
+                        android:id="@+id/txt_location"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -211,14 +220,15 @@
 
                     <TextView
                         android:layout_marginLeft="5dp"
-                        android:layout_weight="0.4"
-                        android:layout_width="wrap_content"
-                        android:text="Length: "
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:text="Length "
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="48ft"
+                        android:id="@+id/txt_length"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>

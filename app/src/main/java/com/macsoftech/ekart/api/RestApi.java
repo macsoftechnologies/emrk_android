@@ -12,6 +12,8 @@ import com.macsoftech.ekart.app.BaseApp;
 import com.macsoftech.ekart.model.LoginRootResponse;
 import com.macsoftech.ekart.model.language.LanguageRootResponse;
 import com.macsoftech.ekart.model.register.RegistrationRootResponse;
+import com.macsoftech.ekart.model.search.GetUserResponseRoot;
+import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
 
 import java.io.File;
@@ -83,17 +85,12 @@ public class RestApi {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         OkHttpClient defaultHttpClient = builder
                 .addInterceptor(interceptor)
-//                .addInterceptor(provideOfflineCacheInterceptor())
-//                .addNetworkInterceptor(provideCacheInterceptor())
-                .authenticator(new Authenticator() {
-                    @Override
-                    public Request authenticate(Route route, Response response) throws IOException {
-                        if (BaseApp.getInstance() != null) {
-                            LocalBroadcastManager.getInstance(BaseApp.getInstance())
-                                    .sendBroadcast(new Intent("LOGOUT"));
-                        }
-                        return null;
+                .authenticator((route, response) -> {
+                    if (BaseApp.getInstance() != null) {
+                        LocalBroadcastManager.getInstance(BaseApp.getInstance())
+                                .sendBroadcast(new Intent("LOGOUT"));
                     }
+                    return null;
                 })
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -110,54 +107,63 @@ public class RestApi {
                 .client(defaultHttpClient)
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         return retrofit.create(clazz);
     }
 
-    //
-    private static Cache provideCache() {
-        Cache cache = null;
-        try {
-            cache = new Cache(new File(BaseApp.getInstance().getCacheDir(), "http-cache"),
-                    10 * 1024 * 1024); // 10 MB
-        } catch (Exception e) {
-//            Timber.e(e, "Could not create Cache!");
-        }
-        return cache;
+
+    public interface MyService {
+
+        @GET
+        Call<ResponseBody> callDynamicUrl(@Url String url);
+
+        //        {
+//            "emailId":"gowthami@gmail.com",
+//                "password":"gfdsdf"
+//        }
+        @GET("languages/getLang")
+        Call<LanguageRootResponse> getLanguages();
+
+        @POST("users/login")
+        Call<LoginRootResponse> login(@Body Map<String, String> body);
+
+        @POST("users/verifyOtp")
+        Call<LoginRootResponse> verifyOtp(@Body Map<String, String> body);
+
+//        @POST("product/search")
+        @POST("admin-product/search")
+        Call<SearchRootResponse> searchProducts(@Body Map<String, String> body);
+
+        @POST("admin-product/getVendorProduct")
+        Call<ListOfVendorsResponse> getVendorProduct(@Body Map<String, String> body);
+
+        //{
+        //    "productId": "f49df39a-ff29-46e6-869f-b17771a7baca"
+        //}
+//        @POST("admin-product/getAdminProduct")
+//        Call<ListOfVendorsResponse> getAdminProduct(@Body Map<String, String> body);
+
+        @Multipart
+        @POST("users/register")
+        Call<RegistrationRootResponse> register(
+                @Part MultipartBody.Part paramImage1,
+                @Part MultipartBody.Part paramImage2,
+                @PartMap() Map<String, RequestBody> partMap
+        );
+
+        @POST("users/getUser")
+        Call<GetUserResponseRoot> getUser(@Body Map<String, String> body);
+
+        @POST("admin-product/getUserProducts")
+        Call<SearchRootResponse> getUserProducts(@Body Map<String, String> body);
+
+//        {
+//            "userId":"7d415ca3-22f3-421b-9f4e-df261ea0a655"
+//        }
+        //users/getUser
     }
 
-//    private static HttpLoggingInterceptor provideHttpLoggingInterceptor() {
-//        HttpLoggingInterceptor httpLoggingInterceptor =
-//                new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-//                    @Override
-//                    public void log(String message) {
-//                        Timber.d(message);
-//                    }
-//                });
-//        httpLoggingInterceptor.setLevel(BuildConfig.DEBUG ? HEADERS : NONE);
-//        return httpLoggingInterceptor;
-//    }
-
-    public static Interceptor provideCacheInterceptor() {
-        return new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response response = chain.proceed(chain.request());
-
-                // re-write response header to force use of cache
-                CacheControl cacheControl = new CacheControl.Builder()
-                        .maxAge(2, TimeUnit.MINUTES)
-                        .build();
-
-                return response.newBuilder()
-                        .header(CACHE_CONTROL, cacheControl.toString())
-                        .build();
-            }
-        };
-    }
-
+    //FILE UPLOAD BLOCK
 
     public static Map<String, RequestBody> prepareBodyPart(Map<String, String> map) {
         // add another part within the multipart request
@@ -191,37 +197,6 @@ public class RestApi {
             return null;
         }
     }
-
-
-    public interface MyService {
-
-        @GET
-        Call<ResponseBody> callDynamicUrl(@Url String url);
-
-        //        {
-//            "emailId":"gowthami@gmail.com",
-//                "password":"gfdsdf"
-//        }
-        @GET("languages/getLang")
-        Call<LanguageRootResponse> getLanguages();
-
-        @POST("users/login")
-        Call<LoginRootResponse> login(@Body Map<String, String> body);
-
-        @POST("product/search")
-        Call<SearchRootResponse> searchProducts(@Body Map<String, String> body);
-
-        @Multipart
-        @POST("users/register")
-        Call<RegistrationRootResponse> register(
-                @Part MultipartBody.Part paramImage1,
-                @Part MultipartBody.Part paramImage2,
-                @PartMap() Map<String, RequestBody> partMap
-        );
-
-    }
-
-    //
 
     public interface UploadCallbacks {
         void onProgressUpdate(int percentage);

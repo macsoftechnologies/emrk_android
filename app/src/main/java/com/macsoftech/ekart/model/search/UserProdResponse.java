@@ -1,25 +1,97 @@
 package com.macsoftech.ekart.model.search;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserProdResponse {
+public class UserProdResponse implements Parcelable {
     private String createdAt;
 
+//    private List<String> productImage;
     private List<String> productImage;
+    private String quantity;
 
     private String productCode;
+    private String size;
 
     private String productId;
+    private String userId;
 
     private String __v;
 
     private String productStatus;
 
-    private List<String> location;
+//    private List<String> location;
+    private String location;
+
+    protected UserProdResponse(Parcel in) {
+        createdAt = in.readString();
+        productImage = in.createStringArrayList();
+        quantity = in.readString();
+        productCode = in.readString();
+        size = in.readString();
+        productId = in.readString();
+        userId = in.readString();
+        __v = in.readString();
+        productStatus = in.readString();
+        location = in.readString();
+        _id = in.readString();
+        productName = in.readString();
+        length = in.readString();
+        productAlias = in.createStringArrayList();
+        updatedAt = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createdAt);
+        dest.writeStringList(productImage);
+        dest.writeString(quantity);
+        dest.writeString(productCode);
+        dest.writeString(size);
+        dest.writeString(productId);
+        dest.writeString(userId);
+        dest.writeString(__v);
+        dest.writeString(productStatus);
+        dest.writeString(location);
+        dest.writeString(_id);
+        dest.writeString(productName);
+        dest.writeString(length);
+        dest.writeStringList(productAlias);
+        dest.writeString(updatedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<UserProdResponse> CREATOR = new Creator<UserProdResponse>() {
+        @Override
+        public UserProdResponse createFromParcel(Parcel in) {
+            return new UserProdResponse(in);
+        }
+
+        @Override
+        public UserProdResponse[] newArray(int size) {
+            return new UserProdResponse[size];
+        }
+    };
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     private String _id;
 
     private String productName;
+    private String length;
 
     private List<String> productAlias;
 
@@ -34,6 +106,9 @@ public class UserProdResponse {
     }
 
     public List<String> getProductImage() {
+        if (productImage == null) {
+            return new ArrayList<>();
+        }
         return productImage;
     }
 
@@ -73,13 +148,13 @@ public class UserProdResponse {
         this.productStatus = productStatus;
     }
 
-    public List<String> getLocation() {
-        return location;
-    }
-
-    public void setLocation(List<String> location) {
-        this.location = location;
-    }
+//    public List<String> getLocation() {
+//        return location;
+//    }
+//
+//    public void setLocation(List<String> location) {
+//        this.location = location;
+//    }
 
     public String get_id() {
         return _id;
@@ -116,5 +191,37 @@ public class UserProdResponse {
     @Override
     public String toString() {
         return "ClassPojo [createdAt = " + createdAt + ", productImage = " + productImage + ", productCode = " + productCode + ", productId = " + productId + ", __v = " + __v + ", productStatus = " + productStatus + ", location = " + location + ", _id = " + _id + ", productName = " + productName + ", productAlias = " + productAlias + ", updatedAt = " + updatedAt + "]";
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

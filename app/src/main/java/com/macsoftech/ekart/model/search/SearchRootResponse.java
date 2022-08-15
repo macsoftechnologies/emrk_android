@@ -5,6 +5,8 @@ import java.util.List;
 public class SearchRootResponse {
     private List<UserProdResponse> userProdResponse;
 
+    private List<UserProdResponse> Data;
+
     private String productVendorsCount;
 
     private String StatusCode;
@@ -36,5 +38,13 @@ public class SearchRootResponse {
     @Override
     public String toString() {
         return "ClassPojo [userProdResponse = " + userProdResponse + ", productVendorsCount = " + productVendorsCount + ", StatusCode = " + StatusCode + "]";
+    }
+
+    public List<UserProdResponse> getData() {
+        return Data;
+    }
+
+    public void setData(List<UserProdResponse> data) {
+        Data = data;
     }
 }

@@ -12,57 +12,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.api.RestApi;
+import com.macsoftech.ekart.databinding.FragmentSearchEntityProductDetailBinding;
+import com.macsoftech.ekart.model.LoginResponse;
+import com.macsoftech.ekart.model.search.GetUserResponseRoot;
+import com.macsoftech.ekart.model.search.ListOfVendorsData;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchEntityDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class SearchEntityDetailFragment extends BaseFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FragmentSearchEntityProductDetailBinding binding;
+    ListOfVendorsData data;
 
     public SearchEntityDetailFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchEntityDetailFragment newInstance(String param1, String param2) {
-        SearchEntityDetailFragment fragment = new SearchEntityDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -76,12 +59,17 @@ public class SearchEntityDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        data = getArguments().getParcelable("data");
+        binding = FragmentSearchEntityProductDetailBinding.bind(view);
         view.findViewById(R.id.txtviewentity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity activity = (DashboardActivity) getActivity();
-                activity.replaceBackStackFragment(new SearchEntityProductNameFragment());
+                Fragment fragment = new SearchEntityProductNameFragment();
+                Bundle args = new Bundle();
+                args.putString("userId", data.getUserId());
+                fragment.setArguments(args);
+                activity.replaceBackStackFragment(fragment);
 
             }
         });
@@ -102,10 +90,52 @@ public class SearchEntityDetailFragment extends BaseFragment {
         });
 
 
+        binding.txtProduct.setText(data.getProductName());
+        binding.txtQty.setText(": " + data.getQuantity());
+        binding.txtSize.setText(": " + data.getSize());
+        binding.txtLocation.setText(": " + data.getLocation());
+        binding.txtLength.setText(": " + data.getLength());
+
+        if (!data.getProductImage().isEmpty()) {
+            Glide.with(getActivity())
+                    .load(RestApi.BASE_URL + data.getProductImage().get(0))
+                    .into(binding.ivProduct);
+        }
+
+        loadEntityDetails();
 
     }
 
-    private void addContactAlertDialog(){
+    //userId
+    private void loadEntityDetails() {
+        Map<String, String> body = new HashMap<>();
+        body.put("userId", data.getUserId());
+        RestApi.getInstance().getService().getUser(body).enqueue(new Callback<GetUserResponseRoot>() {
+            @Override
+            public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        LoginResponse user = response.body().getUserFeedbackResponse().get(0);
+                        binding.txtEntity.setText(user.getEntityName());
+                        binding.txtVendorName.setText(user.getFirstName() + " " + user.getLastName());
+                        binding.txtMobile.setText(user.getMobileNum());
+                        Glide.with(getActivity())
+                                .load(RestApi.BASE_URL + user.getEntityImage())
+                                .into(binding.ivEntity);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserResponseRoot> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void addContactAlertDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

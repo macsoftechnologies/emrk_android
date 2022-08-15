@@ -6,6 +6,7 @@ public class LoginResponse {
     public String _id;
     public String firstName;
     public String lastName;
+    private String entityImage;
 
     public String get_id() {
         return _id;
@@ -121,4 +122,12 @@ public class LoginResponse {
     public String userId;
     public String createdAt;
     public String updatedAt;
+
+    public String getEntityImage() {
+        return entityImage;
+    }
+
+    public void setEntityImage(String entityImage) {
+        this.entityImage = entityImage;
+    }
 }

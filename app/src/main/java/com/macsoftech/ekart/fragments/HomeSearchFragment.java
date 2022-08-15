@@ -1,9 +1,8 @@
 package com.macsoftech.ekart.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,25 +12,36 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
-import com.macsoftech.ekart.activities.TestActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
+import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.model.CompanyName;
+import com.macsoftech.ekart.model.search.ListOfVendorsData;
+import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
+import com.macsoftech.ekart.model.search.SearchRootResponse;
+import com.macsoftech.ekart.model.search.UserProdResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +53,8 @@ public class HomeSearchFragment extends BaseFragment {
     ChipGroup chipGroup;
 
     ImageView iv_search;
+
+    @BindView(R.id.et_search)
     EditText et_search;
 
     @BindView(R.id.recycleView)
@@ -54,7 +66,7 @@ public class HomeSearchFragment extends BaseFragment {
     @BindView(R.id.locationlayout)
     LinearLayout locationlayout;
 
-    List<CompanyName>   list ;
+    List<ListOfVendorsData> list = new ArrayList<>();
 
     public HomeSearchFragment() {
         // Required empty public constructor
@@ -77,11 +89,11 @@ public class HomeSearchFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         iv_search = view.findViewById(R.id.iv_search);
         //sizelayout = view.findViewById(R.id.sizelayout);
-       // recyclerView = view.findViewById(R.id.recyclerView);
+        // recyclerView = view.findViewById(R.id.recyclerView);
 
         lengthlayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +109,6 @@ public class HomeSearchFragment extends BaseFragment {
             }
         });
 
-        et_search = view.findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -111,6 +122,7 @@ public class HomeSearchFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                callSearchApi();
                 String str = editable.toString().trim();
                 if (str.length() > 0) {
                     chipGroup.setVisibility(View.VISIBLE);
@@ -122,7 +134,7 @@ public class HomeSearchFragment extends BaseFragment {
         //
 //        SettingsPreferences.save
         chipGroup.setVisibility(View.GONE);
-        loadGroup();
+//        loadGroup();
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,53 +143,101 @@ public class HomeSearchFragment extends BaseFragment {
         });
     }
 
-    public void loadGroup() {
+    private void callSearchApi() {
+        Map<String, String> map = new HashMap<>();
+        map.put("productName", et_search.getText().toString().trim());
+        RestApi.getInstance().getService().searchProducts(map)
+                .enqueue(new Callback<SearchRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        if (response.isSuccessful()) {
+                            loadGroup(response.body().getUserProdResponse());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void loadGroup(List<UserProdResponse> userProdResponse) {
         //chip_group
         chipGroup.clearCheck();
         chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < userProdResponse.size(); i++) {
             Chip chip1 = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.tag_cloud, chipGroup, false);
-            chip1.setText("Adidas " + (i + 1));
-            chip1.setTag(chip1.getText());
+            chip1.setText(userProdResponse.get(i).getProductName() + " - " + userProdResponse.get(i).getProductCode());
+            chip1.setTag(userProdResponse.get(i));
             chip1.setId(i + 1);
             chipGroup.addView(chip1);
         }
         chipGroup.setOnCheckedChangeListener(null);
         chipGroup.setOnCheckedChangeListener((chipGroup, id) -> {
-            Chip chip = ((Chip) chipGroup.getChildAt(chipGroup.getCheckedChipId() - 1));
+            @SuppressLint("ResourceType") Chip chip = ((Chip) chipGroup.getChildAt(chipGroup.getCheckedChipId() - 1));
             if (chip != null) {
-               // showPopUp(id, String.valueOf(chip.getTag()));
+                // showPopUp(id, String.valueOf(chip.getTag()));
                 chip.setChecked(false);
-                chipAlertDialog(id, String.valueOf(chip.getTag()));
+                chipAlertDialog(id, (UserProdResponse) chip.getTag());
             }
         });
     }
 
-    void showPopUp(int id, String tag) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Info");
-        builder.setMessage(tag);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                chipGroup.setVisibility(View.GONE);
-                // DashboardActivity activity = (DashboardActivity) getActivity();
-//                activity.replaceBackStackFragment();
-                   displayDetails(getActivity());
+//    void showPopUp(int id, UserProdResponse tag) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle("Info");
+//        builder.setMessage(tag.getProductName());
+//        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                chipGroup.setVisibility(View.GONE);
+//                // DashboardActivity activity = (DashboardActivity) getActivity();
+////                activity.replaceBackStackFragment();
+//                displayDetails(getActivity());
+//
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", null);
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    private void loadDetails(UserProdResponse item) {
+        //
+        list = new ArrayList<>();
+        ComapnyNameAdapter listAdapter = new ComapnyNameAdapter(list, getActivity());
+        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayout);
+        recyclerView.setAdapter(listAdapter);
+        listAdapter.onItemClickListener(clickListener);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("productId", item.getProductId());
+//        body.put("productId", "aba1f2d8-5c14-4008-b76f-ddf8746fd94f");
+        RestApi.getInstance().getService()
+                .getVendorProduct(body)
+                .enqueue(new Callback<ListOfVendorsResponse>() {
+                    @Override
+                    public void onResponse(Call<ListOfVendorsResponse> call, Response<ListOfVendorsResponse> response) {
+                        if (response.isSuccessful()) {
+                            list.addAll(response.body().getData());
+                            listAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ListOfVendorsResponse> call, Throwable t) {
+
+                    }
+                });
     }
 
-
-    private void displayDetails(Context mContext) {
-
-         list = new ArrayList<CompanyName>();
-         CompanyName campanyName = new CompanyName();
+    private void displayDetails(Context mContext, UserProdResponse item) {
+        List list;
+        list = new ArrayList<CompanyName>();
+        CompanyName campanyName = new CompanyName();
         campanyName.setCompanyName("Skml Pt Ltd");
         campanyName.setMobileNo("999998766");
         campanyName.setQty("9999");
@@ -216,21 +276,23 @@ public class HomeSearchFragment extends BaseFragment {
     }
 
 
-
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
-            //CompanyName item = list.get(position);
-          //  Intent intent = new Intent(getActivity(), TestActivity.class);
+            ListOfVendorsData item = list.get(position);
+            //  Intent intent = new Intent(getActivity(), TestActivity.class);
 //            intent.putExtra("brandLogo", item.getLogo());
 //            intent.putExtra("brandName", item.getBrandName());
 //            intent.putExtra("data", item);
             //startActivity(intent);
-
-             DashboardActivity activity = (DashboardActivity) getActivity();
-             activity.replaceBackStackFragment(new SearchEntityDetailFragment());
+            Fragment fragment = new SearchEntityDetailFragment();
+            Bundle args = new Bundle();
+            args.putParcelable("data", item);
+            fragment.setArguments(args);
+            DashboardActivity activity = (DashboardActivity) getActivity();
+            activity.replaceBackStackFragment(fragment);
 
             //displayDetails(getActivity());
 
@@ -242,7 +304,7 @@ public class HomeSearchFragment extends BaseFragment {
     /**
      * length dialog
      */
-    private void lengthAlertDialog(){
+    private void lengthAlertDialog() {
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_size, null);
@@ -277,7 +339,7 @@ public class HomeSearchFragment extends BaseFragment {
     /**
      * location dialog
      */
-    private void locationAlertDialog(){
+    private void locationAlertDialog() {
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_location, null);
@@ -311,13 +373,22 @@ public class HomeSearchFragment extends BaseFragment {
 
     /**
      * length dialog
+     *
      * @param id
-     * @param s
+     * @param item
      */
-    private void chipAlertDialog(int id, String s){
+    private void chipAlertDialog(int id, UserProdResponse item) {
 
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_chip, null);
+        ImageView iv_product = alertLayout.findViewById(R.id.iv_product);
+        TextView txt_title = alertLayout.findViewById(R.id.txt_title);
+        txt_title.setText(item.getProductName());
+        if (!item.getProductImage().isEmpty()) {
+            Glide.with(getActivity())
+                    .load(RestApi.BASE_URL + item.getProductImage().get(0))
+                    .into(iv_product);
+        }
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertLayout);
         alert.setCancelable(false);
@@ -335,7 +406,8 @@ public class HomeSearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                displayDetails(getActivity());
+//                displayDetails(getActivity(), item);
+                loadDetails(item);
                 chipGroup.setVisibility(View.GONE);
             }
         });
