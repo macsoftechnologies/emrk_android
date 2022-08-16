@@ -93,7 +93,9 @@ public class SearchEntityProductNameFragment extends BaseFragment {
     }
 
     private void loadEntityDetails() {
-
+        if (getArguments() == null) {
+            return;
+        }
         Map<String, String> body = new HashMap<>();
         body.put("userId", getArguments().getString("userId"));
         RestApi.getInstance().getService().getUser(body).enqueue(new Callback<GetUserResponseRoot>() {

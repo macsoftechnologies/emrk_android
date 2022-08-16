@@ -2,7 +2,6 @@ package com.macsoftech.ekart.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,10 +22,10 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.macsoftech.ekart.R;
+import com.macsoftech.ekart.activities.BaseActivity;
 import com.macsoftech.ekart.activities.DashboardActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
-import com.macsoftech.ekart.model.CompanyName;
 import com.macsoftech.ekart.model.search.ListOfVendorsData;
 import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
@@ -135,12 +134,12 @@ public class HomeSearchFragment extends BaseFragment {
 //        SettingsPreferences.save
         chipGroup.setVisibility(View.GONE);
 //        loadGroup();
-        iv_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chipGroup.setVisibility(chipGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            }
-        });
+//        iv_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                chipGroup.setVisibility(chipGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+//            }
+//        });
     }
 
     private void callSearchApi() {
@@ -232,47 +231,6 @@ public class HomeSearchFragment extends BaseFragment {
 
                     }
                 });
-    }
-
-    private void displayDetails(Context mContext, UserProdResponse item) {
-        List list;
-        list = new ArrayList<CompanyName>();
-        CompanyName campanyName = new CompanyName();
-        campanyName.setCompanyName("Skml Pt Ltd");
-        campanyName.setMobileNo("999998766");
-        campanyName.setQty("9999");
-        list.add(campanyName);
-
-
-        CompanyName campanyName2 = new CompanyName();
-        campanyName2.setCompanyName("Skml Pt Ltd");
-        campanyName2.setMobileNo("999998766");
-        campanyName2.setQty("9999");
-        list.add(campanyName2);
-
-        CompanyName campanyName3 = new CompanyName();
-        campanyName3.setCompanyName("Skml Pt Ltd");
-        campanyName3.setMobileNo("999998766");
-        campanyName3.setQty("9999");
-        list.add(campanyName3);
-
-        CompanyName campanyName4 = new CompanyName();
-        campanyName4.setCompanyName("Skml Pt Ltd");
-        campanyName4.setMobileNo("999998766");
-        campanyName4.setQty("9999");
-        list.add(campanyName4);
-
-        CompanyName campanyName5 = new CompanyName();
-        campanyName5.setCompanyName("Skml Pt Ltd");
-        campanyName5.setMobileNo("999998766");
-        campanyName5.setQty("9999");
-        list.add(campanyName5);
-
-        ComapnyNameAdapter listAdapter = new ComapnyNameAdapter(list, mContext);
-        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(mContext);
-        recyclerView.setLayoutManager(linearLayout);
-        recyclerView.setAdapter(listAdapter);
-        listAdapter.onItemClickListener(clickListener);
     }
 
 
@@ -378,15 +336,19 @@ public class HomeSearchFragment extends BaseFragment {
      * @param item
      */
     private void chipAlertDialog(int id, UserProdResponse item) {
-
+        BaseActivity.hideKeyboard(getActivity());
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_chip, null);
         ImageView iv_product = alertLayout.findViewById(R.id.iv_product);
         TextView txt_title = alertLayout.findViewById(R.id.txt_title);
         txt_title.setText(item.getProductName());
         if (!item.getProductImage().isEmpty()) {
+            String image = item.getProductImage().get(0);
+            if (image.contains(",")) {
+                image = image.split(",")[0];
+            }
             Glide.with(getActivity())
-                    .load(RestApi.BASE_URL + item.getProductImage().get(0))
+                    .load(RestApi.BASE_URL + image)
                     .into(iv_product);
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

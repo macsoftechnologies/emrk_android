@@ -2,7 +2,6 @@ package com.macsoftech.ekart.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,25 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
-import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentMyEntityBinding;
-import com.macsoftech.ekart.model.CompanyName;
 import com.macsoftech.ekart.model.search.ListOfVendorsData;
-import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
 import com.macsoftech.ekart.model.search.UserProdResponse;
 
@@ -84,7 +77,7 @@ public class AddProductSearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-       // binding = FragmentMyEntityBinding.bind(view);
+        // binding = FragmentMyEntityBinding.bind(view);
 
         iv_search = view.findViewById(R.id.iv_search);
 
@@ -165,13 +158,6 @@ public class AddProductSearchFragment extends BaseFragment {
     }
 
 
-
-
-
-
-
-
-
     /**
      * length dialog
      *
@@ -208,9 +194,12 @@ public class AddProductSearchFragment extends BaseFragment {
             public void onClick(View v) {
                 dialog.dismiss();
 //                displayDetails(getActivity(), item);
-               // loadDetails(item);
+                // loadDetails(item);
                 DashboardActivity activity = (DashboardActivity) getActivity();
                 AddProdictDetailFragment fragment = new AddProdictDetailFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("data", item);
+                fragment.setArguments(args);
                 activity.replaceBackStackFragment(fragment);
                 chipGroup.setVisibility(View.GONE);
             }

@@ -28,6 +28,7 @@ public class ListOfVendorsData implements Parcelable {
 
     private String vendorName;
     private String entityName;
+    private String mobileNum;
 
     private String productName;
 
@@ -47,6 +48,7 @@ public class ListOfVendorsData implements Parcelable {
         _id = in.readString();
         vendorName = in.readString();
         entityName = in.readString();
+        mobileNum = in.readString();
         productName = in.readString();
         updatedAt = in.readString();
     }
@@ -66,6 +68,7 @@ public class ListOfVendorsData implements Parcelable {
         dest.writeString(_id);
         dest.writeString(vendorName);
         dest.writeString(entityName);
+        dest.writeString(mobileNum);
         dest.writeString(productName);
         dest.writeString(updatedAt);
     }
@@ -213,5 +216,13 @@ public class ListOfVendorsData implements Parcelable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getMobileNum() {
+        return mobileNum;
+    }
+
+    public void setMobileNum(String mobileNum) {
+        this.mobileNum = mobileNum;
     }
 }

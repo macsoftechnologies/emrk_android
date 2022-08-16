@@ -15,6 +15,7 @@ import com.macsoftech.ekart.model.register.RegistrationRootResponse;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
 import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
+import com.macsoftech.ekart.model.sizes.SizeModelRootResponse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,19 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Authenticator;
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSink;
 import retrofit2.Call;
@@ -124,13 +118,16 @@ public class RestApi {
         @GET("languages/getLang")
         Call<LanguageRootResponse> getLanguages();
 
+        @GET("admin/getProductSize")
+        Call<SizeModelRootResponse> getProductSizes();
+
         @POST("users/login")
         Call<LoginRootResponse> login(@Body Map<String, String> body);
 
         @POST("users/verifyOtp")
         Call<LoginRootResponse> verifyOtp(@Body Map<String, String> body);
 
-//        @POST("product/search")
+        //        @POST("product/search")
         @POST("admin-product/search")
         Call<SearchRootResponse> searchProducts(@Body Map<String, String> body);
 
@@ -156,6 +153,21 @@ public class RestApi {
 
         @POST("admin-product/getUserProducts")
         Call<SearchRootResponse> getUserProducts(@Body Map<String, String> body);
+
+
+        @Multipart
+        @POST("admin-product/addVendorProduct")
+        Call<RegistrationRootResponse> addProduct(
+                @PartMap() Map<String, RequestBody> partMap,
+                @Part MultipartBody.Part... paramImage
+        );
+
+        @POST("users/report")
+        Call<ResponseBody> addReport(@Body Map<String, String> body);
+
+        @POST("users/userFeedback")
+        Call<ResponseBody> addUserFeedback(@Body Map<String, String> body);
+
 
 //        {
 //            "userId":"7d415ca3-22f3-421b-9f4e-df261ea0a655"

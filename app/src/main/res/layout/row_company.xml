@@ -30,6 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:text="Product Name"
+                    android:textSize="18sp"
                     android:fontFamily="@font/lato_bold"
                     android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"/>
@@ -39,6 +40,7 @@
                 android:id="@+id/txtmobileNo"
                 android:layout_width="match_parent"
                 android:text="Mobile No:"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_margin="5dp"

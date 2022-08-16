@@ -97,8 +97,12 @@ public class SearchEntityDetailFragment extends BaseFragment {
         binding.txtLength.setText(": " + data.getLength());
 
         if (!data.getProductImage().isEmpty()) {
+            String image = data.getProductImage().get(0);
+            if (image.contains(",")) {
+                image = image.split(",")[0];
+            }
             Glide.with(getActivity())
-                    .load(RestApi.BASE_URL + data.getProductImage().get(0))
+                    .load(RestApi.BASE_URL + image)
                     .into(binding.ivProduct);
         }
 

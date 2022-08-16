@@ -340,19 +340,22 @@
                 android:background="@color/white"
                 android:layout_height="70dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                <EditText
+                    android:id="@+id/et_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:drawablePadding="10dp"
-                    android:gravity="center_horizontal"
+                    android:gravity="left"
                     android:padding="16dp"
-                    android:text="Report"
+                    android:background="@android:color/transparent"
+                    android:hint="Report"
                     android:textColor="@color/grey"
                     android:textSize="16sp" />
 
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/btnReport"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
@@ -401,19 +404,21 @@
                 android:background="@color/white"
                 android:layout_height="70dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                <EditText
+                    android:id="@+id/et_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:drawablePadding="10dp"
-                    android:gravity="center_horizontal"
+                    android:gravity="left"
                     android:padding="16dp"
-                    android:text="Feeback"
+                    android:background="@android:color/transparent"
+                    android:hint="Feedback"
                     android:textColor="@color/grey"
                     android:textSize="16sp" />
-
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/btnFeedback"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"

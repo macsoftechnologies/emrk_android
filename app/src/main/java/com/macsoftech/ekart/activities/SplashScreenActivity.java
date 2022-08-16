@@ -32,6 +32,7 @@ public class SplashScreenActivity extends BaseActivity {
         if (isLoginSucces) {
             Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
             startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(SplashScreenActivity.this, LanguageSelectionActivity.class);
             startActivity(intent);

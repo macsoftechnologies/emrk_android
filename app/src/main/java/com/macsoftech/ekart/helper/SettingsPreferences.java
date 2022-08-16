@@ -10,6 +10,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.google.gson.Gson;
+import com.macsoftech.ekart.model.LoginResponse;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -93,6 +94,10 @@ public class SettingsPreferences {
         return new Gson().fromJson(s, val);
     }
 
+    public static LoginResponse getUser(Context context){
+        LoginResponse user = SettingsPreferences.getObject(context, SettingsPreferences.USER, LoginResponse.class);
+        return user;
+    }
 
 
     public static void saveBoolean(Context context, String key, boolean value) {
