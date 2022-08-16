@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/entity_profile"/>
+                tools:src="@drawable/entity_profile"/>
 
             <TextView
                 android:layout_toRightOf="@+id/profileicon"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Gopal Krishna"
+                tools:text="Gopal Krishna"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
@@ -66,7 +66,7 @@
                 android:layout_toLeftOf="@id/editicon"
                 android:layout_toRightOf="@+id/profileicon"
                 android:padding="5dp"
-                android:text="Owner name"
+                tools:text="Owner name"
                 android:layout_marginLeft="2dp"
                 android:textColor="@color/grey"
                 android:textSize="16sp" />
@@ -84,12 +84,16 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:textSize="16sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:id="@+id/txt_location"
                     android:layout_height="wrap_content"
-                    android:text="Location1">
+                    tools:text="Location1">
 
                 </TextView>
 
                 <TextView
+                    android:visibility="gone"
                     android:textColor="@color/grey"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"

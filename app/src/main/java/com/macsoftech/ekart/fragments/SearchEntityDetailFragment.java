@@ -121,6 +121,7 @@ public class SearchEntityDetailFragment extends BaseFragment {
                         binding.txtMobile.setText(user.getMobileNum());
                         Glide.with(getActivity())
                                 .load(RestApi.BASE_URL + user.getEntityImage())
+                                .error(R.drawable.entity_profile)
                                 .into(binding.ivEntity);
                     } catch (Exception e) {
                         e.printStackTrace();

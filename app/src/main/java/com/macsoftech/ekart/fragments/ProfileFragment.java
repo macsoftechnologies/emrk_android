@@ -2,73 +2,52 @@ package com.macsoftech.ekart.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.LoginActivity;
-import com.macsoftech.ekart.activities.RegistrationActivity;
+import com.macsoftech.ekart.api.RestApi;
+import com.macsoftech.ekart.databinding.FragmentProfileBinding;
 import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.model.LoginResponse;
+import com.macsoftech.ekart.model.search.GetUserResponseRoot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ProfileFragment extends BaseFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     @BindView(R.id.tvlogout)
     TextView tvlogout;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    private FragmentProfileBinding binding;
+
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +61,44 @@ public class ProfileFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        binding = FragmentProfileBinding.bind(view);
+        loadEntityDetails();
+    }
+
+
+    private void loadEntityDetails() {
+        showProgress();
+        Map<String, String> body = new HashMap<>();
+//        body.put("userId", getArguments().getString("userId"));
+        LoginResponse user = SettingsPreferences.getObject(getActivity(), SettingsPreferences.USER, LoginResponse.class);
+        body.put("userId", user.getUserId());
+//        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
+        RestApi.getInstance().getService().getUser(body).enqueue(new Callback<GetUserResponseRoot>() {
+            @Override
+            public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
+                hideDialog();
+                if (response.isSuccessful()) {
+                    try {
+                        LoginResponse user = response.body().getUserFeedbackResponse().get(0);
+                        binding.ownername.setText(user.getEntityName());
+                        binding.edtprofilename.setText(user.getFirstName() + " " + user.getLastName());
+                        binding.txtLocation.setText(TextUtils.join(", ", user.getAvailableLocation()).toUpperCase());
+//                        binding.txtMobile.setText(user.getMobileNum());
+                        Glide.with(getActivity())
+                                .load(RestApi.BASE_URL + user.getUserImage())
+                                .error(R.drawable.entity_profile)
+                                .into(binding.profileicon);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserResponseRoot> call, Throwable t) {
+                hideDialog();
+            }
+        });
     }
 
     @OnClick(R.id.tvlogout)

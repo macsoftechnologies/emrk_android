@@ -1,12 +1,14 @@
 package com.macsoftech.ekart.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LoginResponse {
     public String _id;
     public String firstName;
     public String lastName;
     private String entityImage;
+    private String userImage;
 
     public String get_id() {
         return _id;
@@ -57,6 +59,9 @@ public class LoginResponse {
     }
 
     public ArrayList<String> getAvailableLocation() {
+        if(availableLocation==null){
+            return new ArrayList<>();
+        }
         return availableLocation;
     }
 
@@ -129,5 +134,13 @@ public class LoginResponse {
 
     public void setEntityImage(String entityImage) {
         this.entityImage = entityImage;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }
