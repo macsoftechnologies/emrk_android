@@ -38,7 +38,6 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyEntityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MyEntityFragment extends BaseFragment {
@@ -75,6 +74,14 @@ public class MyEntityFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         binding = FragmentMyEntityBinding.bind(view);
+        binding.tvaddproduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity activity = (DashboardActivity) getActivity();
+                AddProductSearchFragment fragment = new AddProductSearchFragment();
+                activity.replaceBackStackFragment(fragment);
+            }
+        });
         tvcontacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +105,7 @@ public class MyEntityFragment extends BaseFragment {
 //        body.put("userId", getArguments().getString("userId"));
         LoginResponse user = SettingsPreferences.getObject(getActivity(), SettingsPreferences.USER, LoginResponse.class);
         body.put("userId", user.getUserId());
-//        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
+        //body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
         RestApi.getInstance().getService().getUser(body).enqueue(new Callback<GetUserResponseRoot>() {
             @Override
             public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
@@ -134,8 +141,8 @@ public class MyEntityFragment extends BaseFragment {
 
         Map<String, String> body = new HashMap<>();
         LoginResponse user = SettingsPreferences.getObject(getActivity(), SettingsPreferences.USER, LoginResponse.class);
-        body.put("userId", user.getUserId());
-//        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
+      //  body.put("userId", user.getUserId());
+        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
 
         RestApi.getInstance().getService().getUserProducts(body).enqueue(new Callback<SearchRootResponse>() {
             @Override
