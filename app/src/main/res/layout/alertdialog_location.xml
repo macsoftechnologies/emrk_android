@@ -24,7 +24,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center_vertical|center"
-                android:text="Length"
+                android:text="Location"
                 android:textColor="@color/white"
                 android:textSize="14sp">
 
@@ -55,8 +55,9 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/sp_state"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="State"
@@ -75,8 +76,9 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/sp_district"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="District"
@@ -102,8 +104,9 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/sp_mandal"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Mandal"
@@ -122,8 +125,9 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/sp_village"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Village"

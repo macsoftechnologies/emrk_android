@@ -41,7 +41,11 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
     @Override
     public void onBindViewHolder(MyviewHolder holder, int position) {
         holder.txtcampanyname.setText(companyLists.get(position).getEntityName());
-        holder.txtmobileNo.setText("Mobile : " + companyLists.get(position).getMobileNum());
+        String mobile = companyLists.get(position).getMobileNum();
+        if (mobile == null) {
+            mobile = "";
+        }
+        holder.txtmobileNo.setText("Mobile : " + mobile);
         holder.txtqty.setText("QTY : " + companyLists.get(position).getQuantity());
         holder.txtqty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +60,13 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
     @Override
     public int getItemCount() {
         return companyLists.size();
+    }
+
+    public void clear() {
+        if (companyLists != null) {
+            companyLists.clear();
+            notifyDataSetChanged();
+        }
     }
 
     class MyviewHolder extends RecyclerView.ViewHolder {

@@ -9,6 +9,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.app.BaseApp;
+import com.macsoftech.ekart.model.LocationResponseRoot;
 import com.macsoftech.ekart.model.LoginRootResponse;
 import com.macsoftech.ekart.model.language.LanguageRootResponse;
 import com.macsoftech.ekart.model.register.RegistrationRootResponse;
@@ -42,6 +43,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
@@ -120,6 +122,21 @@ public class RestApi {
 
         @GET("admin/getProductSize")
         Call<SizeModelRootResponse> getProductSizes();
+
+        @GET("admin/getLocations")
+        Call<LocationResponseRoot> getLocations();
+
+
+        @GET("admin-product/getVendorProductByLength/{min}/{max}")
+        Call<SearchRootResponse> getVendorProductByLength(
+                @Path("min") String min,
+                @Path("max") String max
+        );
+        @POST("admin-product/getVendorProductByLocation")
+        Call<SearchRootResponse> getVendorProductByLocation(@Body Map<String, String> body);
+
+        @POST("admin-product/getVendorProductByQuantity")
+        Call<SearchRootResponse> getVendorProductByQuantity(@Body Map<String, String> body);
 
 //        @GET("admin/getProductSize")
 //        Call<SizeModelRootResponse> getProductSizes();

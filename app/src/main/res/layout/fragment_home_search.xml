@@ -133,11 +133,16 @@
             android:gravity="center"
             android:background="@drawable/home_spinner_bg"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_qty"
+                android:layout_width="match_parent"
                 android:padding="16dp"
+                android:inputType="number"
+                android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:text="Qty"
+                android:hint="Qty"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
@@ -190,12 +195,25 @@
         android:layout_height="50dp"/>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        />
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            />
+
+    </FrameLayout>
+
 
 </LinearLayout>

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:fontFamily="@font/lato_bold"
-                android:text="Entity Name"
+                tools:text="Entity Name"
                 android:id="@+id/txt_entity"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="0dp"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
             <TextView
-                android:text="Owner Name"
+                tools:text="Owner Name"
                 android:id="@+id/txt_vendor_name"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"

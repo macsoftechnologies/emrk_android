@@ -5,14 +5,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,8 @@ import com.macsoftech.ekart.activities.DashboardActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentHomeSearchBinding;
+import com.macsoftech.ekart.model.LocationData;
+import com.macsoftech.ekart.model.LocationResponseRoot;
 import com.macsoftech.ekart.model.search.ListOfVendorsData;
 import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
@@ -40,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,13 +112,28 @@ public class HomeSearchFragment extends BaseFragment {
                 showLength();
             }
         });
-
-        binding.llQty.setOnClickListener(new View.OnClickListener() {
+        binding.etQty.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                showQty();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                findByQty(editable.toString().trim());
             }
         });
+//        binding.llQty.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showQty();
+//            }
+//        });
         lengthlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,22 +189,40 @@ public class HomeSearchFragment extends BaseFragment {
 //        });
     }
 
-    private void showQty() {
-        RestApi.getInstance().getService().getProductSizes()
-                .enqueue(new Callback<SizeModelRootResponse>() {
+    private void findByQty(String value) {
+        showProgress();
+        Map<String, String> map = new HashMap<>();
+        map.put("quantity", value);
+        RestApi.getInstance().getService()
+                .getVendorProductByQuantity(map)
+                .enqueue(new Callback<SearchRootResponse>() {
                     @Override
-                    public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
+                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        hideDialog();
                         if (response.isSuccessful()) {
-                            showLengthPopup(response.body().getData().getSizesList());
+                            loadGroup(response.body().getData());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<SizeModelRootResponse> call, Throwable t) {
-
+                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
+                        hideDialog();
                     }
                 });
     }
+
+    @Override
+    public void showProgress(String title) {
+//        super.showProgress(title);
+        binding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideDialog() {
+        super.hideDialog();
+        binding.progressBar.setVisibility(View.GONE);
+    }
+
 
     private void showLength() {
         RestApi.getInstance().getService().getProductSizes()
@@ -191,7 +230,6 @@ public class HomeSearchFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
                         if (response.isSuccessful()) {
-
                             showLengthPopup(response.body().getData().getSizesList());
                         }
                     }
@@ -219,12 +257,14 @@ public class HomeSearchFragment extends BaseFragment {
     }
 
     private void callProductsSearch(String size) {
+        showProgress();
         Map<String, String> map = new HashMap<>();
         map.put("size", size);
         RestApi.getInstance().getService().getVendorProductBySize(map)
                 .enqueue(new Callback<SearchRootResponse>() {
                     @Override
                     public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        hideDialog();
                         if (response.isSuccessful()) {
                             loadGroup(response.body().getData());
                         }
@@ -232,18 +272,20 @@ public class HomeSearchFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-
+                        hideDialog();
                     }
                 });
     }
 
     private void callSearchApi() {
+        showProgress();
         Map<String, String> map = new HashMap<>();
         map.put("productName", et_search.getText().toString().trim());
         RestApi.getInstance().getService().searchProducts(map)
                 .enqueue(new Callback<SearchRootResponse>() {
                     @Override
                     public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        hideDialog();
                         if (response.isSuccessful()) {
                             loadGroup(response.body().getUserProdResponse());
                         }
@@ -251,7 +293,7 @@ public class HomeSearchFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-
+                        hideDialog();
                     }
                 });
     }
@@ -261,9 +303,17 @@ public class HomeSearchFragment extends BaseFragment {
         chipGroup.clearCheck();
         chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);
+        ComapnyNameAdapter adapter = (ComapnyNameAdapter) recyclerView.getAdapter();
+        if(adapter!=null){
+            adapter.clear();
+        }
         for (int i = 0; i < userProdResponse.size(); i++) {
             Chip chip1 = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.tag_cloud, chipGroup, false);
-            chip1.setText(userProdResponse.get(i).getProductName() + " - " + userProdResponse.get(i).getProductCode());
+            String productCode = userProdResponse.get(i).getProductCode();
+            if (productCode == null) {
+                productCode = "";
+            }
+            chip1.setText(userProdResponse.get(i).getProductName() + " - " + productCode);
             chip1.setTag(userProdResponse.get(i));
             chip1.setId(i + 1);
             chipGroup.addView(chip1);
@@ -300,6 +350,7 @@ public class HomeSearchFragment extends BaseFragment {
 
     private void loadDetails(UserProdResponse item) {
         //
+        showProgress();
         list = new ArrayList<>();
         ComapnyNameAdapter listAdapter = new ComapnyNameAdapter(list, getActivity());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getActivity());
@@ -315,6 +366,7 @@ public class HomeSearchFragment extends BaseFragment {
                 .enqueue(new Callback<ListOfVendorsResponse>() {
                     @Override
                     public void onResponse(Call<ListOfVendorsResponse> call, Response<ListOfVendorsResponse> response) {
+                        hideDialog();
                         if (response.isSuccessful()) {
                             list.addAll(response.body().getData());
                             listAdapter.notifyDataSetChanged();
@@ -323,7 +375,7 @@ public class HomeSearchFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(Call<ListOfVendorsResponse> call, Throwable t) {
-
+                        hideDialog();
                     }
                 });
     }
@@ -384,11 +436,25 @@ public class HomeSearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                BaseActivity.hideKeyboard(getActivity());
                 String max_num = txt_max_num.getText().toString().trim();
                 String max_dec = txt_max_dec.getText().toString().trim();
                 String min_num = txt_min_num.getText().toString().trim();
                 String min_dec = txt_min_dec.getText().toString().trim();
-                filterProductsBySize(max_num + max_dec, min_num + min_dec);
+                if (TextUtils.isEmpty(max_num)) {
+                    max_num = "0";
+                }
+                if (TextUtils.isEmpty(max_dec)) {
+                    max_dec = "0";
+                }
+                if (TextUtils.isEmpty(min_num)) {
+                    min_num = "0";
+                }
+                if (TextUtils.isEmpty(min_dec)) {
+                    min_dec = "0";
+                }
+
+                filterProductsBySize(max_num + "." + max_dec, min_num + "." + min_dec);
             }
         });
 
@@ -401,8 +467,25 @@ public class HomeSearchFragment extends BaseFragment {
     }
 
     private void filterProductsBySize(String max, String min) {
+        showProgress();
+        RestApi.getInstance().getService().getVendorProductByLength(min, max)
+                .enqueue(new Callback<SearchRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        hideDialog();
+                        if (response.isSuccessful()) {
+                            loadGroup(response.body().getData());
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
+                        hideDialog();
+                    }
+                });
     }
+
+    List<LocationData> mLocationData = new ArrayList<>();
 
     /**
      * location dialog
@@ -413,6 +496,116 @@ public class HomeSearchFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_location, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertLayout);
+        //
+        Spinner spState = alertLayout.findViewById(R.id.sp_state);
+        Spinner spDistrict = alertLayout.findViewById(R.id.sp_district);
+        Spinner sp_mandal = alertLayout.findViewById(R.id.sp_mandal);
+        Spinner sp_village = alertLayout.findViewById(R.id.sp_village);
+        //
+        RestApi.getInstance().getService().getLocations().enqueue(new Callback<LocationResponseRoot>() {
+            @Override
+            public void onResponse(Call<LocationResponseRoot> call, Response<LocationResponseRoot> response) {
+                if (response.isSuccessful()) {
+                    LocationResponseRoot res = response.body();
+                    TreeSet<String> states = new TreeSet<>();
+                    mLocationData = res.getData();
+                    for (LocationData locationData : mLocationData) {
+                        if (locationData.getState() != null) {
+                            states.add(locationData.getState());
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(states));
+                    spState.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LocationResponseRoot> call, Throwable t) {
+
+            }
+        });
+        spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (spState.getSelectedItem().toString().equalsIgnoreCase(locationData.getState())) {
+                        if (locationData.getDistrict() != null) {
+                            districts.add(locationData.getDistrict());
+                        }
+                    }
+
+                }
+                //
+                ArrayAdapter<String> emptyAdapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, new ArrayList<>());
+                sp_mandal.setAdapter(emptyAdapter);
+                sp_village.setAdapter(emptyAdapter);
+                //
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(districts));
+                spDistrict.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        spDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (spDistrict.getAdapter().getItem(i).toString().equalsIgnoreCase(
+                            locationData.getDistrict())) {
+                        if (locationData.getMandal() != null) {
+                            districts.add(locationData.getMandal());
+                        }
+
+                    }
+
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(districts));
+                sp_mandal.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        sp_mandal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (sp_mandal.getAdapter().getItem(i).toString().equalsIgnoreCase(
+                            locationData.getMandal())) {
+                        if (locationData.getVillage() != null) {
+                            districts.add(locationData.getVillage());
+                        }
+                    }
+
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(districts));
+                sp_village.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //
+
         alert.setCancelable(false);
         AlertDialog dialog = alert.create();
         dialog.show();
@@ -428,6 +621,15 @@ public class HomeSearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                String state = spState.getSelectedItem() == null ? "" : spState.getSelectedItem().toString();
+                String district = spDistrict.getSelectedItem().toString().equalsIgnoreCase("--Select--")
+                        ? "" : spDistrict.getSelectedItem().toString();
+                String mandal = sp_mandal.getSelectedItem().toString().equalsIgnoreCase("--Select--") ? ""
+                        : sp_mandal.getSelectedItem().toString();
+                String village = sp_village.getSelectedItem().toString().equalsIgnoreCase("--Select--") ? ""
+                        : sp_village.getSelectedItem().toString();
+                findByLocation(state, district, mandal, village);
+
             }
         });
         alertLayout.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
@@ -436,6 +638,32 @@ public class HomeSearchFragment extends BaseFragment {
                 dialog.dismiss();
             }
         });
+    }
+
+    void findByLocation(String state, String district, String mandal, String village) {
+        showProgress();
+        Map<String, String> map = new HashMap<>();
+        map.put("state", state);
+        map.put("district", district);
+        map.put("mandal", mandal);
+        map.put("village", village);
+        map.put("location", village);
+        RestApi.getInstance().getService()
+                .getVendorProductByLocation(map)
+                .enqueue(new Callback<SearchRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        hideDialog();
+                        if (response.isSuccessful()) {
+                            loadGroup(response.body().getData());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
+                        hideDialog();
+                    }
+                });
     }
 
 
