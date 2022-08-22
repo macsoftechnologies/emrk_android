@@ -123,6 +123,9 @@ public class EntityDetailsFragment extends BaseFragment {
                                 .into(binding.ivEntity);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        binding.txtEntity.setText("");
+                        binding.txtVendorName.setText("");
+                        binding.txtMobile.setText("");
                     }
                 }
             }

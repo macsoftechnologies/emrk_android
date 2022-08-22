@@ -37,7 +37,6 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchEntityProductNameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class SearchEntityProductNameFragment extends BaseFragment {
@@ -113,6 +112,9 @@ public class SearchEntityProductNameFragment extends BaseFragment {
                                 .into(binding.ivEntity);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        binding.txtEntity.setText("");
+                        binding.txtVendorName.setText("");
+                        binding.txtMobile.setText("");
                     }
                 }
             }

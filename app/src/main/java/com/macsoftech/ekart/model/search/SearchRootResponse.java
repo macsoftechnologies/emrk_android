@@ -1,5 +1,6 @@
 package com.macsoftech.ekart.model.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchRootResponse {
@@ -12,6 +13,9 @@ public class SearchRootResponse {
     private String StatusCode;
 
     public List<UserProdResponse> getUserProdResponse() {
+        if (userProdResponse == null) {
+            return new ArrayList<>();
+        }
         return userProdResponse;
     }
 
@@ -41,6 +45,9 @@ public class SearchRootResponse {
     }
 
     public List<UserProdResponse> getData() {
+        if (Data == null) {
+            return new ArrayList<>();
+        }
         return Data;
     }
 

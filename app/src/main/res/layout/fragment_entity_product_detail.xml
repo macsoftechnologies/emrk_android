@@ -255,6 +255,7 @@
                         android:textColor="@color/white"
                         android:layout_width="80dp"
                         android:gravity="center"
+                        android:visibility="gone"
                         />
 
                     <TextView
@@ -263,6 +264,7 @@
                         android:layout_gravity="center_vertical|center"
                         android:text="View Entity"
                         android:paddingLeft="15dp"
+                        android:visibility="gone"
                         android:drawableTint="@color/white"
                         android:layout_marginLeft="10dp"
                         android:drawableLeft="@drawable/contact_white"

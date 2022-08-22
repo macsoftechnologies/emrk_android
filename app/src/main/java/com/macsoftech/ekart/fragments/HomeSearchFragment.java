@@ -2,12 +2,14 @@ package com.macsoftech.ekart.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +28,13 @@ import com.macsoftech.ekart.activities.BaseActivity;
 import com.macsoftech.ekart.activities.DashboardActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
+import com.macsoftech.ekart.databinding.FragmentHomeSearchBinding;
 import com.macsoftech.ekart.model.search.ListOfVendorsData;
 import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
 import com.macsoftech.ekart.model.search.UserProdResponse;
+import com.macsoftech.ekart.model.sizes.SizeModel;
+import com.macsoftech.ekart.model.sizes.SizeModelRootResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +71,7 @@ public class HomeSearchFragment extends BaseFragment {
     LinearLayout locationlayout;
 
     List<ListOfVendorsData> list = new ArrayList<>();
+    private FragmentHomeSearchBinding binding;
 
     public HomeSearchFragment() {
         // Required empty public constructor
@@ -89,15 +95,29 @@ public class HomeSearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        binding = FragmentHomeSearchBinding.bind(view);
         iv_search = view.findViewById(R.id.iv_search);
         //sizelayout = view.findViewById(R.id.sizelayout);
         // recyclerView = view.findViewById(R.id.recyclerView);
 
+        binding.sizelayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLength();
+            }
+        });
+
+        binding.llQty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showQty();
+            }
+        });
         lengthlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lengthAlertDialog();
+//                showLength();
             }
         });
 
@@ -140,6 +160,81 @@ public class HomeSearchFragment extends BaseFragment {
 //                chipGroup.setVisibility(chipGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 //            }
 //        });
+//        binding.txtLength.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showLength();
+//            }
+//        });
+    }
+
+    private void showQty() {
+        RestApi.getInstance().getService().getProductSizes()
+                .enqueue(new Callback<SizeModelRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
+                        if (response.isSuccessful()) {
+                            showLengthPopup(response.body().getData().getSizesList());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SizeModelRootResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void showLength() {
+        RestApi.getInstance().getService().getProductSizes()
+                .enqueue(new Callback<SizeModelRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
+                        if (response.isSuccessful()) {
+
+                            showLengthPopup(response.body().getData().getSizesList());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SizeModelRootResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void showLengthPopup(List<SizeModel> sizesList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        ArrayAdapter<SizeModel> adapter = new ArrayAdapter<SizeModel>(getActivity(), android.R.layout.simple_list_item_1,
+                sizesList);
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+                callProductsSearch(sizesList.get(position).toString());
+            }
+        });
+        builder.setTitle("Select Size");
+        builder.setPositiveButton("Cancel", null);
+        builder.create().show();
+    }
+
+    private void callProductsSearch(String size) {
+        Map<String, String> map = new HashMap<>();
+        map.put("size", size);
+        RestApi.getInstance().getService().getVendorProductBySize(map)
+                .enqueue(new Callback<SearchRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        if (response.isSuccessful()) {
+                            loadGroup(response.body().getData());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
+
+                    }
+                });
     }
 
     private void callSearchApi() {
@@ -162,7 +257,7 @@ public class HomeSearchFragment extends BaseFragment {
     }
 
     public void loadGroup(List<UserProdResponse> userProdResponse) {
-        //chip_group
+        chipGroup.setVisibility(View.VISIBLE);
         chipGroup.clearCheck();
         chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);
@@ -265,33 +360,48 @@ public class HomeSearchFragment extends BaseFragment {
     private void lengthAlertDialog() {
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.alertdialog_size, null);
+        View alertView = inflater.inflate(R.layout.alertdialog_size, null);
+        //
+        EditText txt_max_num = alertView.findViewById(R.id.txt_max_num);
+        EditText txt_max_dec = alertView.findViewById(R.id.txt_max_dec);
+        EditText txt_min_num = alertView.findViewById(R.id.txt_min_num);
+        EditText txt_min_dec = alertView.findViewById(R.id.txt_min_dec);
+        //
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setView(alertLayout);
+        alert.setView(alertView);
         alert.setCancelable(false);
         AlertDialog dialog = alert.create();
         dialog.show();
 
-        alertLayout.findViewById(R.id.linearcancel).setOnClickListener(new View.OnClickListener() {
+        alertView.findViewById(R.id.linearcancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
 
-        alertLayout.findViewById(R.id.linearok).setOnClickListener(new View.OnClickListener() {
+        alertView.findViewById(R.id.linearok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                String max_num = txt_max_num.getText().toString().trim();
+                String max_dec = txt_max_dec.getText().toString().trim();
+                String min_num = txt_min_num.getText().toString().trim();
+                String min_dec = txt_min_dec.getText().toString().trim();
+                filterProductsBySize(max_num + max_dec, min_num + min_dec);
             }
         });
 
-        alertLayout.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
+        alertView.findViewById(R.id.ivdelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void filterProductsBySize(String max, String min) {
+
     }
 
     /**

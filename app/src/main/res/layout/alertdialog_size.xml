@@ -44,10 +44,11 @@
 
 
         <TextView
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:text="minimum"
+            android:text="Minimum"
             android:textColor="@color/black"
             android:textSize="14sp">
 
@@ -65,11 +66,14 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/txt_min_num"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Num"
+                    android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
@@ -84,8 +88,11 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/txt_min_dec"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:singleLine="true"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Decimal"
@@ -99,10 +106,11 @@
 
 
         <TextView
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:text="maximum"
+            android:text="Maximum"
             android:textColor="@color/black"
             android:textSize="14sp">
 
@@ -121,11 +129,14 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/txt_max_num"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Num"
+                    android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
@@ -140,11 +151,14 @@
                 android:gravity="center"
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/txt_max_dec"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:text="Decimal"
+                    android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"

@@ -42,7 +42,7 @@ public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.
     @Override
     public void onBindViewHolder(MyviewHolder holder, int position) {
         holder.txtcampanyname.setText(companyLists.get(position).getProductName());
-        holder.txtmobileNo.setText(companyLists.get(position).getProductCode());
+        holder.txtmobileNo.setText(companyLists.get(position).getMobileNum());
         holder.txtqty.setText("SIZE :"+companyLists.get(position).getSize());
         holder.txtqty.setOnClickListener(new View.OnClickListener() {
             @Override

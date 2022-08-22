@@ -7,11 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProdResponse implements Parcelable {
+
+//    _id = "62fb42eb938389984c607839"
+//    createdAt = "2022-08-16T07:10:35.860Z"
+//    length = "15cm"
+//    location = "Visakhapatnam"
+//    productAlias = null
+//    productCode = null
+//    productId = "ec22028c-def6-4078-b10a-dac79ff2248d"
+//    productImage = {ArrayList@12005}  size = 1
+//    productName = "Shoes"
+//    productStatus = null
+//    quantity = "20"
+//    size = "7inchs"
+//    updatedAt = "2022-08-16T07:10:35.860Z"
+//    userId = "6d43a713-1af0-40cf-96cc-aa6c76853ff3"
+
     private String createdAt;
 
 //    private List<String> productImage;
     private List<String> productImage;
     private String quantity;
+
+    private String mobileNum;
 
     private String productCode;
     private String size;
@@ -30,6 +48,7 @@ public class UserProdResponse implements Parcelable {
         createdAt = in.readString();
         productImage = in.createStringArrayList();
         quantity = in.readString();
+        mobileNum = in.readString();
         productCode = in.readString();
         size = in.readString();
         productId = in.readString();
@@ -49,6 +68,7 @@ public class UserProdResponse implements Parcelable {
         dest.writeString(createdAt);
         dest.writeStringList(productImage);
         dest.writeString(quantity);
+        dest.writeString(mobileNum);
         dest.writeString(productCode);
         dest.writeString(size);
         dest.writeString(productId);
@@ -223,5 +243,13 @@ public class UserProdResponse implements Parcelable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getMobileNum() {
+        return mobileNum;
+    }
+
+    public void setMobileNum(String mobileNum) {
+        this.mobileNum = mobileNum;
     }
 }

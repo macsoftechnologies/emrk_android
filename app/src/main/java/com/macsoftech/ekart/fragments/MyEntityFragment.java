@@ -142,8 +142,8 @@ public class MyEntityFragment extends BaseFragment {
 
         Map<String, String> body = new HashMap<>();
         LoginResponse user = SettingsPreferences.getObject(getActivity(), SettingsPreferences.USER, LoginResponse.class);
-      //  body.put("userId", user.getUserId());
-        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
+        body.put("userId", user.getUserId());
+//        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
 
         RestApi.getInstance().getService().getUserProducts(body).enqueue(new Callback<SearchRootResponse>() {
             @Override

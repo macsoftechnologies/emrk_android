@@ -121,24 +121,25 @@ public class RestApi {
         @GET("admin/getProductSize")
         Call<SizeModelRootResponse> getProductSizes();
 
+//        @GET("admin/getProductSize")
+//        Call<SizeModelRootResponse> getProductSizes();
+
         @POST("users/login")
         Call<LoginRootResponse> login(@Body Map<String, String> body);
 
         @POST("users/verifyOtp")
         Call<LoginRootResponse> verifyOtp(@Body Map<String, String> body);
 
-        //        @POST("product/search")
+
         @POST("admin-product/search")
         Call<SearchRootResponse> searchProducts(@Body Map<String, String> body);
+
+        @POST("admin-product/getVendorProductBySize")
+        Call<SearchRootResponse> getVendorProductBySize(@Body Map<String, String> body);
 
         @POST("admin-product/getVendorProduct")
         Call<ListOfVendorsResponse> getVendorProduct(@Body Map<String, String> body);
 
-        //{
-        //    "productId": "f49df39a-ff29-46e6-869f-b17771a7baca"
-        //}
-//        @POST("admin-product/getAdminProduct")
-//        Call<ListOfVendorsResponse> getAdminProduct(@Body Map<String, String> body);
 
         @Multipart
         @POST("users/register")
