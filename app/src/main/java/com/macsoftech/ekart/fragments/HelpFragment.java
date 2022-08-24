@@ -1,10 +1,16 @@
 package com.macsoftech.ekart.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,18 +23,28 @@ import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentHelpBinding;
 import com.macsoftech.ekart.helper.Helper;
 import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.model.LocationData;
+import com.macsoftech.ekart.model.LocationResponseRoot;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import id.zelory.compressor.Compressor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.macsoftech.ekart.activities.BaseActivity.CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +93,7 @@ public class HelpFragment extends BaseFragment {
     @BindView(R.id.ll_content_5)
     LinearLayout ll_content_5;
     private FragmentHelpBinding binding;
+    private List<LocationData> mLocationData;
 
     public HelpFragment() {
         // Required empty public constructor
@@ -149,6 +166,143 @@ public class HelpFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 saveFeedBack();
+            }
+        });
+        binding.btnMissingProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitMissingProduct();
+            }
+        });
+
+        binding.txtAddMissingProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BaseActivity) getActivity()).openCamera();
+            }
+        });
+
+        binding.txtLocationSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitMissingLocation();
+            }
+        });
+    }
+
+    private void submitMissingLocation() {
+        if (binding.spState.getSelectedItemPosition() < 0
+                || binding.spDistrict.getSelectedItemPosition() < 1
+                || binding.spMandal.getSelectedItemPosition() < 1) {
+            Helper.showShortToast(getActivity(), "Please Select State/District/Mandal");
+            return;
+        } else if (TextUtils.isEmpty(binding.etVillage.getText().toString().trim())) {
+            Helper.showShortToast(getActivity(), "Please Enter Area/Village name");
+            return;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", SettingsPreferences.getUser(getActivity()).getUserId());
+        map.put("state", binding.spState.getSelectedItem().toString());
+        map.put("district", binding.spDistrict.getSelectedItem().toString());
+        map.put("mandal", binding.spMandal.getSelectedItem().toString());
+        map.put("village", binding.etVillage.getText().toString());
+        BaseActivity.hideKeyboard(getActivity());
+        showProgress();
+        RestApi.getInstance().getService()
+                .unavailLocationCreate(map)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        hideDialog();
+                        if (response.isSuccessful()) {
+                            Helper.showShortToast(getActivity(), "Submitted Successfully");
+                            binding.etVillage.setText("");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        hideDialog();
+                    }
+                });
+    }
+
+    private void submitMissingProduct() {
+        String product = binding.etProduct.getText().toString().trim();
+        String desc = binding.etDesc.getText().toString().trim();
+
+        if (TextUtils.isEmpty(product)) {
+            Helper.showShortToast(getActivity(), "Please Enter Product");
+            return;
+        }
+        if (TextUtils.isEmpty(product)) {
+            Helper.showShortToast(getActivity(), "Please Enter Description");
+            return;
+        }
+        if (profile == null) {
+            Helper.showShortToast(getActivity(), "Please Add image");
+            return;
+        }
+        BaseActivity.hideKeyboard(getActivity());
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", SettingsPreferences.getUser(getActivity()).getUserId());
+        map.put("productName", product);
+        map.put("productDescription", desc);
+        showProgress();
+        RestApi.getInstance().getService()
+                .createUnavailbleproduct(
+                        RestApi.prepareFilePart("productImage", profile.getAbsolutePath(), null),
+                        RestApi.prepareBodyPart(map)
+                ).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                hideDialog();
+                if (response.isSuccessful()) {
+                    binding.etProduct.setText("");
+                    binding.etDesc.setText("");
+                    binding.txtAddMissingProduct.setText("");
+                    profile = null;
+                    Helper.showShortToast(getActivity(), "Submitted Successfully");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                hideDialog();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300
+                && resultCode == Activity.RESULT_OK
+        ) {
+            new Thread(() -> {
+                try {
+                    compressFile();
+//                    runOnUiThread(() -> setData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+        }
+
+    }
+
+    private File profile;
+
+    private void compressFile() throws IOException {
+        Compressor compressor = new Compressor(getActivity());
+        final File file = compressor.compressToFile(((BaseActivity) getActivity()).photoFile);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                profile = file;
+                binding.txtAddMissingProduct.setText(file.getName());
             }
         });
     }
@@ -224,6 +378,7 @@ public class HelpFragment extends BaseFragment {
         ll_content_3.setVisibility(View.GONE);
         ll_content_4.setVisibility(View.GONE);
         ll_content_5.setVisibility(View.GONE);
+        loadLocationsData();
     }
 
 
@@ -257,5 +412,110 @@ public class HelpFragment extends BaseFragment {
         ll_content_5.setVisibility(View.VISIBLE);
     }
 
+    void loadLocationsData() {
+        View alertLayout = getView();
+        Spinner spState = alertLayout.findViewById(R.id.sp_state);
+        Spinner spDistrict = alertLayout.findViewById(R.id.sp_district);
+        Spinner sp_mandal = alertLayout.findViewById(R.id.sp_mandal);
+//        Spinner sp_village = alertLayout.findViewById(R.id.sp_village);
+        //
+        RestApi.getInstance().getService().getLocations().enqueue(new Callback<LocationResponseRoot>() {
+            @Override
+            public void onResponse(Call<LocationResponseRoot> call, Response<LocationResponseRoot> response) {
+                if (response.isSuccessful()) {
+                    LocationResponseRoot res = response.body();
+                    TreeSet<String> states = new TreeSet<>();
+                    mLocationData = res.getData();
+                    for (LocationData locationData : mLocationData) {
+                        if (locationData.getState() != null) {
+                            states.add(locationData.getState());
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(states));
+                    spState.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LocationResponseRoot> call, Throwable t) {
+
+            }
+        });
+        spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (spState.getSelectedItem().toString().equalsIgnoreCase(locationData.getState())) {
+                        if (locationData.getDistrict() != null) {
+                            districts.add(locationData.getDistrict());
+                        }
+                    }
+
+                }
+                //
+                ArrayAdapter<String> emptyAdapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, new ArrayList<>());
+                sp_mandal.setAdapter(emptyAdapter);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(districts));
+                spDistrict.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        spDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (spDistrict.getAdapter().getItem(i).toString().equalsIgnoreCase(
+                            locationData.getDistrict())) {
+                        if (locationData.getMandal() != null) {
+                            districts.add(locationData.getMandal());
+                        }
+
+                    }
+
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(districts));
+                sp_mandal.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        sp_mandal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TreeSet<String> districts = new TreeSet<>();
+                districts.add("--Select--");
+                for (LocationData locationData : mLocationData) {
+                    if (sp_mandal.getAdapter().getItem(i).toString().equalsIgnoreCase(
+                            locationData.getMandal())) {
+                        if (locationData.getVillage() != null) {
+                            districts.add(locationData.getVillage());
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
 
 }

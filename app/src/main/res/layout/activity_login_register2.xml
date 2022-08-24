@@ -9,13 +9,15 @@
     tools:context=".activities.LoginRegisterActivity">
 
     <LinearLayout
+        android:id="@+id/ll_login_bio"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="bottom|center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:layout_weight="1">
 
         <ImageView
+            android:id="@+id/iv_bio"
             android:layout_width="80dp"
             android:src="@drawable/ic_baseline_fingerprint_24"
             android:layout_height="80dp"/>
@@ -46,6 +48,7 @@
             android:layout_width="wrap_content"
             android:text="Forgot your password"
             android:layout_margin="20dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
@@ -55,6 +58,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:id="@+id/ll_login"
         android:orientation="vertical">
 
         <TextView

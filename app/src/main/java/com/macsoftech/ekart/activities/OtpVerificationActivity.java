@@ -40,17 +40,6 @@ public class OtpVerificationActivity extends BaseActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
-        squareField.setOnTextCompleteListener(new PinField.OnTextCompleteListener() {
-            @Override
-            public boolean onTextComplete(String str) {
-                if (str.equalsIgnoreCase("1234")) {
-                    onLoginClick();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         boolean isLoginSucces = SettingsPreferences.getBoolean(OtpVerificationActivity.this, "LOGIN");
         if (isLoginSucces) {
             btn_login.setVisibility(View.GONE);

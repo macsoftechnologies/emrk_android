@@ -34,24 +34,50 @@
             android:layout_height="wrap_content"/>
 
         <EditText
+            android:drawableTint="@color/colorPrimary"
             android:id="@+id/et_primary"
             android:singleLine="true"
             android:layout_marginTop="10dp"
             android:hint="Primary Location"
             android:textSize="16sp"
+            android:drawablePadding="20sp"
+            android:clickable="true"
+            android:editable="false"
+            android:focusableInTouchMode="true"
             android:textColorHint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/et_location"
-            android:singleLine="true"
-            android:layout_marginTop="10dp"
-            android:hint="Other Locations (ex: Goa,Hyderabad,Delhi)"
-            android:textSize="16sp"
-            android:textColorHint="@color/grey"
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:id="@+id/ll_another_locations"
             android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="20sp"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:drawableTint="@color/colorPrimary"
+            android:id="@+id/txt_add_another"
+            android:drawableRight="@drawable/add"
+            android:gravity="right|center_vertical"
+            android:drawablePadding="10dp"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:text="Add Another Locations"
+            android:layout_height="wrap_content"/>
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_location"-->
+<!--            android:singleLine="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:hint="Other Locations (ex: Goa,Hyderabad,Delhi)"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColorHint="@color/grey"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
 <!--        <EditText-->
 <!--            android:singleLine="true"-->

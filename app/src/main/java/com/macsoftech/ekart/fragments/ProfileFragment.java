@@ -62,7 +62,11 @@ public class ProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         binding = FragmentProfileBinding.bind(view);
-        loadEntityDetails();
+        try {
+            loadEntityDetails();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -82,7 +86,7 @@ public class ProfileFragment extends BaseFragment {
                         LoginResponse user = response.body().getUserFeedbackResponse().get(0);
                         binding.ownername.setText(user.getEntityName());
                         binding.edtprofilename.setText(user.getFirstName() + " " + user.getLastName());
-                        binding.txtLocation.setText(TextUtils.join(", ", user.getAvailableLocation()).toUpperCase());
+                        binding.txtLocation.setText(user.getPrimaryLocation().toUpperCase());
 //                        binding.txtMobile.setText(user.getMobileNum());
                         Glide.with(getActivity())
                                 .load(RestApi.BASE_URL + user.getUserImage())

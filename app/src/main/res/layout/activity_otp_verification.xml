@@ -40,7 +40,7 @@
         app:cornerRadius="5dp"
         app:fieldBgColor="#fff"
         app:highlightColor="@color/colorPrimary"
-        app:noOfFields="4"
+        app:noOfFields="6"
         android:textSelectHandle="@drawable/text_handle"
         android:id="@+id/squareField"
         android:layout_marginTop="15dp"/>

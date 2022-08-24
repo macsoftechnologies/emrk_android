@@ -1,14 +1,15 @@
 package com.macsoftech.ekart.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class LoginResponse {
     public String _id;
     public String firstName;
     public String lastName;
-    private String entityImage;
-    private String userImage;
+    private String primaryLocation;
+    private List<String> entityImage;
+    private List<String> userImage;
 
     public String get_id() {
         return _id;
@@ -59,7 +60,7 @@ public class LoginResponse {
     }
 
     public ArrayList<String> getAvailableLocation() {
-        if(availableLocation==null){
+        if (availableLocation == null) {
             return new ArrayList<>();
         }
         return availableLocation;
@@ -129,18 +130,32 @@ public class LoginResponse {
     public String updatedAt;
 
     public String getEntityImage() {
-        return entityImage;
+        if (entityImage == null || entityImage.isEmpty()) {
+            return "";
+        }
+        return entityImage.get(0);
     }
 
-    public void setEntityImage(String entityImage) {
+    public void setEntityImage(List<String> entityImage) {
         this.entityImage = entityImage;
     }
 
     public String getUserImage() {
-        return userImage;
+        if (userImage == null || userImage.isEmpty()) {
+            return "";
+        }
+        return userImage.get(0);
     }
 
-    public void setUserImage(String userImage) {
+    public void setUserImage(List<String> userImage) {
         this.userImage = userImage;
+    }
+
+    public String getPrimaryLocation() {
+        return primaryLocation;
+    }
+
+    public void setPrimaryLocation(String primaryLocation) {
+        this.primaryLocation = primaryLocation;
     }
 }

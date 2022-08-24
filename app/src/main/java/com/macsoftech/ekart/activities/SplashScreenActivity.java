@@ -30,7 +30,8 @@ public class SplashScreenActivity extends BaseActivity {
     private void moveToNext() {
         boolean isLoginSucces = SettingsPreferences.getBoolean(this, "LOGIN");
         if (isLoginSucces) {
-            Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+//            Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, LoginRegisterActivity.class);
             startActivity(intent);
             finish();
         } else {

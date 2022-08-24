@@ -649,7 +649,8 @@ public class HomeSearchFragment extends BaseFragment {
         map.put("village", village);
         map.put("location", village);
         RestApi.getInstance().getService()
-                .getVendorProductByLocation(map)
+                .getVendorProductsByLocationFilter(state,district,mandal,village)
+//                .getVendorProductByLocation(map)
                 .enqueue(new Callback<SearchRootResponse>() {
                     @Override
                     public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {

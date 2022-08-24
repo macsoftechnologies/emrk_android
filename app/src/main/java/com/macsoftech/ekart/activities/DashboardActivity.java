@@ -1,10 +1,18 @@
 package com.macsoftech.ekart.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,8 +24,14 @@ import com.macsoftech.ekart.fragments.MyEntityFragment;
 import com.macsoftech.ekart.fragments.MyEntityTrailFragment;
 import com.macsoftech.ekart.fragments.ProfileFragment;
 
+import java.util.concurrent.Executor;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 
 public class DashboardActivity extends BaseActivity {
 
@@ -26,6 +40,8 @@ public class DashboardActivity extends BaseActivity {
     BottomNavigationView navigation;
 
     public static boolean isTrailStarted;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +80,10 @@ public class DashboardActivity extends BaseActivity {
             }
         });
         replaceFragment(new HomeSearchFragment());
+
     }
+
+
 
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()

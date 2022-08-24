@@ -44,6 +44,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -132,8 +133,17 @@ public class RestApi {
                 @Path("min") String min,
                 @Path("max") String max
         );
+
         @POST("admin-product/getVendorProductByLocation")
         Call<SearchRootResponse> getVendorProductByLocation(@Body Map<String, String> body);
+
+        @GET("admin-product/getVendorProductsByLocationFilter")
+        Call<SearchRootResponse> getVendorProductsByLocationFilter(
+                @Query("state") String state,
+                @Query("district") String district,
+                @Query("mandal") String mandal,
+                @Query("village") String village
+        );
 
         @POST("admin-product/getVendorProductByQuantity")
         Call<SearchRootResponse> getVendorProductByQuantity(@Body Map<String, String> body);
@@ -165,6 +175,16 @@ public class RestApi {
                 @Part MultipartBody.Part paramImage2,
                 @PartMap() Map<String, RequestBody> partMap
         );
+
+        @Multipart
+        @POST("users/createUnavailbleproduct")
+        Call<ResponseBody> createUnavailbleproduct(
+                @Part MultipartBody.Part paramImage1,
+                @PartMap() Map<String, RequestBody> partMap
+        );
+
+        @POST("users/unavailLcreate")
+        Call<ResponseBody> unavailLocationCreate(@Body Map<String, String> body);
 
         @POST("users/getUser")
         Call<GetUserResponseRoot> getUser(@Body Map<String, String> body);

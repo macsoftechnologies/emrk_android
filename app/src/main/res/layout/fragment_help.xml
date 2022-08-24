@@ -42,17 +42,22 @@
                 android:text="If Product is not in the list, Please add your product here "
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/et_product"
                 android:layout_width="match_parent"
                 android:padding="16dp"
+                android:inputType="textCapSentences"
                 android:layout_margin="5dp"
                 android:hint="Enter Product"
                 android:singleLine="true"
                 android:textSize="16sp"
                 android:background="@drawable/help_stroke"
-                android:layout_height="wrap_content"/>    <EditText
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/et_desc"
                 android:layout_width="match_parent"
                 android:padding="16dp"
                 android:layout_margin="5dp"
+                android:inputType="textCapSentences"
                 android:hint="Enter Description"
                 android:singleLine="true"
                 android:textSize="16sp"
@@ -62,12 +67,13 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">
-                <EditText
+                <TextView
+                    android:id="@+id/txt_add_missing_product"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:padding="12dp"
                     android:layout_marginLeft="5dp"
-                    android:hint="Add Images"
+                    android:hint="+ Add Image"
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:background="@drawable/help_stroke"
@@ -75,6 +81,7 @@
                 <TextView
                     android:layout_gravity="center_horizontal"
                     android:text="Upload"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:background="@drawable/ll_trail_bg_start_trail"
                     android:textColor="@color/white"
@@ -84,6 +91,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/btn_missing_product"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
@@ -140,11 +148,11 @@
                 android:layout_margin="10dp"
                 android:background="@color/white"
                 android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:layout_width="match_parent"
                     android:padding="16dp"
                     android:gravity="center_horizontal"
-                    android:text="State"
+                    android:id="@+id/sp_state"
                     android:textSize="16sp"
                     android:textColor="@color/grey"
                     android:drawablePadding="10dp"
@@ -167,12 +175,13 @@
                     android:background="@color/white"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <Spinner
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawablePadding="10dp"
                         android:gravity="center_horizontal"
                         android:padding="16dp"
+                        android:id="@+id/sp_district"
                         android:text="State"
                         android:textColor="@color/grey"
                         android:textSize="16sp" />
@@ -194,12 +203,13 @@
                     android:background="@color/white"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <Spinner
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawablePadding="10dp"
                         android:gravity="center_horizontal"
                         android:padding="16dp"
+                        android:id="@+id/sp_mandal"
                         android:text="State"
                         android:textColor="@color/grey"
                         android:textSize="16sp" />
@@ -221,28 +231,24 @@
                     android:background="@color/white"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/et_village"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawablePadding="10dp"
-                        android:gravity="center_horizontal"
                         android:padding="16dp"
-                        android:text="State"
+                        android:inputType="textCapSentences"
+                        android:background="@android:color/transparent"
+                        android:hint="Area/Village"
+                        android:singleLine="true"
                         android:textColor="@color/grey"
                         android:textSize="16sp" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/down_blue">
 
-                    </ImageView>
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/txt_location_submit"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
                     android:layout_gravity="center_horizontal"
