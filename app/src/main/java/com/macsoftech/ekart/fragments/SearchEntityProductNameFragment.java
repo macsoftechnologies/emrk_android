@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,14 +84,18 @@ public class SearchEntityProductNameFragment extends BaseFragment {
         view.findViewById(R.id.txt_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = "+91987654321";
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
+                if (currentUser != null) {
+                    String phone = currentUser.getMobileNum();
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                    startActivity(intent);
+                }
             }
         });
         loadEntityDetails();
         loadEntityProductsDetails();
     }
+
+    LoginResponse currentUser;
 
     private void loadEntityDetails() {
         if (getArguments() == null) {
@@ -102,12 +108,12 @@ public class SearchEntityProductNameFragment extends BaseFragment {
             public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
                 if (response.isSuccessful()) {
                     try {
-                        LoginResponse user = response.body().getUserFeedbackResponse().get(0);
-                        binding.txtEntity.setText(user.getEntityName());
-                        binding.txtVendorName.setText(user.getFirstName() + " " + user.getLastName());
-                        binding.txtMobile.setText(user.getMobileNum());
+                        currentUser = response.body().getUserFeedbackResponse().get(0);
+                        binding.txtEntity.setText(currentUser.getEntityName());
+                        binding.txtVendorName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+                        binding.txtMobile.setText(currentUser.getMobileNum());
                         Glide.with(getActivity())
-                                .load(RestApi.BASE_URL + user.getEntityImage())
+                                .load(RestApi.BASE_URL + currentUser.getEntityImage())
                                 .error(R.drawable.entity_profile)
                                 .into(binding.ivEntity);
                     } catch (Exception e) {
@@ -152,10 +158,26 @@ public class SearchEntityProductNameFragment extends BaseFragment {
         });
     }
 
+
     private void addContactAlertDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
+        if (currentUser != null) {
+            String[] contacts = new String[]{
+                    currentUser.getMobileNum(),
+                    currentUser.getAltNumber()
+            };
+            for (int i = 1; i <= 2; i++) {
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
+                TextView tv_name = view.findViewById(R.id.tv_name);
+                TextView txt_mobile = view.findViewById(R.id.txt_mobile);
+                txt_mobile.setText(contacts[i - 1]);
+                tv_name.setText(i + ". " + currentUser.getFirstName() + " " + currentUser.getLastName());
+                ll_contacts.addView(view);
+            }
+        }
         alert.setView(alertLayout);
         alert.setCancelable(true);
         AlertDialog dialog = alert.create();

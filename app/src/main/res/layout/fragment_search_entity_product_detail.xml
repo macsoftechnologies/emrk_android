@@ -75,7 +75,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="View Contacts"
+                    android:text="Contacts"
                     android:layout_height="35dp"
                     android:paddingLeft="15dp"
                     android:id="@+id/txt_view_contacts"

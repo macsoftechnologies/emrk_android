@@ -1,6 +1,8 @@
 package com.macsoftech.ekart.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +34,7 @@ import com.macsoftech.ekart.model.sizes.SizeModelRootResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +60,7 @@ public class AddProdictDetailFragment extends BaseFragment {
     Spinner sprsize;
 
     @BindView(R.id.sprlocation)
-    Spinner sprlocation;
+    TextView sprlocation;
     private FragmentAddproductdetailsBinding binding;
 
     public AddProdictDetailFragment() {
@@ -104,6 +108,12 @@ public class AddProdictDetailFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+        sprlocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show();
+            }
+        });
     }
 
     private void saveData() {
@@ -116,7 +126,8 @@ public class AddProdictDetailFragment extends BaseFragment {
         map.put("quantity", binding.etQty.getText().toString());
         map.put("size", sprsize.getSelectedItem().toString());
         map.put("length", binding.etFeet.getText().toString() + "." + binding.etInch.getText().toString());
-        map.put("location", sprlocation.getSelectedItem().toString());
+//        map.put("location", sprlocation.getSelectedItem().toString());
+        map.put("location", sprlocation.getText().toString());
         map.put("userId", SettingsPreferences.getUser(getActivity()).getUserId());
 
         showProgress();
@@ -198,10 +209,14 @@ public class AddProdictDetailFragment extends BaseFragment {
                 if (response.isSuccessful()) {
                     try {
                         LoginResponse user = response.body().getUserFeedbackResponse().get(0);
-                        ArrayAdapter l1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, user.getAvailableLocation());
-                        l1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        sprlocation.setAdapter(l1);
-                        sprlocation.setPrompt("Location");
+                        locatinos = user.getAvailableLocation();
+//                        locatinos.add("Vizag");
+//                        locatinos.add("Maddila Palem");
+//                        ArrayAdapter l1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, locatinos);
+//                        l1.setDropDownViewResource(android.R.layout.simple_list_item_multiple_choice);
+//                        sprlocation.setAdapter(l1);
+//                        sprlocation.setSelection(-1);
+//                        sprlocation.setPrompt("Location");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -237,6 +252,87 @@ public class AddProdictDetailFragment extends BaseFragment {
 
                     }
                 });
+    }
+
+    ArrayList<Integer> langList = new ArrayList<>();
+    ArrayList<String> locatinos = new ArrayList<>();
+    String[] langArray = {};
+    boolean[] selectedLanguage;
+
+    void show() {
+        langArray = locatinos.toArray(new String[0]);
+        // Initialize alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // set title
+        builder.setTitle("Select Language");
+
+        // set dialog non cancelable
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(langArray, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                // check condition
+                if (b) {
+                    // when checkbox selected
+                    // Add position  in lang list
+                    langList.add(i);
+                    // Sort array list
+                    Collections.sort(langList);
+                } else {
+                    // when checkbox unselected
+                    // Remove position from langList
+                    langList.remove(Integer.valueOf(i));
+                }
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Initialize string builder
+                StringBuilder stringBuilder = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < langList.size(); j++) {
+                    // concat array value
+                    stringBuilder.append(langArray[langList.get(j)]);
+                    // check condition
+                    if (j != langList.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder.append(", ");
+                    }
+                }
+                // set text on textView
+                sprlocation.setText(stringBuilder.toString());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // use for loop
+                for (int j = 0; j < selectedLanguage.length; j++) {
+                    // remove all selection
+                    selectedLanguage[j] = false;
+                    // clear language list
+                    langList.clear();
+                    // clear text view value
+                    sprlocation.setText("");
+                }
+            }
+        });
+        // show dialog
+        builder.show();
     }
 
 

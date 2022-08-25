@@ -20,6 +20,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="5dp">
 
+
         <RelativeLayout
             android:layout_margin="5dp"
             android:layout_width="match_parent"
@@ -47,6 +48,8 @@
                 android:textSize="18sp" />
 
             <ImageView
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
                 android:id="@+id/editicon"
@@ -100,28 +103,35 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textSize="16sp"
-                    android:text="Location 2">
+                    tools:text="Location 2">
 
                 </TextView>
 
             </LinearLayout>
 
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
 
         <TextView
+            android:id="@+id/txt_change_contact_no"
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="16dp"
             android:layout_marginTop="5dp"
             android:text="1. Change Contact Number"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <TextView
+            android:visibility="gone"
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,12 +142,13 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/txt_change_language"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="3. Change Language"
+            android:padding="16dp"
+            android:text="2. Change Language"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
@@ -152,7 +163,8 @@
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4. Subscription"
+            android:text="3. Subscription"
+            android:padding="16dp"
             android:layout_marginTop="5dp"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
@@ -171,6 +183,7 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -182,12 +195,24 @@
 
 
         <TextView
+            android:id="@+id/txt_add_entity"
             android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="16dp"
             android:layout_marginTop="5dp"
-            android:text="6. Entity Locations"
+            android:text="4. Add Entity Locations"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txt_add_pin"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="5dp"
+            android:text="5. Add/Change PIN"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 

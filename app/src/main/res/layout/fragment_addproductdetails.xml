@@ -200,12 +200,17 @@
                         android:padding="10dp"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:text="Select Location :"
+                        android:text="Locations :"
                         android:layout_height="wrap_content"/>
-                    <Spinner
+                    <TextView
                         android:id="@+id/sprlocation"
+                        android:padding="16dp"
+                        android:drawableTint="@color/colorPrimary"
+                        android:drawableRight="@drawable/white_arrow_down"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        android:text="Select Locations"
                         android:tooltipText="Location"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"

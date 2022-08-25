@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -99,6 +100,8 @@ public class MyEntityFragment extends BaseFragment {
         loadEntityProductsDetails();
     }
 
+    LoginResponse currentUser;
+
     private void loadEntityDetails() {
 
         Map<String, String> body = new HashMap<>();
@@ -111,12 +114,12 @@ public class MyEntityFragment extends BaseFragment {
             public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
                 if (response.isSuccessful()) {
                     try {
-                        LoginResponse user = response.body().getUserFeedbackResponse().get(0);
-                        binding.txtEntity.setText(user.getEntityName());
-                        binding.txtVendorName.setText(user.getFirstName() + " " + user.getLastName());
+                        currentUser = response.body().getUserFeedbackResponse().get(0);
+                        binding.txtEntity.setText(currentUser.getEntityName());
+                        binding.txtVendorName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
 //                        binding.txtMobile.setText(user.getMobileNum());
                         Glide.with(getActivity())
-                                .load(RestApi.BASE_URL + user.getEntityImage())
+                                .load(RestApi.BASE_URL + currentUser.getEntityImage())
                                 .error(R.drawable.entity_profile)
                                 .into(binding.ivEntity);
                     } catch (Exception e) {
@@ -166,6 +169,21 @@ public class MyEntityFragment extends BaseFragment {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
+        if (currentUser != null) {
+            String[] contacts = new String[]{
+                    currentUser.getMobileNum(),
+                    currentUser.getAltNumber()
+            };
+            for (int i = 1; i <= 2; i++) {
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
+                TextView tv_name = view.findViewById(R.id.tv_name);
+                TextView txt_mobile = view.findViewById(R.id.txt_mobile);
+                txt_mobile.setText(contacts[i - 1]);
+                tv_name.setText(i + ". " + currentUser.getFirstName() + " " + currentUser.getLastName());
+                ll_contacts.addView(view);
+            }
+        }
         alert.setView(alertLayout);
         alert.setCancelable(true);
         AlertDialog dialog = alert.create();
@@ -177,6 +195,24 @@ public class MyEntityFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_location, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertLayout);
+        LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
+        if (currentUser != null) {
+
+            List<String> list = new ArrayList<>();
+            list.add(currentUser.getPrimaryLocation());
+            if (!currentUser.getAvailableLocation().isEmpty()) {
+                list.addAll(currentUser.getAvailableLocation());
+            }
+
+            for (int i = 1; i <= list.size(); i++) {
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
+                TextView tv_name = view.findViewById(R.id.tv_name);
+                TextView txt_mobile = view.findViewById(R.id.txt_mobile);
+                txt_mobile.setText(list.get(i - 1));
+                tv_name.setText("");
+                ll_contacts.addView(view);
+            }
+        }
         alert.setCancelable(true);
         AlertDialog dialog = alert.create();
         dialog.show();

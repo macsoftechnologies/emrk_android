@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,10 @@ public class LoginRegisterActivity extends BaseActivity {
 
     @BindView(R.id.iv_bio)
     ImageView ivBio;
+
+    @BindView(R.id.txt_or)
+    TextView txt_or;
+
     private int REQUEST_CODE = 1000;
 
     @Override
@@ -42,13 +47,19 @@ public class LoginRegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_login_register2);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+        if (SettingsPreferences.getString(this, "pin") == null) {
+            squareField.setVisibility(View.GONE);
+            txt_or.setVisibility(View.GONE);
+        }
         squareField.setOnTextCompleteListener(new PinField.OnTextCompleteListener() {
             @Override
             public boolean onTextComplete(String str) {
-                if (str.equalsIgnoreCase("1234")) {
+                if (str.equalsIgnoreCase(SettingsPreferences.getString(LoginRegisterActivity.this, "pin"))) {
                     startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
                     finish();
                     return true;
+                }else{
+                    showToast("Invalid Pin");
                 }
                 return false;
             }
@@ -67,9 +78,15 @@ public class LoginRegisterActivity extends BaseActivity {
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Log.e("MY_APP_TAG", "No biometric features available on this device.");
+                if (SettingsPreferences.getString(this, "pin") == null) {
+                    startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                }
                 break;
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                 Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
+                if (SettingsPreferences.getString(this, "pin") == null) {
+                    startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                }
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 // Prompts the user to create credentials that your app accepts.
@@ -109,8 +126,8 @@ public class LoginRegisterActivity extends BaseActivity {
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
                 finish();
             }

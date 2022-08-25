@@ -137,6 +137,9 @@ public class RestApi {
         @POST("admin-product/getVendorProductByLocation")
         Call<SearchRootResponse> getVendorProductByLocation(@Body Map<String, String> body);
 
+        @POST("users/updateUser")
+        Call<ResponseBody> updateUser(@Body Map<String, Object> body);
+
         @GET("admin-product/getVendorProductsByLocationFilter")
         Call<SearchRootResponse> getVendorProductsByLocationFilter(
                 @Query("state") String state,

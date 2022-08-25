@@ -152,6 +152,9 @@ public class LoginResponse {
     }
 
     public String getPrimaryLocation() {
+        if (primaryLocation == null) {
+            return "";
+        }
         return primaryLocation;
     }
 
