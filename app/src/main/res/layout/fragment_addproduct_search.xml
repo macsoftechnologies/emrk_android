@@ -31,6 +31,7 @@
             android:background="@drawable/et_search"
             android:layout_height="wrap_content">
             <EditText
+                android:hint="Search Product.."
                 android:layout_width="match_parent"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
@@ -72,11 +73,39 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
+        <ProgressBar
+            android:padding="10dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:tint="@color/grey"
+                android:layout_width="100dp"
+                android:src="@drawable/search"
+                android:layout_height="100dp"/>
+            <TextView
+                android:layout_marginTop="20sp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:text="Search Available Products."
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:id="@+id/chip_group"
@@ -84,6 +113,6 @@
             app:selectionRequired="true"
             android:layout_height="wrap_content">
         </com.google.android.material.chip.ChipGroup>
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

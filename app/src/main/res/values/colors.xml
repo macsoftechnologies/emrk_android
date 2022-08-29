@@ -11,4 +11,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="skyblue">#E0F4FE</color>
     <color name="mid_grey">#40808080</color>
+    <color name="colorAccent">#fa0</color>
 </resources>

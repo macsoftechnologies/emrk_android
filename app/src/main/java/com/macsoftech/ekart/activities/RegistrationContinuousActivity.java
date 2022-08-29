@@ -145,6 +145,16 @@ public class RegistrationContinuousActivity extends BaseActivity {
             showToast("Select Primary Location");
             return;
         }
+
+        if (profile == null) {
+            showToast("Add User Image");
+            return;
+        }
+        if (entity == null) {
+            showToast("Add Entity Image");
+            return;
+        }
+
         map.put("entityName", binding.etEntityName.getText().toString());
         map.put("primaryLocation", binding.etPrimary.getText().toString());
         if (binding.llAnotherLocations.getChildCount() > 0) {
@@ -153,13 +163,6 @@ public class RegistrationContinuousActivity extends BaseActivity {
                 map.put("availableLocation[" + i + "]", location.getText().toString());
             }
         }
-//        String[] str = binding.etLocation.getText().toString().split(",");
-//        if (str.length > 0) {
-//            for (int i = 0; i < str.length; i++) {
-//                map.put("availableLocation[" + i + "]", str[i].trim());
-//            }
-//        }
-
         showProgress();
         RestApi.getInstance().getService().register(
                 RestApi.prepareFilePart("userImage", profile.getAbsolutePath(), null),

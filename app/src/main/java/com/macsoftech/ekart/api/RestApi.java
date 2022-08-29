@@ -206,14 +206,14 @@ public class RestApi {
         @POST("users/report")
         Call<ResponseBody> addReport(@Body Map<String, String> body);
 
+        @POST("notifications/createnotification")
+        Call<ResponseBody> saveGCM(@Body Map<String, String> body);
+
         @POST("users/userFeedback")
         Call<ResponseBody> addUserFeedback(@Body Map<String, String> body);
 
 
-//        {
-//            "userId":"7d415ca3-22f3-421b-9f4e-df261ea0a655"
-//        }
-        //users/getUser
+
     }
 
     //FILE UPLOAD BLOCK

@@ -26,6 +26,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 
@@ -44,6 +45,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(getApplicationContext());
         if (BuildConfig.DEBUG) {
             Log.e(getClass().getSimpleName(), "onCreate: called");
         }

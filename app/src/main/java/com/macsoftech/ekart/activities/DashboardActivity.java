@@ -1,36 +1,29 @@
 package com.macsoftech.ekart.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.fragments.HelpFragment;
 import com.macsoftech.ekart.fragments.HomeSearchFragment;
 import com.macsoftech.ekart.fragments.MyEntityFragment;
 import com.macsoftech.ekart.fragments.MyEntityTrailFragment;
 import com.macsoftech.ekart.fragments.ProfileFragment;
-
-import java.util.concurrent.Executor;
+import com.macsoftech.ekart.helper.SettingsPreferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
-import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 
 public class DashboardActivity extends BaseActivity {
@@ -40,7 +33,7 @@ public class DashboardActivity extends BaseActivity {
     BottomNavigationView navigation;
 
     public static boolean isTrailStarted;
-
+    private String TAG = "DashboardActivity";
 
 
     @Override
@@ -80,12 +73,39 @@ public class DashboardActivity extends BaseActivity {
             }
         });
         replaceFragment(new HomeSearchFragment());
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
 
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, token);
+                        }
+
+                        SettingsPreferences.saveString(DashboardActivity.this, SettingsPreferences.GCM_TOKEN,
+                                token);
+                        SplashScreenActivity.saveGCM(getApplicationContext());
+//                        Toast.makeText(DashboardActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
-
     public void replaceFragment(Fragment fragment) {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < count - 1; i++) {
+            getSupportFragmentManager().popBackStack();
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commitAllowingStateLoss();

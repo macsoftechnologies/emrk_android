@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,13 @@ public class AddProductSearchFragment extends BaseFragment {
 
     @BindView(R.id.et_search)
     EditText et_search;
+
+    @BindView(R.id.ll_search)
+    LinearLayout ll_search;
+
+    @BindView(R.id.progressBar)
+    View progressBar;
+
 
     private FragmentMyEntityBinding binding;
 
@@ -113,23 +121,31 @@ public class AddProductSearchFragment extends BaseFragment {
                 chipGroup.setVisibility(chipGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             }
         });
+
     }
 
     private void callSearchApi() {
+        progressBar.setVisibility(View.VISIBLE);
         Map<String, String> map = new HashMap<>();
         map.put("productName", et_search.getText().toString().trim());
         RestApi.getInstance().getService().searchProducts(map)
                 .enqueue(new Callback<SearchRootResponse>() {
                     @Override
                     public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                        progressBar.setVisibility(View.GONE);
                         if (response.isSuccessful()) {
                             loadGroup(response.body().getUserProdResponse());
+                        }
+                        if (chipGroup.getChildCount() == 0) {
+                            ll_search.setVisibility(View.VISIBLE);
+                        } else {
+                            ll_search.setVisibility(View.GONE);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }

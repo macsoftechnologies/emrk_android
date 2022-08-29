@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.AddChangePinActivity;
 import com.macsoftech.ekart.activities.LoginActivity;
@@ -107,6 +108,7 @@ public class ProfileFragment extends BaseFragment {
                 locationAlertDialog();
             }
         });
+        binding.txtVersion.setText("Version: " + BuildConfig.VERSION_NAME);
 
     }
 
