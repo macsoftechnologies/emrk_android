@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 
@@ -46,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(getApplicationContext());
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
         if (BuildConfig.DEBUG) {
             Log.e(getClass().getSimpleName(), "onCreate: called");
         }

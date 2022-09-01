@@ -36,6 +36,9 @@ public class LoginRegisterActivity extends BaseActivity {
     @BindView(R.id.iv_bio)
     ImageView ivBio;
 
+    @BindView(R.id.ll_bio)
+    View ll_bio;
+
     @BindView(R.id.txt_or)
     TextView txt_or;
 
@@ -64,12 +67,20 @@ public class LoginRegisterActivity extends BaseActivity {
                 return false;
             }
         });
-        ivBio.setOnClickListener(new View.OnClickListener() {
+//        ivBio.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                biometricPrompt.authenticate(promptInfo);
+//            }
+//        });
+
+        ll_bio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 biometricPrompt.authenticate(promptInfo);
             }
         });
+
         BiometricManager biometricManager = BiometricManager.from(this);
         switch (biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
             case BiometricManager.BIOMETRIC_SUCCESS:

@@ -206,7 +206,8 @@ public class RestApi {
         @POST("users/report")
         Call<ResponseBody> addReport(@Body Map<String, String> body);
 
-        @POST("notifications/createnotification")
+//        @POST("notifications/createnotification")
+        @POST("notifications/saveFCMToken")
         Call<ResponseBody> saveGCM(@Body Map<String, String> body);
 
         @POST("users/userFeedback")
