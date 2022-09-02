@@ -100,6 +100,12 @@ public class SearchEntityDetailFragment extends BaseFragment {
         binding.txtSize.setText(": " + data.getSize());
         binding.txtLocation.setText(": " + data.getLocation());
         binding.txtLength.setText(": " + data.getLength());
+        binding.txtShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareProduct();
+            }
+        });
 
         if (!data.getProductImage().isEmpty()) {
             String image = data.getProductImage().get(0);
@@ -113,6 +119,15 @@ public class SearchEntityDetailFragment extends BaseFragment {
 
         loadEntityDetails();
 
+    }
+
+    private void shareProduct() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey, check out this product :" + data.getProductName());
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 
     LoginResponse currentUser;

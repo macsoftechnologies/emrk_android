@@ -76,6 +76,12 @@ public class HomeSearchFragment extends BaseFragment {
     @BindView(R.id.locationlayout)
     LinearLayout locationlayout;
 
+    @BindView(R.id.emptyProductsView)
+    View emptyProductsView;
+
+    @BindView(R.id.emptyVendorsView)
+    View emptyVendorsView;
+
     List<ListOfVendorsData> list = new ArrayList<>();
     private FragmentHomeSearchBinding binding;
 
@@ -304,8 +310,16 @@ public class HomeSearchFragment extends BaseFragment {
         chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);
         ComapnyNameAdapter adapter = (ComapnyNameAdapter) recyclerView.getAdapter();
-        if(adapter!=null){
+        if (adapter != null) {
             adapter.clear();
+        }
+        if (getActivity() == null) {
+            return;
+        }
+        if (userProdResponse.isEmpty()) {
+            emptyProductsView.setVisibility(View.VISIBLE);
+        } else {
+            emptyProductsView.setVisibility(View.GONE);
         }
         for (int i = 0; i < userProdResponse.size(); i++) {
             Chip chip1 = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.tag_cloud, chipGroup, false);
@@ -360,7 +374,6 @@ public class HomeSearchFragment extends BaseFragment {
 
         Map<String, String> body = new HashMap<>();
         body.put("productId", item.getProductId());
-//        body.put("productId", "aba1f2d8-5c14-4008-b76f-ddf8746fd94f");
         RestApi.getInstance().getService()
                 .getVendorProduct(body)
                 .enqueue(new Callback<ListOfVendorsResponse>() {
@@ -370,6 +383,11 @@ public class HomeSearchFragment extends BaseFragment {
                         if (response.isSuccessful()) {
                             list.addAll(response.body().getData());
                             listAdapter.notifyDataSetChanged();
+                        }
+                        if (list.isEmpty()) {
+                            emptyVendorsView.setVisibility(View.VISIBLE);
+                        } else {
+                            emptyVendorsView.setVisibility(View.GONE);
                         }
                     }
 
@@ -649,7 +667,7 @@ public class HomeSearchFragment extends BaseFragment {
         map.put("village", village);
         map.put("location", village);
         RestApi.getInstance().getService()
-                .getVendorProductsByLocationFilter(state,district,mandal,village)
+                .getVendorProductsByLocationFilter(state, district, mandal, village)
 //                .getVendorProductByLocation(map)
                 .enqueue(new Callback<SearchRootResponse>() {
                     @Override

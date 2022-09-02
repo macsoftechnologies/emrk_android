@@ -111,7 +111,7 @@ public class AddProdictDetailFragment extends BaseFragment {
         sprlocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                show();
+                showLocationsPopup();
             }
         });
     }
@@ -201,7 +201,6 @@ public class AddProdictDetailFragment extends BaseFragment {
         Map<String, String> body = new HashMap<>();
         LoginResponse user = SettingsPreferences.getObject(getActivity(), SettingsPreferences.USER, LoginResponse.class);
         body.put("userId", user.getUserId());
-//        body.put("userId", "7d415ca3-22f3-421b-9f4e-df261ea0a655");
         RestApi.getInstance().getService().getUser(body).enqueue(new Callback<GetUserResponseRoot>() {
             @Override
             public void onResponse(Call<GetUserResponseRoot> call, Response<GetUserResponseRoot> response) {
@@ -209,14 +208,9 @@ public class AddProdictDetailFragment extends BaseFragment {
                 if (response.isSuccessful()) {
                     try {
                         LoginResponse user = response.body().getUserFeedbackResponse().get(0);
-                        locatinos = user.getAvailableLocation();
-//                        locatinos.add("Vizag");
-//                        locatinos.add("Maddila Palem");
-//                        ArrayAdapter l1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, locatinos);
-//                        l1.setDropDownViewResource(android.R.layout.simple_list_item_multiple_choice);
-//                        sprlocation.setAdapter(l1);
-//                        sprlocation.setSelection(-1);
-//                        sprlocation.setPrompt("Location");
+                        locatinos.clear();
+                        locatinos.add(user.getPrimaryLocation());
+                        locatinos.addAll(user.getAvailableLocation());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -257,15 +251,19 @@ public class AddProdictDetailFragment extends BaseFragment {
     ArrayList<Integer> langList = new ArrayList<>();
     ArrayList<String> locatinos = new ArrayList<>();
     String[] langArray = {};
-    boolean[] selectedLanguage;
+    boolean[] selectedLanguage = null;
 
-    void show() {
+    void showLocationsPopup() {
         langArray = locatinos.toArray(new String[0]);
+        if (selectedLanguage == null || selectedLanguage.length != langArray.length) {
+            selectedLanguage = new boolean[langArray.length];
+        }
+
         // Initialize alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // set title
-        builder.setTitle("Select Language");
+        builder.setTitle("Select Locations");
 
         // set dialog non cancelable
         builder.setCancelable(false);
@@ -296,6 +294,7 @@ public class AddProdictDetailFragment extends BaseFragment {
                 // use for loop
                 for (int j = 0; j < langList.size(); j++) {
                     // concat array value
+                    selectedLanguage[langList.get(j)] = true;
                     stringBuilder.append(langArray[langList.get(j)]);
                     // check condition
                     if (j != langList.size() - 1) {
@@ -304,6 +303,9 @@ public class AddProdictDetailFragment extends BaseFragment {
                         // add comma
                         stringBuilder.append(", ");
                     }
+                }
+                if (stringBuilder.toString().trim().length() == 0) {
+                    sprlocation.setText("Select Locations");
                 }
                 // set text on textView
                 sprlocation.setText(stringBuilder.toString());
@@ -317,20 +319,20 @@ public class AddProdictDetailFragment extends BaseFragment {
                 dialogInterface.dismiss();
             }
         });
-        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // use for loop
-                for (int j = 0; j < selectedLanguage.length; j++) {
-                    // remove all selection
-                    selectedLanguage[j] = false;
-                    // clear language list
-                    langList.clear();
-                    // clear text view value
-                    sprlocation.setText("");
-                }
-            }
-        });
+//        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                // use for loop
+//                for (int j = 0; j < selectedLanguage.length; j++) {
+//                    // remove all selection
+//                    selectedLanguage[j] = false;
+//                    // clear language list
+//                    langList.clear();
+//                    // clear text view value
+//                    sprlocation.setText("");
+//                }
+//            }
+//        });
         // show dialog
         builder.show();
     }

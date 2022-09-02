@@ -50,12 +50,12 @@ public class DashboardActivity extends BaseActivity {
                 if (item.getItemId() == R.id.menu_search) {
                     fragment = new HomeSearchFragment();
                 } else if (item.getItemId() == R.id.menu_entity) {
-                    if (!isTrailStarted) {
-                        fragment = new MyEntityTrailFragment();
-                    } else {
-                        fragment = new MyEntityFragment();
-                    }
-
+//                    if (!isTrailStarted) {
+//                        fragment = new MyEntityTrailFragment();
+//                    } else {
+//                        fragment = new MyEntityFragment();
+//                    }
+                    fragment = new MyEntityFragment();
                 } else if (item.getItemId() == R.id.menu_help) {
                     fragment = new HelpFragment();
                 } else if (item.getItemId() == R.id.menu_profile) {
