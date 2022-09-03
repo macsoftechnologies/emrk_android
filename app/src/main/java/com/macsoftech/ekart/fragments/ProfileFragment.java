@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.AddChangePinActivity;
+import com.macsoftech.ekart.activities.EditProfileActivity;
 import com.macsoftech.ekart.activities.LoginActivity;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentProfileBinding;
@@ -109,7 +110,11 @@ public class ProfileFragment extends BaseFragment {
             }
         });
         binding.txtVersion.setText("Version: " + BuildConfig.VERSION_NAME);
+        binding.editicon.setOnClickListener(view12 -> callEditProfile());
+    }
 
+    private void callEditProfile() {
+        startActivity(new Intent(getActivity(), EditProfileActivity.class));
     }
 
     private void navigateToNextPinActivity() {

@@ -1,5 +1,6 @@
 package com.macsoftech.ekart.model.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfVendorsResponse {
@@ -8,6 +9,9 @@ public class ListOfVendorsResponse {
     private String statusCode;
 
     public List<ListOfVendorsData> getData() {
+        if (Data == null) {
+            return new ArrayList();
+        }
         return Data;
     }
 

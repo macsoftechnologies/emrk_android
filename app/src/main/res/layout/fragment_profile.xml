@@ -50,7 +50,6 @@
 
             <ImageView
                 tools:visibility="visible"
-                android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
                 android:id="@+id/editicon"
@@ -138,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:visibility="gone"
                     android:gravity="center_vertical"
                     android:layout_marginRight="10dp"
                     android:layout_width="match_parent"
@@ -215,6 +215,7 @@
                     android:background="@color/mid_grey"/>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:gravity="center_vertical"
                     android:layout_marginRight="10dp"
                     android:layout_width="match_parent"

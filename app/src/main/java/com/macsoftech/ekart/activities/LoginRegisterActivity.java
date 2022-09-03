@@ -61,7 +61,7 @@ public class LoginRegisterActivity extends BaseActivity {
                     startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
                     finish();
                     return true;
-                }else{
+                } else {
                     showToast("Invalid Pin");
                 }
                 return false;
@@ -87,16 +87,25 @@ public class LoginRegisterActivity extends BaseActivity {
                 Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
                 authenticateBioMetric();
                 break;
+            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                Log.e("MY_APP_TAG", "No biometric features available on this device.");
+                boolean isLoginSucces = SettingsPreferences.getBoolean(this, "LOGIN");
+                if (isLoginSucces) {
+                    startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                }
+                break;
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Log.e("MY_APP_TAG", "No biometric features available on this device.");
                 if (SettingsPreferences.getString(this, "pin") == null) {
                     startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                    finish();
                 }
                 break;
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                 Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
                 if (SettingsPreferences.getString(this, "pin") == null) {
                     startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                    finish();
                 }
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
@@ -105,6 +114,12 @@ public class LoginRegisterActivity extends BaseActivity {
                 enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                         BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
                 startActivityForResult(enrollIntent, REQUEST_CODE);
+                break;
+            default:
+                isLoginSucces = SettingsPreferences.getBoolean(this, "LOGIN");
+                if (isLoginSucces) {
+                    startActivity(new Intent(LoginRegisterActivity.this, DashboardActivity.class));
+                }
                 break;
         }
         boolean isLoginSucces = SettingsPreferences.getBoolean(this, "LOGIN");

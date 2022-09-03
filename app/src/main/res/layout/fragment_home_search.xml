@@ -34,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
+                android:hint="Search Product.."
                 android:id="@+id/et_search"
                 android:singleLine="true"
                 android:layout_height="wrap_content"/>
@@ -64,6 +65,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="10dp"
+            android:id="@+id/iv_notification"
             android:layout_gravity="right|center_vertical"
             android:background="@drawable/ic_baseline_circle_24"
             android:tint="@color/white"

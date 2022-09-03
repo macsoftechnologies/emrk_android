@@ -3,6 +3,7 @@ package com.macsoftech.ekart.fragments;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,9 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.BaseActivity;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.NotificationsActivity;
 import com.macsoftech.ekart.adapter.ComapnyNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentHomeSearchBinding;
@@ -42,7 +46,9 @@ import com.macsoftech.ekart.model.sizes.SizeModel;
 import com.macsoftech.ekart.model.sizes.SizeModelRootResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -104,6 +110,20 @@ public class HomeSearchFragment extends BaseFragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("selectedProduct", selectedProduct);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.getString("selectedProduct") != null) {
+            loadDetails(savedInstanceState.getString("selectedProduct"));
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
@@ -115,7 +135,7 @@ public class HomeSearchFragment extends BaseFragment {
         binding.sizelayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showLength();
+                showSizePopup();
             }
         });
         binding.etQty.addTextChangedListener(new TextWatcher() {
@@ -134,12 +154,6 @@ public class HomeSearchFragment extends BaseFragment {
                 findByQty(editable.toString().trim());
             }
         });
-//        binding.llQty.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showQty();
-//            }
-//        });
         lengthlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,41 +194,172 @@ public class HomeSearchFragment extends BaseFragment {
         //
 //        SettingsPreferences.save
         chipGroup.setVisibility(View.GONE);
-//        loadGroup();
-//        iv_search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                chipGroup.setVisibility(chipGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-//            }
-//        });
-//        binding.txtLength.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showLength();
-//            }
-//        });
+        binding.ivNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), NotificationsActivity.class));
+            }
+        });
     }
 
-    private void findByQty(String value) {
-        showProgress();
-        Map<String, String> map = new HashMap<>();
-        map.put("quantity", value);
-        RestApi.getInstance().getService()
-                .getVendorProductByQuantity(map)
-                .enqueue(new Callback<SearchRootResponse>() {
-                    @Override
-                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
-                        hideDialog();
-                        if (response.isSuccessful()) {
-                            loadGroup(response.body().getData());
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-                        hideDialog();
+    String mSize;
+    String mMinLength;
+    String mMaxLength;
+    String mQty;
+    String mLocation;
+
+    //TODO: Need to fix this.
+    void filterByAll(String size, String minLength, String maxLength, String qty, String location) {
+        List<ListOfVendorsData> temp = new ArrayList<>();
+        if (!TextUtils.isEmpty(qty)) {
+            //
+            // value = 20
+            // 20*1.30 = 26
+            //
+            double val1 = Double.parseDouble(qty) * 1.30;
+            List<ListOfVendorsData> topMost = new ArrayList<>();
+            List<ListOfVendorsData> bottomList = new ArrayList<>();
+            for (ListOfVendorsData item : originalList) {
+                double val2 = Double.parseDouble(item.getQuantity());
+                if (val1 <= val2) {
+                    topMost.add(item);
+                } else {
+                    bottomList.add(item);
+                }
+            }
+
+            Collections.sort(topMost, (listOfVendorsData, listOfVendorsData2) -> {
+                try {
+                    double val11 = Double.parseDouble(listOfVendorsData.getQuantity());
+                    double val2 = Double.parseDouble(listOfVendorsData2.getQuantity());
+                    return (int) (val2 - val11);
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            Collections.sort(bottomList, (listOfVendorsData, listOfVendorsData2) -> {
+                try {
+                    double val112 = Double.parseDouble(listOfVendorsData.getQuantity());
+                    double val2 = Double.parseDouble(listOfVendorsData2.getQuantity());
+                    return (int) (val2 - val112);
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            temp.addAll(topMost);
+            temp.addAll(bottomList);
+        } else {
+            temp.addAll(originalList);
+        }
+
+        for (Iterator<ListOfVendorsData> it = temp.iterator(); it.hasNext(); ) {
+            ListOfVendorsData item = it.next();
+            //1. Check Length Condition
+            try {
+                double minValue = Double.parseDouble(minLength);
+                double maxValue = Double.parseDouble(maxLength);
+                double length = Double.parseDouble(item.getLength());
+                if (maxValue == minValue && minValue == 0.0) {
+
+                } else if (maxValue == 0.0 && minValue != 0.0) {
+                    if (length < minValue) {
+                        //5.4>2.5, 2.5<5.4
+                        it.remove();
+                        continue;
                     }
-                });
+                } else if (!(length <= maxValue) || !(length >= minValue)) {
+                    it.remove();
+                    continue;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //2. Check Size Condition
+            if (!TextUtils.isEmpty(size) && item.getSize() != null && !item.getSize().equals(size)) {
+                it.remove();
+                continue;
+            }
+            //3. Check Location Condition
+            if (!TextUtils.isEmpty(location) && item.getLocation() != null && !item.getLocation().equals(location)) {
+                it.remove();
+            }
+
+        }
+
+//        for (ListOfVendorsData item : temp) {
+//            boolean isLengthSelected = false;
+//            try {
+//                double maxValue = Double.parseDouble(minLength);
+//                double minValue = Double.parseDouble(maxLength);
+//                double length = Double.parseDouble(item.getLength());
+//                if (maxValue == 0.0 && minValue != 0.0) {
+//                    if (length >= minValue) {
+//                        //                        temp.add(item);
+//                        isLengthSelected = true;
+//                    }
+//                }
+//                //                else if (minValue > maxValue) {
+//                //                    Helper.showShortToast(getActivity(), "Min Value should be less than Max value");
+//                //                    break;
+//                //                }
+//                if (length <= maxValue && length >= minValue) {
+//                    //                    temp.add(item);
+//                    isLengthSelected = true;
+//                }
+//            } catch (Exception e) {
+//                //                isLengthSelected = true;
+//                e.printStackTrace();
+//            }
+//            //
+//            if (hasLocationSelected(location, item) && hasSizeFilter(size, item)) {
+//                temp.add(item);
+//            }
+//
+//        }
+
+
+        if (listAdapter != null) {
+            list.clear();
+            list.addAll(temp);
+            listAdapter.notifyDataSetChanged();
+            if (list.isEmpty()) {
+                emptyVendorsView.setVisibility(View.VISIBLE);
+            } else {
+                Snackbar.make(emptyProductsView, list.size() + " Records Found.", Snackbar.LENGTH_SHORT).show();
+                emptyVendorsView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private boolean hasSizeFilter(String size, ListOfVendorsData item) {
+        return !TextUtils.isEmpty(size) && item.getSize() != null && item.getSize().equals(size);
+    }
+
+    private boolean hasLocationSelected(String location, ListOfVendorsData item) {
+        return !TextUtils.isEmpty(location) && item.getLocation() != null && item.getLocation().equals(location);
+    }
+
+    private void filterBySizes(String size) {
+        mSize = size;
+        filterByAll(mSize, mMinLength, mMaxLength, mQty, mLocation);
+    }
+
+    private void filterProductsByLength(String max, String min) {
+        mMaxLength = max;
+        mMinLength = min;
+        filterByAll(mSize, mMinLength, mMaxLength, mQty, mLocation);
+    }
+
+    void findByLocation(String state, String district, String mandal, String village) {
+        mLocation = village;
+        filterByAll(mSize, mMinLength, mMaxLength, mQty, mLocation);
+    }
+
+
+    private void findByQty(String value) {
+        mQty = value;
+        filterByAll(mSize, mMinLength, mMaxLength, mQty, mLocation);
     }
 
     @Override
@@ -229,14 +374,20 @@ public class HomeSearchFragment extends BaseFragment {
         binding.progressBar.setVisibility(View.GONE);
     }
 
+    private static List<SizeModel> sizesList = new ArrayList<>();
 
-    private void showLength() {
+    private void showSizePopup() {
+        if (sizesList != null && !sizesList.isEmpty()) {
+            showSizesPopup(sizesList);
+            return;
+        }
         RestApi.getInstance().getService().getProductSizes()
                 .enqueue(new Callback<SizeModelRootResponse>() {
                     @Override
                     public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
                         if (response.isSuccessful()) {
-                            showLengthPopup(response.body().getData().getSizesList());
+                            sizesList = response.body().getData().getSizesList();
+                            showSizesPopup(sizesList);
                         }
                     }
 
@@ -247,14 +398,14 @@ public class HomeSearchFragment extends BaseFragment {
                 });
     }
 
-    public void showLengthPopup(List<SizeModel> sizesList) {
+    public void showSizesPopup(List<SizeModel> sizesList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         ArrayAdapter<SizeModel> adapter = new ArrayAdapter<SizeModel>(getActivity(), android.R.layout.simple_list_item_1,
                 sizesList);
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
-                callProductsSearch(sizesList.get(position).toString());
+                filterBySizes(sizesList.get(position).toString());
             }
         });
         builder.setTitle("Select Size");
@@ -262,26 +413,6 @@ public class HomeSearchFragment extends BaseFragment {
         builder.create().show();
     }
 
-    private void callProductsSearch(String size) {
-        showProgress();
-        Map<String, String> map = new HashMap<>();
-        map.put("size", size);
-        RestApi.getInstance().getService().getVendorProductBySize(map)
-                .enqueue(new Callback<SearchRootResponse>() {
-                    @Override
-                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
-                        hideDialog();
-                        if (response.isSuccessful()) {
-                            loadGroup(response.body().getData());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-                        hideDialog();
-                    }
-                });
-    }
 
     private void callSearchApi() {
         showProgress();
@@ -304,7 +435,14 @@ public class HomeSearchFragment extends BaseFragment {
                 });
     }
 
+    static List<ListOfVendorsData> originalList = new ArrayList<>();
+
     public void loadGroup(List<UserProdResponse> userProdResponse) {
+        originalList.clear();
+        if (listAdapter != null) {
+            listAdapter.clear();
+            listAdapter.notifyDataSetChanged();
+        }
         chipGroup.setVisibility(View.VISIBLE);
         chipGroup.clearCheck();
         chipGroup.removeAllViews();
@@ -343,37 +481,23 @@ public class HomeSearchFragment extends BaseFragment {
         });
     }
 
-//    void showPopUp(int id, UserProdResponse tag) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("Info");
-//        builder.setMessage(tag.getProductName());
-//        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                chipGroup.setVisibility(View.GONE);
-//                // DashboardActivity activity = (DashboardActivity) getActivity();
-////                activity.replaceBackStackFragment();
-//                displayDetails(getActivity());
-//
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", null);
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
 
-    private void loadDetails(UserProdResponse item) {
+    ComapnyNameAdapter listAdapter;
+    private String selectedProduct;
+
+    private void loadDetails(String productId) {
         //
+        selectedProduct = productId;
         showProgress();
         list = new ArrayList<>();
-        ComapnyNameAdapter listAdapter = new ComapnyNameAdapter(list, getActivity());
+        listAdapter = new ComapnyNameAdapter(list, getActivity());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(listAdapter);
         listAdapter.onItemClickListener(clickListener);
 
         Map<String, String> body = new HashMap<>();
-        body.put("productId", item.getProductId());
+        body.put("productId", productId);
         RestApi.getInstance().getService()
                 .getVendorProduct(body)
                 .enqueue(new Callback<ListOfVendorsResponse>() {
@@ -381,6 +505,7 @@ public class HomeSearchFragment extends BaseFragment {
                     public void onResponse(Call<ListOfVendorsResponse> call, Response<ListOfVendorsResponse> response) {
                         hideDialog();
                         if (response.isSuccessful()) {
+                            originalList = new ArrayList<>(response.body().getData());
                             list.addAll(response.body().getData());
                             listAdapter.notifyDataSetChanged();
                         }
@@ -405,21 +530,12 @@ public class HomeSearchFragment extends BaseFragment {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             ListOfVendorsData item = list.get(position);
-            //  Intent intent = new Intent(getActivity(), TestActivity.class);
-//            intent.putExtra("brandLogo", item.getLogo());
-//            intent.putExtra("brandName", item.getBrandName());
-//            intent.putExtra("data", item);
-            //startActivity(intent);
             Fragment fragment = new SearchEntityDetailFragment();
             Bundle args = new Bundle();
             args.putParcelable("data", item);
             fragment.setArguments(args);
             DashboardActivity activity = (DashboardActivity) getActivity();
             activity.replaceBackStackFragment(fragment);
-
-            //displayDetails(getActivity());
-
-
         }
     };
 
@@ -472,7 +588,7 @@ public class HomeSearchFragment extends BaseFragment {
                     min_dec = "0";
                 }
 
-                filterProductsBySize(max_num + "." + max_dec, min_num + "." + min_dec);
+                filterProductsByLength(max_num + "." + max_dec, min_num + "." + min_dec);
             }
         });
 
@@ -484,24 +600,6 @@ public class HomeSearchFragment extends BaseFragment {
         });
     }
 
-    private void filterProductsBySize(String max, String min) {
-        showProgress();
-        RestApi.getInstance().getService().getVendorProductByLength(min, max)
-                .enqueue(new Callback<SearchRootResponse>() {
-                    @Override
-                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
-                        hideDialog();
-                        if (response.isSuccessful()) {
-                            loadGroup(response.body().getData());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-                        hideDialog();
-                    }
-                });
-    }
 
     List<LocationData> mLocationData = new ArrayList<>();
 
@@ -621,9 +719,6 @@ public class HomeSearchFragment extends BaseFragment {
 
             }
         });
-
-        //
-
         alert.setCancelable(false);
         AlertDialog dialog = alert.create();
         dialog.show();
@@ -656,33 +751,6 @@ public class HomeSearchFragment extends BaseFragment {
                 dialog.dismiss();
             }
         });
-    }
-
-    void findByLocation(String state, String district, String mandal, String village) {
-        showProgress();
-        Map<String, String> map = new HashMap<>();
-        map.put("state", state);
-        map.put("district", district);
-        map.put("mandal", mandal);
-        map.put("village", village);
-        map.put("location", village);
-        RestApi.getInstance().getService()
-                .getVendorProductsByLocationFilter(state, district, mandal, village)
-//                .getVendorProductByLocation(map)
-                .enqueue(new Callback<SearchRootResponse>() {
-                    @Override
-                    public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
-                        hideDialog();
-                        if (response.isSuccessful()) {
-                            loadGroup(response.body().getData());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-                        hideDialog();
-                    }
-                });
     }
 
 
@@ -725,8 +793,7 @@ public class HomeSearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-//                displayDetails(getActivity(), item);
-                loadDetails(item);
+                loadDetails(item.getProductId());
                 chipGroup.setVisibility(View.GONE);
             }
         });
