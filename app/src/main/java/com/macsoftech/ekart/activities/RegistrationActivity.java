@@ -3,6 +3,7 @@ package com.macsoftech.ekart.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 
 import com.macsoftech.ekart.databinding.ActivityRegistrationBinding;
@@ -52,10 +53,10 @@ public class RegistrationActivity extends BaseActivity {
             showToast("Enter Mobile Number");
             return;
         }
-        if (TextUtils.isEmpty(binding.etAltMobile.getText().toString())) {
-            showToast("Enter Alternative Mobile Number");
-            return;
-        }
+//        if (TextUtils.isEmpty(binding.etAltMobile.getText().toString())) {
+//            showToast("Enter Alternative Mobile Number");
+//            return;
+//        }
         if (TextUtils.isEmpty(binding.etPwd.getText().toString())) {
             showToast("Enter Password");
             return;
@@ -69,10 +70,26 @@ public class RegistrationActivity extends BaseActivity {
             showToast("Enter Email Address");
             return;
         }
-
+        if (binding.etMobile.getText().toString().length()!=10) {
+            showToast("Mobile number must be 10 digits");
+            return;
+        }
+        if (!TextUtils.isEmpty(binding.etAltMobile.getText())
+                && binding.etAltMobile.getText().toString().length()!=10) {
+            showToast("Alternative Mobile number must be 10 digits");
+            return;
+        }
+        if (binding.etAltMobile.getText().equals(binding.etMobile.getText())) {
+            showToast("Mobile Numbers should not be the same.");
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.getText().toString()).matches())
+        {
+            showToast("Invalid Email Address");
+            return;
+        }
 
         Intent intent = new Intent(this, RegistrationContinuousActivity.class);
-        //
         intent.putExtra("firstName", binding.etFirstName.getText().toString());
         intent.putExtra("lastName", binding.etLastName.getText().toString());
         intent.putExtra("mobileNum", binding.etMobile.getText().toString());

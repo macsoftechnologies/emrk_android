@@ -137,10 +137,10 @@ public class RegistrationContinuousActivity extends BaseActivity {
         for (String key : extras.keySet()) {
             map.put(key, extras.getString(key));
         }
-        if (TextUtils.isEmpty(binding.etEntityName.getText().toString())) {
-            showToast("Enter entity name");
-            return;
-        }
+//        if (TextUtils.isEmpty(binding.etEntityName.getText().toString())) {
+//            showToast("Enter entity name");
+//            return;
+//        }
         if (TextUtils.isEmpty(binding.etPrimary.getText().toString())) {
             showToast("Select Primary Location");
             return;

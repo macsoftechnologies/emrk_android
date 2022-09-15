@@ -47,10 +47,11 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
         }
         holder.txtmobileNo.setText("Mobile : " + mobile);
         holder.txtqty.setText("QTY : " + companyLists.get(position).getQuantity());
-        holder.txtqty.setOnClickListener(new View.OnClickListener() {
+        holder.txtviewdetails.setTag(holder);
+        holder.txtviewdetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onItemClickListener.onClick(v);
             }
         });
 
@@ -84,8 +85,8 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
             txtqty = itemView.findViewById(R.id.txtqty);
             txtviewdetails = itemView.findViewById(R.id.txtviewdetails);
 
-            itemView.setTag(this);
-            itemView.setOnClickListener(onItemClickListener);
+//            itemView.setTag(this);
+//            itemView.setOnClickListener(onItemClickListener);
 
         }
     }

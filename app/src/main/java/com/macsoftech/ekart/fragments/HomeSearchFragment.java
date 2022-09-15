@@ -182,11 +182,13 @@ public class HomeSearchFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                callSearchApi();
+
                 String str = editable.toString().trim();
                 if (str.length() > 0) {
+                    callSearchApi();
                     chipGroup.setVisibility(View.VISIBLE);
                 } else {
+                    loadGroup( new ArrayList<>());
                     chipGroup.setVisibility(View.GONE);
                 }
             }
@@ -405,6 +407,7 @@ public class HomeSearchFragment extends BaseFragment {
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
+                binding.txtSize.setText(sizesList.get(position).toString());
                 filterBySizes(sizesList.get(position).toString());
             }
         });
