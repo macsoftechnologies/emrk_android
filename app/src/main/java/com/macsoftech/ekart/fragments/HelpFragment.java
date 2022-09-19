@@ -1,5 +1,7 @@
 package com.macsoftech.ekart.fragments;
 
+import static com.macsoftech.ekart.activities.BaseActivity.CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,8 +45,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.macsoftech.ekart.activities.BaseActivity.CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -191,10 +191,10 @@ public class HelpFragment extends BaseFragment {
     }
 
     private void submitMissingLocation() {
-        if (binding.spState.getSelectedItemPosition() < 0
-                || binding.spDistrict.getSelectedItemPosition() < 1
-                || binding.spMandal.getSelectedItemPosition() < 1) {
-            Helper.showShortToast(getActivity(), "Please Select State/District/Mandal");
+        if (binding.spState.getText().length() == 0
+                || binding.spDistrict.getText().length() == 0
+                || binding.spMandal.getText().length() == 0) {
+            Helper.showShortToast(getActivity(), "Please Enter State/District/Mandal");
             return;
         } else if (TextUtils.isEmpty(binding.etVillage.getText().toString().trim())) {
             Helper.showShortToast(getActivity(), "Please Enter Area/Village name");
@@ -202,9 +202,9 @@ public class HelpFragment extends BaseFragment {
         }
         Map<String, String> map = new HashMap<>();
         map.put("userId", SettingsPreferences.getUser(getActivity()).getUserId());
-        map.put("state", binding.spState.getSelectedItem().toString());
-        map.put("district", binding.spDistrict.getSelectedItem().toString());
-        map.put("mandal", binding.spMandal.getSelectedItem().toString());
+        map.put("state", binding.spState.getText().toString());
+        map.put("district", binding.spDistrict.getText().toString());
+        map.put("mandal", binding.spMandal.getText().toString());
         map.put("village", binding.etVillage.getText().toString());
         BaseActivity.hideKeyboard(getActivity());
         showProgress();
@@ -239,21 +239,27 @@ public class HelpFragment extends BaseFragment {
             Helper.showShortToast(getActivity(), "Please Enter Description");
             return;
         }
-        if (profile == null) {
-            Helper.showShortToast(getActivity(), "Please Add image");
-            return;
-        }
+//        if (profile == null) {
+//            Helper.showShortToast(getActivity(), "Please Add image");
+//            return;
+//        }
         BaseActivity.hideKeyboard(getActivity());
         Map<String, String> map = new HashMap<>();
         map.put("userId", SettingsPreferences.getUser(getActivity()).getUserId());
         map.put("productName", product);
         map.put("productDescription", desc);
         showProgress();
-        RestApi.getInstance().getService()
-                .createUnavailbleproduct(
-                        RestApi.prepareFilePart("productImage", profile.getAbsolutePath(), null),
-                        RestApi.prepareBodyPart(map)
-                ).enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> call;
+        if (profile == null) {
+            call = RestApi.getInstance().getService()
+                    .createUnavailbleproduct(RestApi.prepareBodyPart(map)
+                    );
+        } else {
+            call = RestApi.getInstance().getService()
+                    .createUnavailbleproduct(RestApi.prepareFilePart("productImage", profile.getAbsolutePath(), null),
+                            RestApi.prepareBodyPart(map));
+        }
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 hideDialog();
@@ -378,7 +384,7 @@ public class HelpFragment extends BaseFragment {
         ll_content_3.setVisibility(View.GONE);
         ll_content_4.setVisibility(View.GONE);
         ll_content_5.setVisibility(View.GONE);
-        loadLocationsData();
+//        loadLocationsData();
     }
 
 

@@ -187,6 +187,12 @@ public class RestApi {
                 @PartMap() Map<String, RequestBody> partMap
         );
 
+        @Multipart
+        @POST("users/createUnavailbleproduct")
+        Call<ResponseBody> createUnavailbleproduct(
+                @PartMap() Map<String, RequestBody> partMap
+        );
+
         @POST("users/unavailLcreate")
         Call<ResponseBody> unavailLocationCreate(@Body Map<String, String> body);
 

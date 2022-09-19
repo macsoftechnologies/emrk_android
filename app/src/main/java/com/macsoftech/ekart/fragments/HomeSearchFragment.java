@@ -109,19 +109,7 @@ public class HomeSearchFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_home_search, container, false);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString("selectedProduct", selectedProduct);
-        super.onSaveInstanceState(outState);
-    }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.getString("selectedProduct") != null) {
-            loadDetails(savedInstanceState.getString("selectedProduct"));
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -131,29 +119,17 @@ public class HomeSearchFragment extends BaseFragment {
         iv_search = view.findViewById(R.id.iv_search);
         //sizelayout = view.findViewById(R.id.sizelayout);
         // recyclerView = view.findViewById(R.id.recyclerView);
-
+        if (selectedProduct != null) {
+            loadDetails(selectedProduct);
+        }
         binding.sizelayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSizePopup();
             }
         });
-        binding.etQty.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                findByQty(editable.toString().trim());
-            }
-        });
         lengthlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,30 +145,6 @@ public class HomeSearchFragment extends BaseFragment {
             }
         });
 
-        et_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                String str = editable.toString().trim();
-                if (str.length() > 0) {
-                    callSearchApi();
-                    chipGroup.setVisibility(View.VISIBLE);
-                } else {
-                    loadGroup( new ArrayList<>());
-                    chipGroup.setVisibility(View.GONE);
-                }
-            }
-        });
         //
 //        SettingsPreferences.save
         chipGroup.setVisibility(View.GONE);
@@ -202,7 +154,71 @@ public class HomeSearchFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), NotificationsActivity.class));
             }
         });
+        binding.txtProductCreation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DashboardActivity activity= (DashboardActivity) getActivity();
+                activity.getNavigation().setSelectedItemId(R.id.menu_help);
+            }
+        });
+
     }
+
+    private final TextWatcher qtyListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            findByQty(editable.toString().trim());
+        }
+    };
+    private final TextWatcher searchListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+            String str = editable.toString().trim();
+            if (str.length() > 0) {
+                callSearchApi();
+                chipGroup.setVisibility(View.VISIBLE);
+            } else {
+                loadGroup(new ArrayList<>());
+                chipGroup.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.etQty.removeTextChangedListener(qtyListener);
+        et_search.removeTextChangedListener(searchListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.etQty.addTextChangedListener(qtyListener);
+        et_search.addTextChangedListener(searchListener);
+    }
+
 
 
     String mSize;
@@ -257,6 +273,13 @@ public class HomeSearchFragment extends BaseFragment {
 
         for (Iterator<ListOfVendorsData> it = temp.iterator(); it.hasNext(); ) {
             ListOfVendorsData item = it.next();
+            //Dont remove if no filter is applied.
+            if (TextUtils.isEmpty(size)
+                    && TextUtils.isEmpty(minLength)
+                    && TextUtils.isEmpty(maxLength)
+                    && TextUtils.isEmpty(location)) {
+                continue;
+            }
             //1. Check Length Condition
             try {
                 double minValue = Double.parseDouble(minLength);
@@ -288,39 +311,6 @@ public class HomeSearchFragment extends BaseFragment {
             }
 
         }
-
-//        for (ListOfVendorsData item : temp) {
-//            boolean isLengthSelected = false;
-//            try {
-//                double maxValue = Double.parseDouble(minLength);
-//                double minValue = Double.parseDouble(maxLength);
-//                double length = Double.parseDouble(item.getLength());
-//                if (maxValue == 0.0 && minValue != 0.0) {
-//                    if (length >= minValue) {
-//                        //                        temp.add(item);
-//                        isLengthSelected = true;
-//                    }
-//                }
-//                //                else if (minValue > maxValue) {
-//                //                    Helper.showShortToast(getActivity(), "Min Value should be less than Max value");
-//                //                    break;
-//                //                }
-//                if (length <= maxValue && length >= minValue) {
-//                    //                    temp.add(item);
-//                    isLengthSelected = true;
-//                }
-//            } catch (Exception e) {
-//                //                isLengthSelected = true;
-//                e.printStackTrace();
-//            }
-//            //
-//            if (hasLocationSelected(location, item) && hasSizeFilter(size, item)) {
-//                temp.add(item);
-//            }
-//
-//        }
-
-
         if (listAdapter != null) {
             list.clear();
             list.addAll(temp);

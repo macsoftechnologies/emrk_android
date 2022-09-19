@@ -18,7 +18,6 @@ import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.fragments.HelpFragment;
 import com.macsoftech.ekart.fragments.HomeSearchFragment;
 import com.macsoftech.ekart.fragments.MyEntityFragment;
-import com.macsoftech.ekart.fragments.MyEntityTrailFragment;
 import com.macsoftech.ekart.fragments.ProfileFragment;
 import com.macsoftech.ekart.helper.SettingsPreferences;
 
@@ -65,7 +64,6 @@ public class DashboardActivity extends BaseActivity {
                 return true;
             }
         });
-
         navigation.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
@@ -99,6 +97,10 @@ public class DashboardActivity extends BaseActivity {
                 });
     }
 
+
+    public BottomNavigationView getNavigation(){
+        return navigation;
+    }
 
     public void replaceFragment(Fragment fragment) {
         int count = getSupportFragmentManager().getBackStackEntryCount();

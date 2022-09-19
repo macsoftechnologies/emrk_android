@@ -65,7 +65,8 @@ public class LoginActivity extends BaseActivity {
         String emailId = etmail.getText().toString();
         String pwd = etpwd.getText().toString();
         Map<String, String> map = new HashMap<>();
-        map.put("emailId", emailId);
+//        map.put("emailId", emailId);
+        map.put("mobileNum", emailId);
         map.put("password", pwd);
         //"emailId":"gowthami@gmail.com",
         //     "password":"gfdsdf"

@@ -10,11 +10,11 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_margin="5dp"
             android:id="@+id/iv_entity"
             android:layout_width="80dp"
-            android:src="@drawable/entity_profile"
+            tools:src="@drawable/entity_profile"
             android:layout_height="80dp"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +33,7 @@
                 android:id="@+id/txt_entity"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="0dp"
+                android:textSize="18sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
             <ImageView

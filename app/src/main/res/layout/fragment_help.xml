@@ -148,17 +148,21 @@
                 android:layout_margin="10dp"
                 android:background="@color/white"
                 android:layout_height="match_parent">
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:padding="16dp"
-                    android:gravity="center_horizontal"
+
+                <EditText
+                    android:background="@android:color/transparent"
+                    android:singleLine="true"
                     android:id="@+id/sp_state"
-                    android:textSize="16sp"
-                    android:textColor="@color/grey"
+                    android:hint="Enter State"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:drawablePadding="10dp"
-                    android:layout_height="50dp"/>
+                    android:padding="16dp"
+                    android:textColor="@color/grey"
+                    android:textSize="16sp" />
 
                 <ImageView
+                    android:visibility="invisible"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
@@ -175,18 +179,22 @@
                     android:background="@color/white"
                     android:layout_height="match_parent">
 
-                    <Spinner
+
+
+                    <EditText
+                        android:background="@android:color/transparent"
+                        android:singleLine="true"
+                        android:id="@+id/sp_district"
+                        android:hint="Enter District"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawablePadding="10dp"
-                        android:gravity="center_horizontal"
                         android:padding="16dp"
-                        android:id="@+id/sp_district"
-                        android:text="State"
                         android:textColor="@color/grey"
                         android:textSize="16sp" />
 
                     <ImageView
+                        android:visibility="invisible"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
@@ -203,18 +211,31 @@
                     android:background="@color/white"
                     android:layout_height="match_parent">
 
-                    <Spinner
+<!--                    <Spinner-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:drawablePadding="10dp"-->
+<!--                        android:gravity="center_horizontal"-->
+<!--                        android:padding="16dp"-->
+<!--                        android:id="@+id/sp_mandal"-->
+<!--                        android:text="Mandal"-->
+<!--                        android:textColor="@color/grey"-->
+<!--                        android:textSize="16sp" />-->
+                    <EditText
+                        android:background="@android:color/transparent"
+                        android:singleLine="true"
+                        android:id="@+id/sp_mandal"
+                        android:hint="Enter Mandal"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawablePadding="10dp"
-                        android:gravity="center_horizontal"
                         android:padding="16dp"
-                        android:id="@+id/sp_mandal"
-                        android:text="State"
                         android:textColor="@color/grey"
                         android:textSize="16sp" />
 
+
                     <ImageView
+                        android:visibility="invisible"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"

@@ -11,7 +11,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 32
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"
         archivesBaseName = "EMRK-$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -64,6 +64,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:23.0.7'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -57,6 +57,8 @@ public class AddProductSearchFragment extends BaseFragment {
 
     @BindView(R.id.progressBar)
     View progressBar;
+    @BindView(R.id.txt_product_creation)
+    View txt_product_creation;
 
 
     private FragmentMyEntityBinding binding;
@@ -86,6 +88,13 @@ public class AddProductSearchFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         // binding = FragmentMyEntityBinding.bind(view);
+        txt_product_creation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DashboardActivity activity= (DashboardActivity) getActivity();
+                activity.getNavigation().setSelectedItemId(R.id.menu_help);
+            }
+        });
 
         iv_search = view.findViewById(R.id.iv_search);
 
