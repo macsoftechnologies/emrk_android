@@ -152,8 +152,8 @@ public class RestApi {
         @POST("admin-product/getVendorProductByQuantity")
         Call<SearchRootResponse> getVendorProductByQuantity(@Body Map<String, String> body);
 
-//        @GET("admin/getProductSize")
-//        Call<SizeModelRootResponse> getProductSizes();
+        @GET("admin/getProductLength")
+        Call<SizeModelRootResponse> getProductLength();
 
         @POST("users/login")
         Call<LoginRootResponse> login(@Body Map<String, String> body);

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +42,7 @@ import com.macsoftech.ekart.model.search.ListOfVendorsData;
 import com.macsoftech.ekart.model.search.ListOfVendorsResponse;
 import com.macsoftech.ekart.model.search.SearchRootResponse;
 import com.macsoftech.ekart.model.search.UserProdResponse;
+import com.macsoftech.ekart.model.sizes.LengthModel;
 import com.macsoftech.ekart.model.sizes.SizeModel;
 import com.macsoftech.ekart.model.sizes.SizeModelRootResponse;
 
@@ -88,6 +89,12 @@ public class HomeSearchFragment extends BaseFragment {
     @BindView(R.id.emptyVendorsView)
     View emptyVendorsView;
 
+    @BindView(R.id.txt_location)
+    TextView txt_location;
+
+    @BindView(R.id.txt_length)
+    TextView txt_length;
+
     List<ListOfVendorsData> list = new ArrayList<>();
     private FragmentHomeSearchBinding binding;
 
@@ -108,7 +115,6 @@ public class HomeSearchFragment extends BaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_search, container, false);
     }
-
 
 
     @Override
@@ -157,11 +163,30 @@ public class HomeSearchFragment extends BaseFragment {
         binding.txtProductCreation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DashboardActivity activity= (DashboardActivity) getActivity();
+                DashboardActivity activity = (DashboardActivity) getActivity();
                 activity.getNavigation().setSelectedItemId(R.id.menu_help);
             }
         });
+        loadLength();
+    }
 
+    SizeModelRootResponse lengthResponse;
+
+    void loadLength() {
+        RestApi.getInstance().getService().getProductLength()
+                .enqueue(new Callback<SizeModelRootResponse>() {
+                    @Override
+                    public void onResponse(Call<SizeModelRootResponse> call, Response<SizeModelRootResponse> response) {
+                        if (response.isSuccessful()) {
+                            lengthResponse = response.body();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SizeModelRootResponse> call, Throwable t) {
+
+                    }
+                });
     }
 
     private final TextWatcher qtyListener = new TextWatcher() {
@@ -218,7 +243,6 @@ public class HomeSearchFragment extends BaseFragment {
         binding.etQty.addTextChangedListener(qtyListener);
         et_search.addTextChangedListener(searchListener);
     }
-
 
 
     String mSize;
@@ -340,6 +364,7 @@ public class HomeSearchFragment extends BaseFragment {
     private void filterProductsByLength(String max, String min) {
         mMaxLength = max;
         mMinLength = min;
+        txt_length.setText(min + " - " + max);
         filterByAll(mSize, mMinLength, mMaxLength, mQty, mLocation);
     }
 
@@ -537,7 +562,15 @@ public class HomeSearchFragment extends BaseFragment {
      * length dialog
      */
     private void lengthAlertDialog() {
-
+        if (lengthResponse == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    lengthAlertDialog();
+                }
+            }, 500);
+            return;
+        }
         LayoutInflater inflater = getLayoutInflater();
         View alertView = inflater.inflate(R.layout.alertdialog_size, null);
         //
@@ -545,6 +578,30 @@ public class HomeSearchFragment extends BaseFragment {
         EditText txt_max_dec = alertView.findViewById(R.id.txt_max_dec);
         EditText txt_min_num = alertView.findViewById(R.id.txt_min_num);
         EditText txt_min_dec = alertView.findViewById(R.id.txt_min_dec);
+        //lengthResponse
+        Spinner sp_min = alertView.findViewById(R.id.sp_min);
+        Spinner sp_max = alertView.findViewById(R.id.sp_max);
+        Spinner sp_min_dec = alertView.findViewById(R.id.sp_min_dec);
+        Spinner sp_max_dec = alertView.findViewById(R.id.sp_max_dec);
+        //lengthResponse
+
+        ArrayAdapter<LengthModel> adapter = new ArrayAdapter<LengthModel>(getActivity(),
+                android.R.layout.simple_list_item_1,
+                lengthResponse.getData().getLengthList());
+
+        List<String> decList = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            decList.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> decAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1,
+                decList);
+
+        sp_min.setAdapter(adapter);
+        sp_max.setAdapter(adapter);
+        sp_min_dec.setAdapter(decAdapter);
+        sp_max_dec.setAdapter(decAdapter);
+
         //
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setView(alertView);
@@ -564,10 +621,15 @@ public class HomeSearchFragment extends BaseFragment {
             public void onClick(View v) {
                 dialog.dismiss();
                 BaseActivity.hideKeyboard(getActivity());
-                String max_num = txt_max_num.getText().toString().trim();
-                String max_dec = txt_max_dec.getText().toString().trim();
-                String min_num = txt_min_num.getText().toString().trim();
-                String min_dec = txt_min_dec.getText().toString().trim();
+//                String max_num = txt_max_num.getText().toString().trim();
+//                String max_dec = txt_max_dec.getText().toString().trim();
+//                String min_num = txt_min_num.getText().toString().trim();
+//                String min_dec = txt_min_dec.getText().toString().trim();
+
+                String max_num = sp_max.getSelectedItem().toString();
+                String max_dec = sp_max_dec.getSelectedItem().toString();
+                String min_num = sp_min.getSelectedItem().toString();
+                String min_dec = sp_min_dec.getSelectedItem().toString();
                 if (TextUtils.isEmpty(max_num)) {
                     max_num = "0";
                 }
@@ -734,6 +796,7 @@ public class HomeSearchFragment extends BaseFragment {
                         : sp_mandal.getSelectedItem().toString();
                 String village = sp_village.getSelectedItem().toString().equalsIgnoreCase("--Select--") ? ""
                         : sp_village.getSelectedItem().toString();
+                txt_location.setText(village);
                 findByLocation(state, district, mandal, village);
 
             }

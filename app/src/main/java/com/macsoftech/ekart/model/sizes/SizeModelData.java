@@ -4,6 +4,7 @@ import java.util.List;
 
 public class SizeModelData {
     private List<SizeModel> sizesList;
+    private List<LengthModel> lengthList;
 
     private String sizesCount;
 
@@ -26,6 +27,14 @@ public class SizeModelData {
     @Override
     public String toString() {
         return "ClassPojo [sizesList = " + sizesList + ", sizesCount = " + sizesCount + "]";
+    }
+
+    public List<LengthModel> getLengthList() {
+        return lengthList;
+    }
+
+    public void setLengthList(List<LengthModel> lengthList) {
+        this.lengthList = lengthList;
     }
 }
 		

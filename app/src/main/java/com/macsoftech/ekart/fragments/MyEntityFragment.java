@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,9 @@ public class MyEntityFragment extends BaseFragment {
 
     @BindView(R.id.tvlocation)
     TextView tvlocation;
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     private FragmentMyEntityBinding binding;
 
@@ -136,6 +140,7 @@ public class MyEntityFragment extends BaseFragment {
     }
 
     private void loadEntityProductsDetails() {
+        progressBar.setVisibility(View.VISIBLE);
         list.clear();
         ProductNameAdapter listAdapter = new ProductNameAdapter(list, getActivity());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getActivity());
@@ -151,6 +156,7 @@ public class MyEntityFragment extends BaseFragment {
         RestApi.getInstance().getService().getUserProducts(body).enqueue(new Callback<SearchRootResponse>() {
             @Override
             public void onResponse(Call<SearchRootResponse> call, Response<SearchRootResponse> response) {
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     list.addAll(response.body().getData());
                     listAdapter.notifyDataSetChanged();
@@ -159,7 +165,7 @@ public class MyEntityFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<SearchRootResponse> call, Throwable t) {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

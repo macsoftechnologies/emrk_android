@@ -67,6 +67,7 @@
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:visibility="gone"
                     android:inputType="numberSigned"
                     android:id="@+id/txt_min_num"
                     android:background="@android:color/transparent"
@@ -79,6 +80,10 @@
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
                     android:layout_height="50dp"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_min"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
 
@@ -101,7 +106,12 @@
                     android:textSize="16sp"
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
+                    android:visibility="gone"
                     android:layout_height="50dp"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_min_dec"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -132,6 +142,7 @@
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/txt_max_num"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"
@@ -144,6 +155,10 @@
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
                     android:layout_height="50dp"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_max"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
 
@@ -155,6 +170,7 @@
                 android:background="@drawable/home_spinner_bg"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/txt_max_dec"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"
@@ -167,6 +183,10 @@
                     android:textColor="@color/colorPrimary"
                     android:drawablePadding="10dp"
                     android:layout_height="50dp"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/sp_max_dec"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </LinearLayout>
