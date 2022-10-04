@@ -91,7 +91,7 @@ public class AddProductSearchFragment extends BaseFragment {
         txt_product_creation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DashboardActivity activity= (DashboardActivity) getActivity();
+                DashboardActivity activity = (DashboardActivity) getActivity();
                 activity.getNavigation().setSelectedItemId(R.id.menu_help);
             }
         });
@@ -160,7 +160,10 @@ public class AddProductSearchFragment extends BaseFragment {
     }
 
     public void loadGroup(List<UserProdResponse> userProdResponse) {
-        //chip_group
+        if (getActivity() == null) {
+            return;
+        }
+        //
         chipGroup.clearCheck();
         chipGroup.removeAllViews();
         chipGroup.setSelectionRequired(false);

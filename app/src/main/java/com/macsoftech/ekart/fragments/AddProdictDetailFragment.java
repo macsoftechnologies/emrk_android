@@ -1,10 +1,18 @@
 package com.macsoftech.ekart.fragments;
 
+import static com.macsoftech.ekart.activities.BaseActivity.CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300;
+import static com.macsoftech.ekart.activities.BaseActivity.GALLERY_PICK_REQUEST_CODE_400;
+import static com.macsoftech.ekart.activities.BaseActivity.IMAGE_DIRECTORY_NAME;
+import static com.macsoftech.ekart.activities.BaseActivity.copy;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +54,6 @@ import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.macsoftech.ekart.activities.BaseActivity.CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +98,7 @@ public class AddProdictDetailFragment extends BaseFragment {
         binding.ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((DashboardActivity) getActivity()).openCamera();
+                ((DashboardActivity) getActivity()).choosePhoto();
             }
         });
         binding.txtSubmit.setOnClickListener(new View.OnClickListener() {
@@ -141,19 +147,19 @@ public class AddProdictDetailFragment extends BaseFragment {
         RestApi.getInstance().getService()
                 .addProduct(RestApi.prepareBodyPart(map),
                         images).enqueue(new Callback<RegistrationRootResponse>() {
-            @Override
-            public void onResponse(Call<RegistrationRootResponse> call, Response<RegistrationRootResponse> response) {
-                hideDialog();
-                if (response.isSuccessful()) {
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
-            }
+                    @Override
+                    public void onResponse(Call<RegistrationRootResponse> call, Response<RegistrationRootResponse> response) {
+                        hideDialog();
+                        if (response.isSuccessful()) {
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<RegistrationRootResponse> call, Throwable t) {
-                hideDialog();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<RegistrationRootResponse> call, Throwable t) {
+                        hideDialog();
+                    }
+                });
     }
 
     @Override
@@ -171,6 +177,55 @@ public class AddProdictDetailFragment extends BaseFragment {
                 }
             }).start();
 
+        } else if (requestCode == GALLERY_PICK_REQUEST_CODE_400
+                && resultCode == Activity.RESULT_OK
+        ) {
+            if (requestCode == GALLERY_PICK_REQUEST_CODE_400
+                    && resultCode == Activity.RESULT_OK
+                    && data != null) {
+                Uri selectedImage = data.getData();
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+
+                if (cursor == null || cursor.getCount() < 1) {
+                    return;
+                }
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+                if (columnIndex < 0) // no column index
+                    return; // DO YOUR ERROR HANDLING
+
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close(); // close cursor
+//                File file = new File(Environment.getExternalStorageDirectory(),
+//                        IMAGE_DIRECTORY_NAME);
+                File file = new File(getActivity().getExternalFilesDir(null), IMAGE_DIRECTORY_NAME);
+
+                if (!file.isDirectory()) {
+                    file.mkdirs();
+                }
+                File photoFile = new File(file.getPath() + "/"
+                        + System.currentTimeMillis() + ".jpg");
+
+                if (!photoFile.getParentFile().exists()) {
+                    photoFile.getParentFile().mkdirs();
+                }
+                copy(new File(picturePath), photoFile);
+                Compressor compressor = new Compressor(getActivity().getApplicationContext());
+                try {
+                    photoFile = compressor.compressToFile(photoFile);
+                    addImage(photoFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+//                UCrop.of(Uri.parse(photoFile.getAbsolutePath()), Uri.parse(photoFile.getAbsolutePath()))
+////                        .withAspectRatio(16, 9)
+//                        .start(this);
+            }
         }
     }
 

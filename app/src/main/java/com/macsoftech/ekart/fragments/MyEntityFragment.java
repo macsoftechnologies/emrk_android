@@ -210,6 +210,7 @@ public class MyEntityFragment extends BaseFragment {
                 TextView txt_mobile = view.findViewById(R.id.txt_mobile);
                 txt_mobile.setText(list.get(i - 1));
                 tv_name.setText("");
+                txt_mobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 ll_contacts.addView(view);
             }
         }

@@ -109,18 +109,18 @@ public class SearchEntityProductNameFragment extends BaseFragment {
                 if (response.isSuccessful()) {
                     try {
                         currentUser = response.body().getUserFeedbackResponse().get(0);
-                        binding.txtEntity.setText(currentUser.getEntityName());
-                        binding.txtVendorName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
-                        binding.txtMobile.setText(currentUser.getMobileNum());
+                        binding.incls.txtEntity.setText(currentUser.getEntityName());
+                        binding.incls.txtVendorName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+                        binding.incls.txtMobile.setText(currentUser.getMobileNum());
                         Glide.with(getActivity())
                                 .load(RestApi.BASE_URL + currentUser.getEntityImage())
                                 .error(R.drawable.entity_profile)
-                                .into(binding.ivEntity);
+                                .into(binding.incls.ivEntity);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        binding.txtEntity.setText("");
-                        binding.txtVendorName.setText("");
-                        binding.txtMobile.setText("");
+                        binding.incls.txtEntity.setText("");
+                        binding.incls.txtVendorName.setText("");
+                        binding.incls.txtMobile.setText("");
                     }
                 }
             }

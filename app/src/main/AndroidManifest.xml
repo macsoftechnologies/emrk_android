@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EKart"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.NotificationsActivity"></activity>
-        <activity android:name=".activities.EditProfileActivity" />
-        <activity android:name=".activities.AddChangePinActivity" />
+        <activity android:name=".activities.NotificationsActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity android:name=".activities.EditProfileActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity android:name=".activities.AddChangePinActivity"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".activities.DashboardActivity"
             android:screenOrientation="sensorPortrait" />

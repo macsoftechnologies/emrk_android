@@ -96,7 +96,7 @@ public class BaseActivity extends AppCompatActivity {
     public File photoFile;
     public static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300 = 300;
     public static final int GALLERY_PICK_REQUEST_CODE_400 = 400;
-    public static final String IMAGE_DIRECTORY_NAME = ".CCE";
+    public static final String IMAGE_DIRECTORY_NAME = ".eKart";
 
 
     public void openCamera() {
@@ -233,7 +233,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void copy(File src, File dst) {
+    public static  void copy(File src, File dst) {
         try {
             FileInputStream inStream = new FileInputStream(src);
             FileOutputStream outStream = new FileOutputStream(dst);

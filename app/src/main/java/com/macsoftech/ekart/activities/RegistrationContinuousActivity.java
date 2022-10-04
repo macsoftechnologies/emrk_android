@@ -57,7 +57,7 @@ public class RegistrationContinuousActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 isProfile = true;
-                openCamera();
+                choosePhoto();
             }
         });
 
@@ -65,7 +65,7 @@ public class RegistrationContinuousActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 isProfile = false;
-                openCamera();
+                choosePhoto();
             }
         });
         binding.etPrimary.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +98,19 @@ public class RegistrationContinuousActivity extends BaseActivity {
                 }
             }).start();
 
+        } else if (requestCode == GALLERY_PICK_REQUEST_CODE_400
+                && resultCode == Activity.RESULT_OK) {
+            if (isProfile) {
+                profile = photoFile;
+                Glide.with(RegistrationContinuousActivity.this)
+                        .load(photoFile)
+                        .into(binding.ivProfile);
+            } else {
+                entity = photoFile;
+                Glide.with(RegistrationContinuousActivity.this)
+                        .load(photoFile)
+                        .into(binding.ivEntity);
+            }
         }
 
     }
