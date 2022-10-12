@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.macsoftech.ekart.R;
-import com.macsoftech.ekart.model.CompanyName;
 import com.macsoftech.ekart.model.search.UserProdResponse;
 
 import java.util.List;
@@ -42,8 +41,10 @@ public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.
     @Override
     public void onBindViewHolder(MyviewHolder holder, int position) {
         holder.txtcampanyname.setText(companyLists.get(position).getProductName());
-        holder.txtmobileNo.setText(companyLists.get(position).getMobileNum());
-        holder.txtqty.setText("SIZE :"+companyLists.get(position).getSize());
+        holder.txtmobileNo.setText("Mobile: " + (companyLists.get(position).getMobileNum() == null ? "-" : companyLists.get(position).getMobileNum()));
+
+        holder.txtqty.setText("SIZE: " + companyLists.get(position).getSize());
+        holder.txt_vendor_name.setText("Vendor: " + companyLists.get(position).getVendorName());
         holder.txtqty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +66,7 @@ public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.
         private TextView txtmobileNo;
         private TextView txtqty;
         private TextView txtviewdetails;
+        private TextView txt_vendor_name;
 
         public MyviewHolder(View itemView) {
             super(itemView);
@@ -72,6 +74,7 @@ public class ProductNameAdapter extends RecyclerView.Adapter<ProductNameAdapter.
             txtmobileNo = itemView.findViewById(R.id.txtmobileNo);
             txtqty = itemView.findViewById(R.id.txtqty);
             txtviewdetails = itemView.findViewById(R.id.txtviewdetails);
+            txt_vendor_name = itemView.findViewById(R.id.txt_vendor_name);
 
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);

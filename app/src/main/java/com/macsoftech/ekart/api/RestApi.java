@@ -12,6 +12,7 @@ import com.macsoftech.ekart.app.BaseApp;
 import com.macsoftech.ekart.model.LocationResponseRoot;
 import com.macsoftech.ekart.model.LoginRootResponse;
 import com.macsoftech.ekart.model.NotificationsRoot;
+import com.macsoftech.ekart.model.ProductDetailsRoot;
 import com.macsoftech.ekart.model.language.LanguageRootResponse;
 import com.macsoftech.ekart.model.register.RegistrationRootResponse;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
@@ -128,6 +129,9 @@ public class RestApi {
         @GET("admin/getLocations")
         Call<LocationResponseRoot> getLocations();
 
+        @GET("admin-product/getProductAndVendorById/{productId}")
+        Call<ProductDetailsRoot> getProductAndVendorById(@Path("productId") String productId);
+
 
         @GET("admin-product/getVendorProductByLength/{min}/{max}")
         Call<SearchRootResponse> getVendorProductByLength(
@@ -213,7 +217,7 @@ public class RestApi {
         @POST("users/report")
         Call<ResponseBody> addReport(@Body Map<String, String> body);
 
-//        @POST("notifications/createnotification")
+        //        @POST("notifications/createnotification")
         @POST("notifications/saveFCMToken")
         Call<ResponseBody> saveGCM(@Body Map<String, String> body);
 
@@ -222,7 +226,6 @@ public class RestApi {
 
         @POST("notifications/getPushNotificationByUserId")
         Call<NotificationsRoot> getPushNotificationByUserId(@Body Map<String, String> body);
-
 
 
     }

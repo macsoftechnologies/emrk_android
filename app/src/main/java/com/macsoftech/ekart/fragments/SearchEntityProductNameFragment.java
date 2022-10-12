@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.adapter.ProductNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentSearchEntityProductnamelBinding;
@@ -93,6 +94,16 @@ public class SearchEntityProductNameFragment extends BaseFragment {
         });
         loadEntityDetails();
         loadEntityProductsDetails();
+        binding.incls.ivEntity.setOnClickListener(v -> {
+            if (currentUser != null) {
+                String entityImageUrl = RestApi.BASE_URL + currentUser.getEntityImage();
+                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
+                intent.putExtra("url", entityImageUrl);
+                startActivity(intent);
+            }
+
+        });
+
     }
 
     LoginResponse currentUser;

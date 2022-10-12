@@ -37,20 +37,29 @@
 
             </LinearLayout>
             <TextView
-                android:id="@+id/txtmobileNo"
+                android:id="@+id/txt_vendor_name"
                 android:layout_width="match_parent"
-                android:text="Mobile No:"
+                android:text="Vendor Name:"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtqty"
+                android:layout_width="wrap_content"
+                android:text="Qty: "
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"/>
+
+
             <LinearLayout
                 android:layout_margin="5dp"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/txtqty"
+                    android:id="@+id/txtmobileNo"
                     android:layout_width="wrap_content"
-                    android:text="Qty: "
+                    android:text="Mobile No:"
+
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:layout_width="0dp"

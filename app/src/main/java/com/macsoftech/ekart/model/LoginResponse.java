@@ -59,14 +59,25 @@ public class LoginResponse {
         this.password = password;
     }
 
-    public ArrayList<String> getAvailableLocation() {
+    public List<String> getAvailableLocation() {
+        if (availableLocation == null) {
+            return new ArrayList<>();
+        }
+        List<String> list = new ArrayList<>();
+        for (LocationData locationData : availableLocation) {
+            list.add(locationData.getVillage());
+        }
+        return list;
+    }
+
+    public List<LocationData> getAvailableLocationObj() {
         if (availableLocation == null) {
             return new ArrayList<>();
         }
         return availableLocation;
     }
 
-    public void setAvailableLocation(ArrayList<String> availableLocation) {
+    public void setAvailableLocation(List<LocationData> availableLocation) {
         this.availableLocation = availableLocation;
     }
 
@@ -121,7 +132,7 @@ public class LoginResponse {
     public String mobileNum;
     public String entityName;
     public String password;
-    public ArrayList<String> availableLocation;
+    public List<LocationData> availableLocation;
     public String emailId;
     public String altNumber;
     public String chooseLanguage;

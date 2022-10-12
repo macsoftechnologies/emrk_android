@@ -145,7 +145,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
-                    android:text="Product Name"
+                    tools:text="Product Name"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/txt_product_name2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:text="Product Name"
                     android:textSize="15sp"
                     android:textColor="@color/colorPrimary" />
 

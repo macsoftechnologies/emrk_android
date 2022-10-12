@@ -30,6 +30,7 @@ public class UserProdResponse implements Parcelable {
     private String quantity;
 
     private String mobileNum;
+    private String vendorName;
 
     private String productCode;
     private String size;
@@ -251,5 +252,13 @@ public class UserProdResponse implements Parcelable {
 
     public void setMobileNum(String mobileNum) {
         this.mobileNum = mobileNum;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 }

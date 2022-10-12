@@ -12,11 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EKart"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.NotificationsActivity"
+        <activity
+            android:name=".ImagePreviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.NotificationsActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".activities.EditProfileActivity"
+        <activity
+            android:name=".activities.EditProfileActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".activities.AddChangePinActivity"
+        <activity
+            android:name=".activities.AddChangePinActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".activities.DashboardActivity"
@@ -49,6 +55,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.ImagePreviewActivity" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -85,13 +92,13 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

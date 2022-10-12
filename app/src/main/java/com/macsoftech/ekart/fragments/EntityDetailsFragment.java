@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentEntityProductDetailBinding;
 import com.macsoftech.ekart.model.LoginResponse;
+import com.macsoftech.ekart.model.ProductDetailsRoot;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
 import com.macsoftech.ekart.model.search.UserProdResponse;
 
@@ -107,8 +109,43 @@ public class EntityDetailsFragment extends BaseFragment {
         }
 
         loadEntityDetails();
+        binding.incls.ivEntity.setOnClickListener(v -> {
+            if (currentUser != null) {
+                String entityImageUrl = RestApi.BASE_URL + currentUser.getEntityImage();
+                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
+                intent.putExtra("url", entityImageUrl);
+                startActivity(intent);
+            }
+
+        });
+        loadProductDetailProduct();
     }
+
+    void loadProductDetailProduct() {
+        RestApi.getInstance().getService()
+                .getProductAndVendorById(data.getProductId())
+                .enqueue(new Callback<ProductDetailsRoot>() {
+                    @Override
+                    public void onResponse(Call<ProductDetailsRoot> call, Response<ProductDetailsRoot> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                binding.txtProductName2.setText(response.body().getResp().getProductName1());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductDetailsRoot> call, Throwable t) {
+
+                    }
+                });
+    }
+
+
     LoginResponse currentUser;
+
     private void loadEntityDetails() {
         Map<String, String> body = new HashMap<>();
         body.put("userId", data.getUserId());

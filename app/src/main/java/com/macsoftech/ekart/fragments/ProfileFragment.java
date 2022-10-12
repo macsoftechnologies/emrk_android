@@ -473,8 +473,9 @@ public class ProfileFragment extends BaseFragment {
                         if (response.isSuccessful()) {
                             LoginResponse user = SettingsPreferences.getUser(getActivity());
                             //Add new village
-                            user.getAvailableLocation().add(village);
-                            user.setAvailableLocation(user.getAvailableLocation());
+                            LocationData data=new LocationData();
+                            data.setVillage(village);
+                            user.getAvailableLocationObj().add(data);
                             SettingsPreferences.saveObject(getActivity(), SettingsPreferences.USER, user);
                             Helper.showShortToast(getActivity(), "Updated.");
                         }

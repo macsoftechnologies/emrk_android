@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentSearchEntityProductDetailBinding;
 import com.macsoftech.ekart.model.LoginResponse;
@@ -118,6 +119,15 @@ public class SearchEntityDetailFragment extends BaseFragment {
         }
 
         loadEntityDetails();
+        binding.incls.ivEntity.setOnClickListener(v -> {
+            if (currentUser != null) {
+                String entityImageUrl = RestApi.BASE_URL + currentUser.getEntityImage();
+                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
+                intent.putExtra("url", entityImageUrl);
+                startActivity(intent);
+            }
+
+        });
 
     }
 

@@ -47,6 +47,7 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
         }
         holder.txtmobileNo.setText("Mobile : " + mobile);
         holder.txtqty.setText("QTY : " + companyLists.get(position).getQuantity());
+        holder.txt_vendor_name.setText("Vendor: "+companyLists.get(position).getVendorName());
         holder.txtviewdetails.setTag(holder);
         holder.txtviewdetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +78,11 @@ public class ComapnyNameAdapter extends RecyclerView.Adapter<ComapnyNameAdapter.
         private TextView txtmobileNo;
         private TextView txtqty;
         private TextView txtviewdetails;
+        private TextView txt_vendor_name;
 
         public MyviewHolder(View itemView) {
             super(itemView);
+            txt_vendor_name = itemView.findViewById(R.id.txt_vendor_name);
             txtcampanyname = itemView.findViewById(R.id.txtcampanyname);
             txtmobileNo = itemView.findViewById(R.id.txtmobileNo);
             txtqty = itemView.findViewById(R.id.txtqty);
