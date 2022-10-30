@@ -145,6 +145,16 @@ public class RestApi {
         @POST("users/updateUser")
         Call<ResponseBody> updateUser(@Body Map<String, Object> body);
 
+
+        @Multipart
+        @POST("users/updateUser")
+        Call<RegistrationRootResponse> updateUser(
+                @Part MultipartBody.Part paramImage1,
+                @Part MultipartBody.Part paramImage2,
+                @PartMap() Map<String, RequestBody> partMap
+        );
+
+
         @GET("admin-product/getVendorProductsByLocationFilter")
         Call<SearchRootResponse> getVendorProductsByLocationFilter(
                 @Query("state") String state,

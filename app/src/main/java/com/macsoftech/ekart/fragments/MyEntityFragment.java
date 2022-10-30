@@ -1,6 +1,7 @@
 package com.macsoftech.ekart.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.adapter.ProductNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentMyEntityBinding;
@@ -126,6 +128,15 @@ public class MyEntityFragment extends BaseFragment {
                                 .load(RestApi.BASE_URL + currentUser.getEntityImage())
                                 .error(R.drawable.entity_profile)
                                 .into(binding.ivEntity);
+                        binding.ivEntity.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String entityImageUrl = RestApi.BASE_URL + currentUser.getEntityImage();
+                                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
+                                intent.putExtra("url", entityImageUrl);
+                                startActivity(intent);
+                            }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

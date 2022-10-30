@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
@@ -371,10 +372,24 @@ public class RegistrationContinuousActivity extends BaseActivity {
     }
 
     private void addNewLocation(String village) {
-        EditText editText = (EditText) LayoutInflater.from(this)
+//        EditText editText = (EditText) LayoutInflater.from(this)
+//                .inflate(R.layout.row_other_locations, binding.llAnotherLocations, false);
+//        editText.setText(village);
+//        editText.setEnabled(false);
+//        binding.llAnotherLocations.addView(editText);
+        View view = LayoutInflater.from(this)
                 .inflate(R.layout.row_other_locations, binding.llAnotherLocations, false);
+
+        EditText editText = view.findViewById(R.id.et_location);
+        ImageView iv_delete = view.findViewById(R.id.iv_delete);
         editText.setText(village);
         editText.setEnabled(false);
-        binding.llAnotherLocations.addView(editText);
+        binding.llAnotherLocations.addView(view);
+        iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.llAnotherLocations.removeView(view);
+            }
+        });
     }
 }

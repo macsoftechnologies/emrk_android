@@ -64,8 +64,8 @@ public class LoginResponse {
             return new ArrayList<>();
         }
         List<String> list = new ArrayList<>();
-        for (LocationData locationData : availableLocation) {
-            list.add(locationData.getVillage());
+        for (Object locationData : availableLocation) {
+            list.add(((LocationData)locationData).getVillage());
         }
         return list;
     }
@@ -132,7 +132,7 @@ public class LoginResponse {
     public String mobileNum;
     public String entityName;
     public String password;
-    public List<LocationData> availableLocation;
+    public List availableLocation;
     public String emailId;
     public String altNumber;
     public String chooseLanguage;

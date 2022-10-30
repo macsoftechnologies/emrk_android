@@ -1,5 +1,6 @@
 package com.macsoftech.ekart.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -114,7 +115,15 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void callEditProfile() {
-        startActivity(new Intent(getActivity(), EditProfileActivity.class));
+        startActivityForResult(new Intent(getActivity(), EditProfileActivity.class),102);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== Activity.RESULT_OK){
+            loadEntityDetails();
+        }
     }
 
     private void navigateToNextPinActivity() {

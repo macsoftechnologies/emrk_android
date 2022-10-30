@@ -1,6 +1,8 @@
 package com.macsoftech.ekart.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,24 +10,31 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.ActivityEditProfileBinding;
 import com.macsoftech.ekart.helper.SettingsPreferences;
+import com.macsoftech.ekart.model.CommonErrorResponse;
 import com.macsoftech.ekart.model.LocationData;
 import com.macsoftech.ekart.model.LocationResponseRoot;
 import com.macsoftech.ekart.model.LoginResponse;
+import com.macsoftech.ekart.model.register.RegistrationRootResponse;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +44,7 @@ public class EditProfileActivity extends BaseActivity {
 
     private ActivityEditProfileBinding binding;
     private boolean isEdit = false;
+    private boolean isProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +69,18 @@ public class EditProfileActivity extends BaseActivity {
         binding.ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                isProfile = true;
-//                openCamera();
-                showToast("Profile pic updating is restricted.");
+                isProfile = true;
+                openCamera();
+//                showToast("Profile pic updating is restricted.");
             }
         });
 
         binding.ivEntity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                isProfile = false;
-//                openCamera();
-                showToast("Entity pic updating is restricted.");
+                isProfile = false;
+                openCamera();
+//                showToast("Entity pic updating is restricted.");
             }
         });
         binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +102,65 @@ public class EditProfileActivity extends BaseActivity {
         enableUIComponents();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE_300
+                    && resultCode == Activity.RESULT_OK
+            ) {
+                new Thread(() -> {
+                    try {
+                        compressFile();
+
+//                    runOnUiThread(() -> setData());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+
+            } else if (requestCode == GALLERY_PICK_REQUEST_CODE_400
+                    && resultCode == Activity.RESULT_OK) {
+                if (isProfile) {
+                    profile = photoFile;
+                    Glide.with(this)
+                            .load(photoFile)
+                            .into(binding.ivProfile);
+                } else {
+                    entity = photoFile;
+                    Glide.with(this)
+                            .load(photoFile)
+                            .into(binding.ivEntity);
+                }
+                updatePics();
+            }
+
+        }
+    }
+
+    private void compressFile() throws IOException {
+        Compressor compressor = new Compressor(this.getApplicationContext());
+        final File file = compressor.compressToFile(((BaseActivity) this).photoFile);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isProfile) {
+                    profile = file;
+                    Glide.with(EditProfileActivity.this)
+                            .load(file)
+                            .into(binding.ivProfile);
+                } else {
+                    entity = file;
+                    Glide.with(EditProfileActivity.this)
+                            .load(file)
+                            .into(binding.ivEntity);
+                }
+                updatePics();
+            }
+        });
+    }
+
+
     private void enableUIComponents() {
         binding.etEntityName.setEnabled(isEdit);
         binding.etFirstName.setEnabled(isEdit);
@@ -100,6 +169,7 @@ public class EditProfileActivity extends BaseActivity {
         binding.etMobile.setEnabled(isEdit);
         binding.etAltMobile.setEnabled(isEdit);
         binding.etEmail.setEnabled(isEdit);
+        binding.txtAddAnother.setEnabled(isEdit);
     }
 
 
@@ -393,10 +463,54 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private void addNewLocation(String village) {
-        EditText editText = (EditText) LayoutInflater.from(this)
+        View view = LayoutInflater.from(this)
                 .inflate(R.layout.row_other_locations, binding.llAnotherLocations, false);
+
+        EditText editText = view.findViewById(R.id.et_location);
+        ImageView iv_delete = view.findViewById(R.id.iv_delete);
         editText.setText(village);
         editText.setEnabled(false);
-        binding.llAnotherLocations.addView(editText);
+        binding.llAnotherLocations.addView(view);
+        iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.llAnotherLocations.removeView(view);
+            }
+        });
+    }
+
+    private File profile;
+    private File entity;
+
+    void updatePics() {
+        showProgress();
+        Map<String, String> map = new HashMap<>();
+        LoginResponse user = SettingsPreferences.getObject(this, SettingsPreferences.USER, LoginResponse.class);
+        map.put("userId", user.getUserId());
+        RestApi.getInstance().getService().updateUser(
+                profile == null ? null : RestApi.prepareFilePart("userImage", profile.getAbsolutePath(), null),
+                entity == null ? null : RestApi.prepareFilePart("entityImage", entity.getAbsolutePath(), null),
+                RestApi.prepareBodyPart(map)
+        ).enqueue(new Callback<RegistrationRootResponse>() {
+            @Override
+            public void onResponse(Call<RegistrationRootResponse> call, Response<RegistrationRootResponse> response) {
+                hideDialog();
+
+                if (response.isSuccessful()) {
+                    setResult(Activity.RESULT_OK);
+                    showToast("Updated Successfully");
+                    finish();
+                } else {
+                    CommonErrorResponse errorResponse = new Gson().fromJson(response.errorBody().charStream(), CommonErrorResponse.class);
+                    showToast(errorResponse.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RegistrationRootResponse> call, Throwable t) {
+                hideDialog();
+                showToast("Failed to register.");
+            }
+        });
     }
 }
