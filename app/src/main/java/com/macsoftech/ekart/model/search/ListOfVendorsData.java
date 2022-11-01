@@ -3,32 +3,30 @@ package com.macsoftech.ekart.model.search;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import com.macsoftech.ekart.model.Vendors;
+
 import java.util.List;
 
 public class ListOfVendorsData implements Parcelable {
     private String createdAt;
 
-    private String quantity;
-
     private List<String> productImage;
+
+    private String productImage2;
+
+    private String productCode;
 
     private String productId;
 
-    private String size;
-    private String location;
-    private String length;
+    private String productName1;
 
     private String __v;
 
-    private String vendorId;
-    private String userId;
+    private String[] productAliasName;
 
     private String _id;
 
-    private String vendorName;
-    private String entityName;
-    private String mobileNum;
+    private List<Vendors> vendors;
 
     private String productName;
 
@@ -36,46 +34,17 @@ public class ListOfVendorsData implements Parcelable {
 
     protected ListOfVendorsData(Parcel in) {
         createdAt = in.readString();
-        quantity = in.readString();
         productImage = in.createStringArrayList();
+        productImage2 = in.readString();
+        productCode = in.readString();
         productId = in.readString();
-        size = in.readString();
-        location = in.readString();
-        length = in.readString();
+        productName1 = in.readString();
         __v = in.readString();
-        vendorId = in.readString();
-        userId = in.readString();
+        productAliasName = in.createStringArray();
         _id = in.readString();
-        vendorName = in.readString();
-        entityName = in.readString();
-        mobileNum = in.readString();
+        vendors = in.createTypedArrayList(Vendors.CREATOR);
         productName = in.readString();
         updatedAt = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(createdAt);
-        dest.writeString(quantity);
-        dest.writeStringList(productImage);
-        dest.writeString(productId);
-        dest.writeString(size);
-        dest.writeString(location);
-        dest.writeString(length);
-        dest.writeString(__v);
-        dest.writeString(vendorId);
-        dest.writeString(userId);
-        dest.writeString(_id);
-        dest.writeString(vendorName);
-        dest.writeString(entityName);
-        dest.writeString(mobileNum);
-        dest.writeString(productName);
-        dest.writeString(updatedAt);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<ListOfVendorsData> CREATOR = new Creator<ListOfVendorsData>() {
@@ -98,23 +67,28 @@ public class ListOfVendorsData implements Parcelable {
         this.createdAt = createdAt;
     }
 
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
     public List<String> getProductImage() {
-        if (productImage == null) {
-            return new ArrayList<>();
-        }
         return productImage;
     }
 
     public void setProductImage(List<String> productImage) {
         this.productImage = productImage;
+    }
+
+    public String getProductImage2() {
+        return productImage2;
+    }
+
+    public void setProductImage2(String productImage2) {
+        this.productImage2 = productImage2;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductId() {
@@ -125,12 +99,12 @@ public class ListOfVendorsData implements Parcelable {
         this.productId = productId;
     }
 
-    public String getSize() {
-        return size;
+    public String getProductName1() {
+        return productName1;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setProductName1(String productName1) {
+        this.productName1 = productName1;
     }
 
     public String get__v() {
@@ -141,12 +115,12 @@ public class ListOfVendorsData implements Parcelable {
         this.__v = __v;
     }
 
-    public String getVendorId() {
-        return vendorId;
+    public String[] getProductAliasName() {
+        return productAliasName;
     }
 
-    public void setVendorId(String vendorId) {
-        this.vendorId = vendorId;
+    public void setProductAliasName(String[] productAliasName) {
+        this.productAliasName = productAliasName;
     }
 
     public String get_id() {
@@ -157,12 +131,12 @@ public class ListOfVendorsData implements Parcelable {
         this._id = _id;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    public List<Vendors> getVendors() {
+        return vendors;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setVendors(List<Vendors> vendors) {
+        this.vendors = vendors;
     }
 
     public String getProductName() {
@@ -183,46 +157,62 @@ public class ListOfVendorsData implements Parcelable {
 
     @Override
     public String toString() {
-        return "ClassPojo [createdAt = " + createdAt + ", quantity = " + quantity + ", productImage = " + productImage + ", productId = " + productId + ", size = " + size + ", __v = " + __v + ", vendorId = " + vendorId + ", _id = " + _id + ", vendorName = " + vendorName + ", productName = " + productName + ", updatedAt = " + updatedAt + "]";
+        return "ClassPojo [createdAt = " + createdAt + ", productImage = " + productImage + ", productImage2 = " + productImage2 + ", productCode = " + productCode + ", productId = " + productId + ", productName1 = " + productName1 + ", __v = " + __v + ", productAliasName = " + productAliasName + ", _id = " + _id + ", vendors = " + vendors + ", productName = " + productName + ", updatedAt = " + updatedAt + "]";
     }
 
-    public String getEntityName() {
-        return entityName;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createdAt);
+        dest.writeStringList(productImage);
+        dest.writeString(productImage2);
+        dest.writeString(productCode);
+        dest.writeString(productId);
+        dest.writeString(productName1);
+        dest.writeString(__v);
+        dest.writeStringArray(productAliasName);
+        dest.writeString(_id);
+        dest.writeTypedList(vendors);
+        dest.writeString(productName);
+        dest.writeString(updatedAt);
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public String getQuantity() {
+        return getVendors().get(0).getQuantity();
     }
 
     public String getLength() {
-        return length;
+        return getVendors().get(0).getLength();
     }
 
-    public void setLength(String length) {
-        this.length = length;
+    public String getSize() {
+        return getVendors().get(0).getSize();
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLocation() {
+        return getVendors().get(0).getLocation();
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getEntityName() {
+        return getVendors().get(0).getEntityName();
     }
 
     public String getMobileNum() {
-        return mobileNum;
+        return getVendors().get(0).getMobileNum();
     }
 
-    public void setMobileNum(String mobileNum) {
-        this.mobileNum = mobileNum;
+    public String getVendorName() {
+        if (getVendors().get(0).getVendorName() == null) {
+            return "";
+        }
+        return getVendors().get(0).getVendorName();
+    }
+
+    public String getUserId() {
+        return getVendors().get(0).getUserId();
     }
 }

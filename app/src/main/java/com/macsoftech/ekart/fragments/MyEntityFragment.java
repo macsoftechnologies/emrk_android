@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.EditContactsListActivity;
 import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.adapter.ProductNameAdapter;
 import com.macsoftech.ekart.api.RestApi;
@@ -187,16 +188,36 @@ public class MyEntityFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
+        View txt_edit = alertLayout.findViewById(R.id.txt_edit);
+        txt_edit.setVisibility(View.VISIBLE);
+
         if (currentUser != null) {
-            String[] contacts = new String[]{
-                    currentUser.getMobileNum(),
-                    currentUser.getAltNumber()
-            };
-            for (int i = 1; i <= 2; i++) {
+//            String[] contacts = new String[]{
+//                    currentUser.getMobileNum(),
+//
+//            };
+//            if (currentUser.getAltNumber() instanceof String) {
+//                contacts = new String[]{
+//                        currentUser.getMobileNum(),
+//                        currentUser.getAltNumber().toString()
+//                };
+//            }
+            List<String> contacts = new ArrayList<>();
+            contacts.add(currentUser.getMobileNum());
+
+            if (currentUser.getAltNumber() instanceof String) {
+                contacts.add(currentUser.getAltNumber().toString());
+            }
+            if (currentUser.getAltNumber() instanceof List && !((List<?>) currentUser.getAltNumber()).isEmpty()) {
+                for (String v : ((List<String>) currentUser.getAltNumber())) {
+                    contacts.add(v);
+                }
+            }
+            for (int i = 1; i <= contacts.size(); i++) {
                 View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
                 TextView tv_name = view.findViewById(R.id.tv_name);
                 TextView txt_mobile = view.findViewById(R.id.txt_mobile);
-                txt_mobile.setText(contacts[i - 1]);
+                txt_mobile.setText(contacts.get(i - 1));
                 tv_name.setText(i + ". " + currentUser.getFirstName() + " " + currentUser.getLastName());
                 ll_contacts.addView(view);
             }
@@ -205,6 +226,13 @@ public class MyEntityFragment extends BaseFragment {
         alert.setCancelable(true);
         AlertDialog dialog = alert.create();
         dialog.show();
+        txt_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                startActivity(new Intent(getActivity(), EditContactsListActivity.class));
+            }
+        });
     }
 
     private void locationAlertDialog() {

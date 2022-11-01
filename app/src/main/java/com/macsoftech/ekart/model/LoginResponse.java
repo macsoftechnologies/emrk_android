@@ -7,7 +7,7 @@ public class LoginResponse {
     public String _id;
     public String firstName;
     public String lastName;
-    private String primaryLocation;
+    private Object primaryLocation;
     private List<String> entityImage;
     private List<String> userImage;
 
@@ -65,7 +65,7 @@ public class LoginResponse {
         }
         List<String> list = new ArrayList<>();
         for (Object locationData : availableLocation) {
-            list.add(((LocationData)locationData).getVillage());
+            list.add(((LocationData) locationData).getVillage());
         }
         return list;
     }
@@ -89,7 +89,7 @@ public class LoginResponse {
         this.emailId = emailId;
     }
 
-    public String getAltNumber() {
+    public Object getAltNumber() {
         return altNumber;
     }
 
@@ -134,7 +134,7 @@ public class LoginResponse {
     public String password;
     public List availableLocation;
     public String emailId;
-    public String altNumber;
+    public Object altNumber;
     public String chooseLanguage;
     public String userId;
     public String createdAt;
@@ -166,7 +166,10 @@ public class LoginResponse {
         if (primaryLocation == null) {
             return "";
         }
-        return primaryLocation;
+        if (primaryLocation instanceof List && !((List<?>) primaryLocation).isEmpty()) {
+            return (String) ((List<?>) primaryLocation).get(0);
+        }
+        return "";
     }
 
     public void setPrimaryLocation(String primaryLocation) {

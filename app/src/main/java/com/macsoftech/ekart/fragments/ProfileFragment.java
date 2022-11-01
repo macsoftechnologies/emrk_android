@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.BuildConfig;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.AddChangePinActivity;
+import com.macsoftech.ekart.activities.EditContactsListActivity;
 import com.macsoftech.ekart.activities.EditProfileActivity;
 import com.macsoftech.ekart.activities.LoginActivity;
 import com.macsoftech.ekart.api.RestApi;
@@ -110,18 +111,25 @@ public class ProfileFragment extends BaseFragment {
                 locationAlertDialog();
             }
         });
+
+        binding.txtSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), EditContactsListActivity.class));
+            }
+        });
         binding.txtVersion.setText("Version: " + BuildConfig.VERSION_NAME);
         binding.editicon.setOnClickListener(view12 -> callEditProfile());
     }
 
     private void callEditProfile() {
-        startActivityForResult(new Intent(getActivity(), EditProfileActivity.class),102);
+        startActivityForResult(new Intent(getActivity(), EditProfileActivity.class), 102);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode== Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             loadEntityDetails();
         }
     }
@@ -482,7 +490,7 @@ public class ProfileFragment extends BaseFragment {
                         if (response.isSuccessful()) {
                             LoginResponse user = SettingsPreferences.getUser(getActivity());
                             //Add new village
-                            LocationData data=new LocationData();
+                            LocationData data = new LocationData();
                             data.setVillage(village);
                             user.getAvailableLocationObj().add(data);
                             SettingsPreferences.saveObject(getActivity(), SettingsPreferences.USER, user);

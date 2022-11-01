@@ -348,13 +348,6 @@ public class HomeSearchFragment extends BaseFragment {
         }
     }
 
-    private boolean hasSizeFilter(String size, ListOfVendorsData item) {
-        return !TextUtils.isEmpty(size) && item.getSize() != null && item.getSize().equals(size);
-    }
-
-    private boolean hasLocationSelected(String location, ListOfVendorsData item) {
-        return !TextUtils.isEmpty(location) && item.getLocation() != null && item.getLocation().equals(location);
-    }
 
     private void filterBySizes(String size) {
         mSize = size;
@@ -517,7 +510,7 @@ public class HomeSearchFragment extends BaseFragment {
         Map<String, String> body = new HashMap<>();
         body.put("productId", productId);
         RestApi.getInstance().getService()
-                .getVendorProduct(body)
+                .getVendorProduct(productId)
                 .enqueue(new Callback<ListOfVendorsResponse>() {
                     @Override
                     public void onResponse(Call<ListOfVendorsResponse> call, Response<ListOfVendorsResponse> response) {

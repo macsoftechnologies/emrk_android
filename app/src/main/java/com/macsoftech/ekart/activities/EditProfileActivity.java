@@ -191,7 +191,14 @@ public class EditProfileActivity extends BaseActivity {
                         binding.etLastName.setText(user.getLastName());
                         binding.etPrimary.setText(user.getPrimaryLocation());
                         binding.etMobile.setText(user.getMobileNum());
-                        binding.etAltMobile.setText(user.getAltNumber());
+                        if (user.getAltNumber() instanceof String) {
+                            binding.etAltMobile.setText(user.getAltNumber().toString());
+                        }else if(user.getAltNumber() instanceof List){
+                            if (user.getAltNumber() instanceof List && !((List<?>) user.getAltNumber()).isEmpty()) {
+                                String value =(String) ((List<?>) user.getAltNumber()).get(0);
+                                binding.etAltMobile.setText(value);
+                            }
+                        }
                         binding.etEmail.setText(user.getEmailId());
 //                        binding.txtMobile.setText(user.getMobileNum());
                         Glide.with(EditProfileActivity.this)
@@ -273,14 +280,14 @@ public class EditProfileActivity extends BaseActivity {
         body.put("firstName", binding.etFirstName.getText().toString());
         body.put("lastName", binding.etLastName.getText().toString());
         body.put("mobileNum", binding.etMobile.getText().toString());
-        body.put("altNumber", binding.etAltMobile.getText().toString());
+        body.put("altNumber", new String[]{binding.etAltMobile.getText().toString()});
         body.put("emailId", binding.etEmail.getText().toString());
         body.put("entityName", binding.etEntityName.getText().toString());
         body.put("primaryLocation", binding.etPrimary.getText().toString());
         String[] availableLocation = new String[binding.llAnotherLocations.getChildCount()];
         if (binding.llAnotherLocations.getChildCount() > 0) {
             for (int i = 0; i < binding.llAnotherLocations.getChildCount(); i++) {
-                EditText location = (EditText) binding.llAnotherLocations.getChildAt(i);
+                EditText location = (EditText) binding.llAnotherLocations.getChildAt(i).findViewById(R.id.et_location);
                 availableLocation[i] = location.getText().toString();
 //                body.put("availableLocation[" + i + "]", location.getText().toString());
             }

@@ -24,7 +24,9 @@ import com.macsoftech.ekart.model.LoginResponse;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
 import com.macsoftech.ekart.model.search.ListOfVendorsData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -97,6 +99,7 @@ public class SearchEntityDetailFragment extends BaseFragment {
 
 
         binding.txtProduct.setText(data.getProductName());
+        binding.txtProduct1.setText(data.getProductName1());
         binding.txtQty.setText(": " + data.getQuantity());
         binding.txtSize.setText(": " + data.getSize());
         binding.txtLocation.setText(": " + data.getLocation());
@@ -181,15 +184,23 @@ public class SearchEntityDetailFragment extends BaseFragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
         if (currentUser != null) {
-            String[] contacts = new String[]{
-                    currentUser.getMobileNum(),
-                    currentUser.getAltNumber()
-            };
-            for (int i = 1; i <= 2; i++) {
+            List<String> contacts = new ArrayList<>();
+            contacts.add(currentUser.getMobileNum());
+
+            if (currentUser.getAltNumber() instanceof String) {
+                contacts.add(currentUser.getAltNumber().toString());
+            }
+            if (currentUser.getAltNumber() instanceof List && !((List<?>) currentUser.getAltNumber()).isEmpty()) {
+                for (String v : ((List<String>) currentUser.getAltNumber())) {
+                    contacts.add(v);
+                }
+            }
+
+            for (int i = 1; i <= contacts.size(); i++) {
                 View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
                 TextView tv_name = view.findViewById(R.id.tv_name);
                 TextView txt_mobile = view.findViewById(R.id.txt_mobile);
-                txt_mobile.setText(contacts[i - 1]);
+                txt_mobile.setText(contacts.get(i - 1));
                 tv_name.setText(i + ". " + currentUser.getFirstName() + " " + currentUser.getLastName());
                 ll_contacts.addView(view);
             }

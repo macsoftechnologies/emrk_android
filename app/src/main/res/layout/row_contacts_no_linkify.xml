@@ -29,7 +29,6 @@
             android:textStyle="bold"
             android:padding="6dp"
             android:textColorLink="@color/colorPrimary"
-            android:autoLink="phone"
             android:drawableRight="@drawable/ic_baseline_phone_enabled_24"
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"

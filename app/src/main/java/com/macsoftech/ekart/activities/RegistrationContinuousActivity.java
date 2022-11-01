@@ -173,7 +173,7 @@ public class RegistrationContinuousActivity extends BaseActivity {
         map.put("primaryLocation", binding.etPrimary.getText().toString());
         if (binding.llAnotherLocations.getChildCount() > 0) {
             for (int i = 0; i < binding.llAnotherLocations.getChildCount(); i++) {
-                EditText location = (EditText) binding.llAnotherLocations.getChildAt(i);
+                EditText location = (EditText) binding.llAnotherLocations.getChildAt(i).findViewById(R.id.et_location);
                 map.put("availableLocation[" + i + "]", location.getText().toString());
             }
         }

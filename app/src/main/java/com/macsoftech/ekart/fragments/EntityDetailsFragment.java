@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.macsoftech.ekart.R;
 import com.macsoftech.ekart.activities.DashboardActivity;
+import com.macsoftech.ekart.activities.EditContactsListActivity;
 import com.macsoftech.ekart.activities.ImagePreviewActivity;
 import com.macsoftech.ekart.api.RestApi;
 import com.macsoftech.ekart.databinding.FragmentEntityProductDetailBinding;
@@ -25,7 +26,9 @@ import com.macsoftech.ekart.model.ProductDetailsRoot;
 import com.macsoftech.ekart.model.search.GetUserResponseRoot;
 import com.macsoftech.ekart.model.search.UserProdResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -183,16 +186,24 @@ public class EntityDetailsFragment extends BaseFragment {
         View alertLayout = inflater.inflate(R.layout.alertdialog_entity_contact, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         LinearLayout ll_contacts = alertLayout.findViewById(R.id.ll_contacts);
+
         if (currentUser != null) {
-            String[] contacts = new String[]{
-                    currentUser.getMobileNum(),
-                    currentUser.getAltNumber()
-            };
-            for (int i = 1; i <= 2; i++) {
+            List<String> contacts = new ArrayList<>();
+            contacts.add(currentUser.getMobileNum());
+
+            if (currentUser.getAltNumber() instanceof String) {
+                contacts.add(currentUser.getAltNumber().toString());
+            }
+            if (currentUser.getAltNumber() instanceof List && !((List<?>) currentUser.getAltNumber()).isEmpty()) {
+                for (String v : ((List<String>) currentUser.getAltNumber())) {
+                    contacts.add(v);
+                }
+            }
+            for (int i = 1; i <= contacts.size(); i++) {
                 View view = LayoutInflater.from(getActivity()).inflate(R.layout.row_contacts, null);
                 TextView tv_name = view.findViewById(R.id.tv_name);
                 TextView txt_mobile = view.findViewById(R.id.txt_mobile);
-                txt_mobile.setText(contacts[i - 1]);
+                txt_mobile.setText(contacts.get(i - 1));
                 tv_name.setText(i + ". " + currentUser.getFirstName() + " " + currentUser.getLastName());
                 ll_contacts.addView(view);
             }

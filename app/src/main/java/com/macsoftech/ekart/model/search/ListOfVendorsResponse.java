@@ -1,9 +1,12 @@
 package com.macsoftech.ekart.model.search;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfVendorsResponse {
+    @SerializedName("resp")
     private List<ListOfVendorsData> Data;
 
     private String statusCode;

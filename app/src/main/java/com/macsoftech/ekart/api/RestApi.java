@@ -182,8 +182,14 @@ public class RestApi {
         @POST("admin-product/getVendorProductBySize")
         Call<SearchRootResponse> getVendorProductBySize(@Body Map<String, String> body);
 
-        @POST("admin-product/getVendorProduct")
-        Call<ListOfVendorsResponse> getVendorProduct(@Body Map<String, String> body);
+//        @POST("admin-product/getVendorProduct")
+//        Call<ListOfVendorsResponse> getVendorProduct(@Body Map<String, String> body);
+
+//        @GET("admin-product/getVendorProductsList")
+//        Call<ListOfVendorsResponse> getVendorProduct(@Body Map<String, String> body);
+
+        @GET("admin-product/getProductAndVendorById/{id}")
+        Call<ListOfVendorsResponse> getVendorProduct(@Path("id") String productId);
 
 
         @Multipart
